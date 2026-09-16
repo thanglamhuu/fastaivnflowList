@@ -1,0 +1,329 @@
+1. Nếu có logo thì hoặc thay ảnh LOGO bằng ảnh  https://fastaivn.com/baner.png, 
+Nếu không thì thêm banner ảnh  https://fastaivn.com/baner.png cao 40px rộng 120px và link web trang chủ fastaivn.com
+
+2. Đổi tông màu thiết kê sang màu chính HEX: #F31B17 (RGB: 243,27,23) Dùng cho:
+- Button chính
+- CTA
+- Icon active
+- Highlight
+- Progress bar
+
+Bạn đang nâng cấp Flow App để tích hợp AI FAST LICENSE LITE V2.
+
+Hãy triển khai toàn bộ License Core trong một lần.
+
+Không tạo kiến trúc mới.
+Không dùng Firebase.
+Không dùng Backend.
+Không dùng Private Key.
+Không dùng JWT.
+
+Chuẩn License:
+
+ECDSA
+P-256
+SHA-256
+
+Token:
+
+payload.signature
+
+
+=================================================
+
+TẠO CÁC FILE:
+
+
+src/license/aifastLicenseConfig.ts
+
+Nội dung:
+
+```typescript
+export const LICENSE_CONFIG = {
+ APP_NAME:"REPLACE_APP_NAME",
+ PROJECT_ID:"REPLACE_PROJECT_ID",
+ ISSUER:"aifast-license-admin",
+ AUDIENCE:"aifast-flow-offline"
+} as const;
+
+
+export const LICENSE_PUBLIC_JWK: JsonWebKey = {
+ kty:"EC",
+ crv:"P-256",
+ x:"7TdV2OHoKXNzV-LruK2SkMcAa6fMOpg5D54GCfzaMo4",
+ y:"yx77NMsDwomn4DB7P31v9495_s28-XzRomrxyNM3V8U",
+ key_ops:["verify"],
+ ext:true
+};
+```
+
+
+=================================================
+
+TẠO:
+
+src/license/aifastMachine.ts
+
+
+Yêu cầu:
+
+Machine ID phải ổn định.
+
+Không dùng:
+- screen.width
+- screen.height
+- crypto.randomUUID() làm machine ID chính.
+
+
+Code:
+
+
+```typescript
+async function sha256(input:string){
+
+ const data =
+ new TextEncoder().encode(input);
+
+ const hash =
+ await crypto.subtle.digest(
+ "SHA-256",
+ data
+ );
+
+ return Array.from(
+ new Uint8Array(hash)
+ )
+ .map(
+ b=>b.toString(16).padStart(2,"0")
+ )
+ .join("");
+}
+
+
+export async function getOrCreateMachineId(){
+
+ const fingerprint = [
+
+ navigator.userAgent || "",
+
+ navigator.platform || "",
+
+ navigator.language || "",
+
+ Intl.DateTimeFormat()
+ .resolvedOptions()
+ .timeZone || "",
+
+ screen.colorDepth || 0,
+
+ navigator.hardwareConcurrency || 0,
+
+ (navigator as any).deviceMemory || 0
+
+ ].join("|");
+
+
+ const hash =
+ await sha256(fingerprint);
+
+
+ return (
+ "AF-" +
+ hash.substring(0,16)
+ .toUpperCase()
+ );
+
+}
+```
+
+
+=================================================
+
+TẠO:
+
+src/license/aifastLicenseVerifier.ts
+
+
+Function:
+
+verifyLicense(token)
+
+
+Luồng bắt buộc:
+
+1. Split token bằng dấu .
+
+2. Import public key.
+
+3. Verify:
+
+crypto.subtle.verify(
+ {
+  name:"ECDSA",
+  hash:"SHA-256"
+ },
+ publicKey,
+ signature,
+ new TextEncoder().encode(payloadPart)
+)
+
+
+4. Sau khi verify mới decode payload.
+
+
+5. Check:
+
+
+payload.projectId === LICENSE_CONFIG.PROJECT_ID
+
+
+payload.machineId === await getOrCreateMachineId()
+
+
+payload.expiresAt >
+Math.floor(Date.now()/1000)
+
+
+Return:
+
+
+{
+ valid:true,
+ payload
+}
+
+
+hoặc:
+
+
+{
+ valid:false,
+ reason
+}
+
+
+=================================================
+
+TẠO:
+
+src/license/aifastLicenseManager.ts
+
+
+API:
+
+
+activateLicense(token)
+
+checkLicense()
+
+getLicenseInfo()
+
+
+activateLicense:
+
+- verify token
+- lưu token
+- trả payload
+
+
+checkLicense:
+
+- đọc token
+- verify lại
+
+
+=================================================
+
+TẠO GIAO DIỆN LICENSE STATUS
+
+
+Hiển thị:
+
+
+LICENSE ACTIVE
+
+
+Thông tin:
+
+
+License ID
+
+Gói sử dụng
+
+Project ID
+
+Machine ID
+
+Ngày cấp
+
+Ngày hết hạn
+
+
+Ngày phải convert:
+
+new Date(timestamp * 1000)
+
+
+=================================================
+
+UI:
+
+Machine ID:
+
+AF-XXXXXXXXXXXX
+
+
+
+=================================================
+
+STARTUP PROTECTION:
+
+
+Khi mở app:
+
+
+checkLicense()
+
+
+Nếu valid:
+
+Mở app.
+
+
+Nếu invalid:
+
+Hiện License Gate.
+
+
+=================================================
+
+SAU KHI HOÀN THÀNH:
+
+
+Báo cáo:
+
+
+FILES CREATED:
+
+src/license/aifastLicenseConfig.ts
+
+src/license/aifastMachine.ts
+
+src/license/aifastLicenseVerifier.ts
+
+src/license/aifastLicenseManager.ts
+
+
+FEATURES:
+
+License Verify: OK
+
+Machine ID Stable: OK
+
+Expiry Display: OK
+
+Copy Machine ID: OK
+
+
+STATUS:
+SUCCESS

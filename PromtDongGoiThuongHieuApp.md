@@ -1,6 +1,5 @@
-1. Thêm banner ảnh  https://fastaivn.com/baner.png, 
-hoặc
-thay ảnh LOGO_URL bằng ảnh  https://fastaivn.com/baner.png, 
+1. Nếu có logo thì hoặc thay ảnh LOGO bằng ảnh  https://fastaivn.com/baner.png, 
+Nếu không thì thêm banner ảnh  https://fastaivn.com/baner.png và link web trang chủ fastaivn.com
 
 2. Đổi tông màu thiết kê sang màu chính HEX: #F31B17 (RGB: 243,27,23) Dùng cho:
 - Button chính
