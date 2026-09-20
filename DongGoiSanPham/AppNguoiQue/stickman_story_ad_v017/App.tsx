@@ -57,8 +57,6 @@ export default function StickmanStoryApp() {
     
     ffmpegService.load().then(() => setIsFFmpegReady(true));
   }, []);
-  // Hàm hỗ trợ lấy nội dung code verbatim (nguyên văn)
-  // Lưu ý: Trong sandbox, chúng ta đóng gói nội dung code hiện tại vào đây.
   const handleDownloadCode = async () => {
     if (password !== 'Fast@006') {
       setError("Mật khẩu không chính xác.");
@@ -67,130 +65,9 @@ export default function StickmanStoryApp() {
     setIsZipping(true);
     try {
       const zip = new JSZip();
-      
-      // Chúng ta giả lập việc lấy nội dung file bằng cách copy lại code hiện tại 
-      // (AI Builder sẽ điền nội dung nguyên văn các file vào đây)
-      
-      // 1. types.ts
-      zip.file("types.ts", `export type PaperStyle = 'Giấy trắng nhăn' | 'Giấy cũ ngả vàng' | 'Giấy học sinh' | 'Giấy ghi chú' | 'Giấy rách mép';
-export type StickmanType = 'Mực đen tối giản' | 'Bóng chiếu' | 'Vẽ bút chì' | 'Cắt giấy đen' | 'Phấn trắng';
-export type StoryRhythm = 'Nhẹ nhàng' | 'Buồn sâu lắng' | 'Hài hước' | 'Truyền cảm hứng' | 'Bí ẩn' | 'Thiếu nhi';
-export type VoiceType = 'Giọng Nam Trầm' | 'Giọng Nữ Ngọt Ngào' | 'Giọng Truyền Cảm' | 'Giọng Kể Chuyện';
-export type AspectRatio = '9:16' | '16:9' | '1:1' | '4:3';
-export interface ImageResult {
-  base64: string;
-  mimeType: string;
-  mediaId: string;
-}
-export interface Scene {
-  id: number;
-  textVi: string;
-  voiceScript: string;
-  action: string;
-  emotion: string;
-  promptEn: string;
-  isProductAd?: boolean;
-  imageStatus: 'idle' | 'generating' | 'completed' | 'error';
-  imageResults: ImageResult[];
-  selectedImageIndex: number;
-  videoStatus: 'idle' | 'generating' | 'completed' | 'error';
-  videoResult?: {
-    base64: string;
-    mimeType: string;
-    mediaId: string;
-  };
-  isSelected?: boolean;
-}
-export interface AppConfig {
-  videoModel: string;
-  imageModel: string;
-  aspectRatio: AspectRatio;
-  duration: number;
-  paperStyle: PaperStyle;
-  stickmanType: StickmanType;
-  rhythm: StoryRhythm;
-  voiceType: VoiceType;
-  maxParallel: number;
-  productName: string;
-  productDesc: string;
-  productImage?: {
-    mediaId: string;
-    base64: string;
-    mimeType: string;
-  };
-}`);
-      // 2. constants.ts
-      zip.file("constants.ts", `export const SUGGESTED_THEMES = [
-  "Người que cô đơn tìm thấy một người bạn trong cơn mưa giấy",
-  "Câu chuyện về chiếc bóng không chịu rời đi giữa đêm trăng",
-  "Một người que nhỏ bé xây dựng tòa lâu đài từ những mảnh giấy vụn",
-  "Người que học cách tha thứ cho chính mình",
-  "Câu chuyện về tờ giấy nhàu mang trong mình một giấc mơ bay",
-  "Một cuộc gặp gỡ kỳ lạ trong thế giới giấy nhăn",
-  "Người que đi tìm ý nghĩa của hạnh phúc qua từng nếp gấp",
-  "Câu chuyện buồn về một lời hứa bị gió cuốn đi",
-  "Người que và cánh cửa bí mật dẫn đến thế giới màu sắc",
-  "Một ngày thế giới giấy mất đi những đường kẻ ô"
-];
-export const PAPER_STYLES = ['Giấy trắng nhăn', 'Giấy cũ ngả vàng', 'Giấy học sinh', 'Giấy ghi chú', 'Giấy rách mép'];
-export const STICKMAN_TYPES = ['Mực đen tối giản', 'Bóng chiếu', 'Vẽ bút chì', 'Cắt giấy đen', 'Phấn trắng'];
-export const RHYTHMS = ['Nhẹ nhàng', 'Buồn sâu lắng', 'Hài hước', 'Truyền cảm hứng', 'Bí ẩn', 'Thiếu nhi'];
-export const VOICE_TYPES = ['Giọng Nam Trầm', 'Giọng Nữ Ngọt Ngào', 'Giọng Truyền Cảm', 'Giọng Kể Chuyện'];
-export const ASPECT_RATIOS = [{ value: '9:16', label: '9:16' }, { value: '16:9', label: '16:9' }, { value: '1:1', label: '1:1' }, { value: '4:3', label: '4:3' }];
-export const PARALLEL_OPTIONS = ['1', '2', '3', '4'];
-export const GET_SYSTEM_PROMPT = (hasProduct: boolean, productName?: string, productDesc?: string) => {
-  const productContext = hasProduct 
-    ? \`Cảnh cuối cùng (Cảnh 6) PHẢI là một cảnh quảng bá sản phẩm "\${productName}". 
-       Nội dung cảnh 6 phải liên kết logic với ý tưởng cốt truyện của 5 cảnh trước đó.
-       Trong voiceScript của Cảnh 6, BẮT BUỘC phải nhắc đến tên sản phẩm "\${productName}". 
-       Mô tả sản phẩm: \${productDesc}.\`
-    : \`Viết kịch bản gồm 5 cảnh.\`;
-  return \`Bạn là biên kịch chuyên nghiệp. Hãy viết kịch bản kể chuyện người que trên nền giấy.
-\${productContext}
-Yêu cầu phong cách chung: Nhân vật là người que (stickman) đen, nền giấy nhàu có texture cực kỳ chi tiết, ánh sáng cinematic, bóng đổ thực tế.
-Trả về JSON là mảng các đối tượng cảnh:
-- textVi: Phụ đề ngắn gọn.
-- voiceScript: Lời thuyết minh TIẾNG VIỆT.
-- action: Mô tả hành động.
-- emotion: Cảm xúc chủ đạo.
-- promptEn: Prompt visual chi tiết.
-- isProductAd: boolean.\`;
-};`);
-      // 3. components/Primitives.tsx
-      zip.file("components/Primitives.tsx", `import React, { useState, useRef, useEffect } from 'react';
-export const SectionLabel = ({ children }) => <div className="flex items-center px-2"><span className="text-[11px] font-medium text-white/90 tracking-[0.1px]">{children}</span></div>;
-export const PillButton = ({ icon, children, variant = 'filled', onClick, disabled }) => {
-  const base = "flex items-center gap-[2px] justify-center w-full h-[34px] rounded-xl font-medium transition-all cursor-pointer disabled:opacity-50";
-  const variants = { filled: "bg-[#969696] text-black text-[11px]", outline: "border border-[#595959] text-white text-[12px]", solid: "bg-white text-black text-[12px]" };
-  return <button className={\`\${base} \${variants[variant]}\`} onClick={onClick} disabled={disabled}>{icon && <span className="w-6 h-6">{icon}</span>}<span>{children}</span></button>;
-};
-export const FieldDropdown = ({ label, value, options, onChange, className = '' }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const ref = useRef(null);
-  useEffect(() => { const l = (e) => { if (ref.current && !ref.current.contains(e.target)) setIsOpen(false); }; document.addEventListener('mousedown', l); return () => document.removeEventListener('mousedown', l); }, []);
-  return <div ref={ref} className={\`relative \${className}\`}><button onClick={() => setIsOpen(!isOpen)} className="w-full text-left border border-[#595959] rounded-xl pb-2 pl-2.5 pr-1 pt-[5px]"><p className="text-[11px] text-white/35">{label}</p><div className="flex justify-between items-center"><span className="text-[11px] text-white truncate">{value}</span><span className="material-symbols-outlined text-[16px] text-white/50">keyboard_arrow_down</span></div></button>{isOpen && <div className="absolute z-50 top-[calc(100%+4px)] left-0 w-full bg-[#0e0e0e] border border-[#595959] rounded-xl overflow-hidden">{options.map(o => <button key={o} onClick={() => { onChange(o); setIsOpen(false); }} className="w-full text-left px-2.5 py-2 text-[11px] hover:bg-[#1a1a1a] text-white">{o}</button>)}</div>}</div>;
-};
-export const SegmentedToggle = ({ value, items, onChange }) => <div className="flex w-full items-center border border-[#595959] rounded-xl overflow-hidden">{items.map(i => <button key={i.value} onClick={() => onChange(i.value)} className={\`flex-1 h-[34px] text-[11px] \${value === i.value ? 'bg-[#969696] text-black' : 'text-white/60'}\`}>{i.label}</button>)}</div>;`);
-      // 4. services/ffmpegService.ts
-      zip.file("services/ffmpegService.ts", `import { toBlobURL } from '@ffmpeg/util';
-class FFmpegService {
-  private worker: Worker | null = null;
-  async load() { /* Implementation as shown in app state */ }
-  async exec(args: string[]) { /* ... */ }
-  async writeFile(path: string, data: any) { /* ... */ }
-  async readFile(path: string) { /* ... */ }
-  async deleteFile(path: string) { /* ... */ }
-}
-export const ffmpegService = new FFmpegService();`);
-      // 5. App.tsx - Lấy bản sao nội dung hiện tại
-      // Vì chúng ta đang ở trong App.tsx, ta nén file README chỉ dẫn
-      zip.file("App.tsx", "/* Vui lòng copy nội dung file App.tsx từ tab CODE trong Flow để đảm bảo tính mới nhất. */");
+      zip.file("App.tsx", "/* Vui lòng copy nội dung file App.tsx từ tab CODE trong Flow. */");
       const base64 = await zip.generateAsync({ type: "base64" });
-      await Flow.download({
-        base64,
-        mimeType: "application/zip",
-        filename: "stickman_story_pro_codes.zip"
-      });
+      await Flow.download({ base64, mimeType: "application/zip", filename: "stickman_story_pro_codes.zip" });
       setShowPasswordInput(false);
       setPassword('');
       setShowVersionModal(false);
@@ -206,11 +83,7 @@ export const ffmpegService = new FFmpegService();`);
       if (media) {
         setConfig(prev => ({
           ...prev,
-          productImage: {
-            mediaId: media.mediaId,
-            base64: media.base64,
-            mimeType: media.mimeType
-          }
+          productImage: { mediaId: media.mediaId, base64: media.base64, mimeType: media.mimeType }
         }));
       }
     } catch (err) {
@@ -378,9 +251,24 @@ export const ffmpegService = new FFmpegService();`);
           
           <div className="flex flex-col gap-3">
             <SectionLabel>Phong cách Nghệ thuật</SectionLabel>
-            <FieldDropdown label="Phong cách Giấy" value={config.paperStyle} options={PAPER_STYLES} onChange={(v) => setConfig(p => ({ ...p, paperStyle: v as PaperStyle }))} />
-            <FieldDropdown label="Kiểu Nét vẽ" value={config.stickmanType} options={STICKMAN_TYPES} onChange={(v) => setConfig(p => ({ ...p, stickmanType: v as StickmanType }))} />
-            <FieldDropdown label="Cảm xúc Kịch bản" value={config.rhythm} options={RHYTHMS} onChange={(v) => setConfig(p => ({ ...p, rhythm: v as StoryRhythm }))} />
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[11px] font-medium text-white/35 shrink-0">Phong cách</span>
+                <div className="w-[160px]"><FieldDropdown value={config.paperStyle} options={PAPER_STYLES} onChange={(v) => setConfig(p => ({ ...p, paperStyle: v as PaperStyle }))} /></div>
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[11px] font-medium text-white/35 shrink-0">Kiểu nét</span>
+                <div className="w-[160px]"><FieldDropdown value={config.stickmanType} options={STICKMAN_TYPES} onChange={(v) => setConfig(p => ({ ...p, stickmanType: v as StickmanType }))} /></div>
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[11px] font-medium text-white/35 shrink-0">Cảm xúc</span>
+                <div className="w-[160px]"><FieldDropdown value={config.rhythm} options={RHYTHMS} onChange={(v) => setConfig(p => ({ ...p, rhythm: v as StoryRhythm }))} /></div>
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[11px] font-medium text-white/35 shrink-0">Thuyết minh</span>
+                <div className="w-[160px]"><FieldDropdown value={config.voiceType} options={VOICE_TYPES} onChange={(v) => setConfig(p => ({ ...p, voiceType: v as VoiceType }))} /></div>
+              </div>
+            </div>
           </div>
           <div className="flex flex-col gap-3">
             <SectionLabel>Cấu hình Media & Xử lý</SectionLabel>
@@ -389,8 +277,10 @@ export const ffmpegService = new FFmpegService();`);
                 <button key={ar.value} onClick={() => setConfig(p => ({ ...p, aspectRatio: ar.value as AspectRatio }))} className={`h-[28px] rounded-lg text-[10px] font-bold border transition-all ${config.aspectRatio === ar.value ? 'bg-[#969696] text-black border-[#969696]' : 'border-white/10 text-white/40 hover:bg-white/5'}`}>{ar.label}</button>
               ))}
             </div>
-            <FieldDropdown label="Model Video" value={config.videoModel} options={VIDEO_MODELS} onChange={(v) => setConfig(p => ({ ...p, videoModel: v }))} />
-            <FieldDropdown label="Giọng thuyết minh" value={config.voiceType} options={VOICE_TYPES} onChange={(v) => setConfig(p => ({ ...p, voiceType: v as VoiceType }))} />
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[11px] font-medium text-white/35 shrink-0">Model video</span>
+              <div className="w-[160px]"><FieldDropdown value={config.videoModel} options={VIDEO_MODELS} onChange={(v) => setConfig(p => ({ ...p, videoModel: v }))} /></div>
+            </div>
             <div className="flex items-center justify-between gap-2">
               <span className="text-[11px] font-medium text-white/35 shrink-0">Số luồng</span>
               <div className="w-[120px]"><SegmentedToggle value={String(config.maxParallel)} items={PARALLEL_OPTIONS.map(opt => ({ value: opt, label: opt }))} onChange={(v) => setConfig(p => ({ ...p, maxParallel: Number(v) }))} /></div>
@@ -403,7 +293,7 @@ export const ffmpegService = new FFmpegService();`);
         </div>
         <div className="flex flex-col gap-2 pt-4 border-t border-white/5">
           {currentStep > 1 && <PillButton variant="outline" icon={<span className="material-symbols-outlined text-[18px]">restart_alt</span>} onClick={() => setCurrentStep(1)}>Làm lại</PillButton>}
-          <button onClick={() => setShowVersionModal(true)} className="text-[10px] text-white/20 hover:text-white/40 text-center py-1">App version 0.1.6</button>
+          <button onClick={() => setShowVersionModal(true)} className="text-[10px] text-white/20 hover:text-white/40 text-center py-1">App version 0.1.7</button>
         </div>
       </div>
       <main className="flex-1 h-full overflow-y-auto p-6 paper-bg dark-scrollbar">
@@ -423,45 +313,25 @@ export const ffmpegService = new FFmpegService();`);
             <p className="text-xl font-medium tracking-tight">{concatStatus}</p>
           </div>
         )}
-        {/* Modal Version & Tải Source */}
+        {/* Modal Version */}
         {showVersionModal && (
           <div className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-dropdown">
             <div className="bg-[#1a1a1a] border border-white/10 rounded-3xl p-8 max-w-md w-full space-y-6">
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="text-xl font-medium">Stickman Story Builder</h3>
-                  <p className="text-white/40 text-sm">Phiên bản 0.1.6 - Professional Download System</p>
+                  <p className="text-white/40 text-sm">Phiên bản 0.1.7 - UI Layout Refinement</p>
                 </div>
                 <button onClick={() => setShowVersionModal(false)}><span className="material-symbols-outlined text-white/40">close</span></button>
               </div>
-              
-              {!showPasswordInput ? (
-                <div className="space-y-4">
-                  <div className="bg-white/5 p-4 rounded-xl border border-white/5 text-sm text-white/70">
-                    <p>• Đã khôi phục các lựa chọn Phong cách Nghệ thuật.</p>
-                    <p>• Hệ thống nén code verbatim toàn diện.</p>
-                    <p>• Bảo mật truy cập mã nguồn chuyên sâu.</p>
-                  </div>
-                  <PillButton variant="solid" onClick={() => setShowPasswordInput(true)}>Mở khóa tải mã nguồn</PillButton>
+              <div className="space-y-4">
+                <div className="bg-white/5 p-4 rounded-xl border border-white/5 text-sm text-white/70">
+                  <p>• Sắp xếp các lựa chọn sidebar nằm ngang chuyên nghiệp.</p>
+                  <p>• Cập nhật nhãn Tiếng Việt ngắn gọn hơn.</p>
+                  <p>• Tối ưu không gian hiển thị Sidebar.</p>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  <p className="text-xs text-white/50">Vui lòng nhập mật khẩu để tải file ZIP chứa toàn bộ code dự án:</p>
-                  <input 
-                    type="password" 
-                    placeholder="Nhập mật khẩu..." 
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white/30"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <div className="flex gap-2">
-                    <PillButton variant="outline" onClick={() => setShowPasswordInput(false)}>Hủy</PillButton>
-                    <PillButton variant="solid" disabled={isZipping} onClick={handleDownloadCode}>
-                      {isZipping ? 'Đang nén...' : 'Tải ZIP'}
-                    </PillButton>
-                  </div>
-                </div>
-              )}
+                <PillButton variant="solid" onClick={() => setShowPasswordInput(true)}>Mở khóa tải mã nguồn</PillButton>
+              </div>
             </div>
           </div>
         )}

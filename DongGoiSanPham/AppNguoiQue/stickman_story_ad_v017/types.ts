@@ -3,13 +3,11 @@ export type StickmanType = 'Mực đen tối giản' | 'Bóng chiếu' | 'Vẽ b
 export type StoryRhythm = 'Nhẹ nhàng' | 'Buồn sâu lắng' | 'Hài hước' | 'Truyền cảm hứng' | 'Bí ẩn' | 'Thiếu nhi';
 export type VoiceType = 'Giọng Nam Trầm' | 'Giọng Nữ Ngọt Ngào' | 'Giọng Truyền Cảm' | 'Giọng Kể Chuyện';
 export type AspectRatio = '9:16' | '16:9' | '1:1' | '4:3';
-
 export interface ImageResult {
   base64: string;
   mimeType: string;
   mediaId: string;
 }
-
 export interface Scene {
   id: number;
   textVi: string;
@@ -18,18 +16,21 @@ export interface Scene {
   emotion: string;
   promptEn: string;
   isProductAd?: boolean;
+  
+  // Trạng thái tạo ảnh
   imageStatus: 'idle' | 'generating' | 'completed' | 'error';
   imageResults: ImageResult[];
   selectedImageIndex: number;
+  
+  // Trạng thái tạo video
   videoStatus: 'idle' | 'generating' | 'completed' | 'error';
   videoResult?: {
     base64: string;
     mimeType: string;
     mediaId: string;
   };
-  isSelected?: boolean;
+  isSelected?: boolean; // Hỗ trợ chọn clip hàng loạt
 }
-
 export interface AppConfig {
   videoModel: string;
   imageModel: string;
@@ -40,6 +41,7 @@ export interface AppConfig {
   rhythm: StoryRhythm;
   voiceType: VoiceType;
   maxParallel: number;
+  
   productName: string;
   productDesc: string;
   productImage?: {
