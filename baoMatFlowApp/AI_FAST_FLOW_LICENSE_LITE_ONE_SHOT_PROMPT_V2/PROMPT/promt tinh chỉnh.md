@@ -1,1 +1,4 @@
+để app có thể dùng dễ dàng khi mở trên điện thoại, hãy thêm một nút bấm Ẩn khung cấu hình phía trên Tùy chỉnh nghệ thuật để bấm vào thì ẩn khung này đi, 
+lúc ẩn thì đổi sang nút Hiện khung cấu hình để hiện lại khung cấu hình này nhé.
+
 sửa ở màn hình License Required, đổi License Required thành Nhập Lisence, sửa Vui lòng nhập mã kích hoạt để sử dụng App thành Vui lòng nhập mã kích hoạt để sử dụng App (Nếu chưa có thì chat zalo với hotline trên web fastaivn.com ), bỏ dòng chữ AI FAST LICENSE LITE v1.0 • P-256 ECDSA SHA-256, bỏ icon Copy bên cạnh MachineID và select sẵn Machine ID. Đổi Machine ID hiện thành Mã máy
