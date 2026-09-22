@@ -21,4 +21,4 @@ export interface ProjectConfig {
   outfitMode: OutfitMode;
   model: string;
   threads: number;
-} 
+}

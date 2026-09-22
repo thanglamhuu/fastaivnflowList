@@ -7,7 +7,12 @@ import {
   ALLOWED_DURATIONS
 } from './constants';
 import { ProjectConfig, Shot, AspectRatio, Gender, Accent, Speed, OutfitMode } from './types';
+import { checkLicense } from './license/aifastLicenseManager';
+import { LicenseGate } from './components/LicenseGate';
+import { LicenseStatus } from './components/LicenseStatus';
 export default function App() {
+  // --- Licensing ---
+  const [isLicensed, setIsLicensed] = useState<boolean | null>(null);
   // --- States ---
   const [step, setStep] = useState<1 | 2>(1);
   const [loading, setLoading] = useState(false);
@@ -37,6 +42,10 @@ export default function App() {
   const [mergeProgress, setMergeProgress] = useState(0);
   // --- Init ---
   useEffect(() => {
+    // Check License on Startup
+    checkLicense().then(result => {
+      setIsLicensed(result.valid);
+    });
     ffmpegService.load().then(() => setFfmpegReady(true));
   }, []);
   // --- Handlers ---
@@ -79,7 +88,6 @@ export default function App() {
     setLoading(true);
     setStatus('Đang phân tích script & thiết kế cảnh quay...');
     try {
-      // Dynamic Prompt modification based on Outfit Mode
       let finalSystemPrompt = SYSTEM_PROMPT;
       if (config.outfitMode === 'Cố định') {
         finalSystemPrompt = finalSystemPrompt
@@ -126,7 +134,6 @@ export default function App() {
     try {
       const audioInstr = `VIETNAMESE AUDIO NARRATION ONLY. Voice Actor: ${config.gender}, ${config.accent} Vietnam accent. Speaking Speed: ${config.speed}. Spoken Text: "${shot.transcript}".`;
       
-      // Fix outfit logic for Video Generation
       let outfitConstraint = "";
       if (config.outfitMode === 'Cố định') {
         outfitConstraint = "\nSTRICT REQUIREMENT: The character's outfit and appearance MUST remain IDENTICAL to the provided reference image. Do not change or alter clothing.";
@@ -249,35 +256,40 @@ export default function App() {
       filename: `Shot_${shot.number}.mp4`
     });
   };
+  // --- Render Protection ---
+  if (isLicensed === null) return null;
+  if (isLicensed === false) {
+    return <LicenseGate onSuccess={() => setIsLicensed(true)} />;
+  }
   return (
     <div className="flex h-full bg-[#0d0b14] text-white overflow-hidden font-sans relative">
-      {/* Configuration Toggle (Floating left of sidebar) */}
+      {/* Configuration Toggle */}
       <button 
         onClick={() => setShowConfig(!showConfig)}
-        className={`absolute z-[70] top-1/2 -translate-y-1/2 w-6 h-12 bg-slate-800/90 border border-purple-500/30 rounded-r-lg flex items-center justify-center transition-all duration-300 shadow-xl ${showConfig ? 'left-[320px]' : 'left-0'}`}
+        className={`absolute z-[70] top-1/2 -translate-y-1/2 w-6 h-12 bg-slate-800/90 border border-red-500/30 rounded-r-lg flex items-center justify-center transition-all duration-300 shadow-xl ${showConfig ? 'left-[320px]' : 'left-0'}`}
       >
-        <span className="text-xs font-black text-purple-400">
+        <span className="text-xs font-black text-[#F31B17]">
           {showConfig ? '<<' : '>>'}
         </span>
       </button>
       {/* Sidebar */}
-      <aside className={`border-r border-purple-900/30 bg-[#12101a] flex flex-col transition-all duration-300 relative z-[60] ${showConfig ? 'w-80 p-5' : 'w-0 p-0 overflow-hidden opacity-0 pointer-events-none'}`}>
-        <header className="mb-2 shrink-0">
-          <h1 className="text-xl font-black uppercase tracking-tighter text-purple-400 flex items-center gap-2">
+      <aside className={`border-r border-red-900/10 bg-[#12101a] flex flex-col transition-all duration-300 relative z-[60] ${showConfig ? 'w-80 p-5' : 'w-0 p-0 overflow-hidden opacity-0 pointer-events-none'}`}>
+        <header className="mb-2 shrink-0 flex flex-col items-center">
+          <img src="https://fastaivn.com/baner.png" alt="FastAI Logo" className="h-[40px] w-[120px] object-contain mb-1" />
+          <a href="https://fastaivn.com" target="_blank" rel="noopener noreferrer" className="text-[9px] text-slate-500 hover:text-[#F31B17] mb-3">fastaivn.com</a>
+          <h1 className="text-sm font-black uppercase tracking-tighter text-[#F31B17] flex items-center gap-2 text-center">
             <span className="material-symbols-outlined">movie_filter</span>
-            Creator Studio
+            Podcast Hiệu Ứng Hiện Đại
           </h1>
-          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">Dynamic Tech Visualizer</p>
         </header>
-        <div className="flex-1 flex flex-col gap-6 overflow-y-auto mt-4 custom-scrollbar pr-1">
-          {/* Ratio Selection */}
+        <div className="flex-1 flex flex-col gap-6 overflow-y-auto mt-4 custom-scrollbar pr-1 pb-4">
           <section className="space-y-3">
              <div className="flex flex-wrap gap-1">
                {ASPECT_RATIOS.map(r => (
                  <button 
                    key={r}
                    onClick={() => setConfig({...config, ratio: r as any})}
-                   className={`flex-1 min-w-[50px] py-2 text-[10px] font-black rounded-lg border transition-all ${config.ratio === r ? 'bg-purple-600 border-purple-400' : 'bg-slate-900 border-slate-800 text-slate-500'}`}
+                   className={`flex-1 min-w-[50px] py-2 text-[10px] font-black rounded-lg border transition-all ${config.ratio === r ? 'bg-[#F31B17] border-red-400' : 'bg-slate-900 border-slate-800 text-slate-500'}`}
                  >
                    {r}
                  </button>
@@ -288,14 +300,14 @@ export default function App() {
             <div className="grid grid-cols-2 gap-2">
               <button 
                 onClick={handleUploadMain}
-                className={`aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all group ${mainChar ? 'border-purple-500 bg-purple-500/10' : 'border-slate-800 hover:border-purple-500 hover:bg-purple-500/5'}`}
+                className={`aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all group ${mainChar ? 'border-[#F31B17] bg-[#F31B17]/10' : 'border-slate-800 hover:border-[#F31B17] hover:bg-[#F31B17]/5'}`}
               >
                 {mainChar ? (
                   <img src={`data:image/jpeg;base64,${mainChar.base64}`} className="w-full h-full object-cover rounded-lg" />
                 ) : (
                   <>
-                    <span className="material-symbols-outlined text-slate-500 group-hover:text-purple-400">person_add</span>
-                    <span className="text-[9px] text-center px-2 text-slate-500 group-hover:text-purple-400">Ảnh nhân vật</span>
+                    <span className="material-symbols-outlined text-slate-500 group-hover:text-[#F31B17]">person_add</span>
+                    <span className="text-[9px] text-center px-2 text-slate-500 group-hover:text-[#F31B17]">Ảnh nhân vật</span>
                   </>
                 )}
               </button>
@@ -320,7 +332,6 @@ export default function App() {
               <ConfigButtonGroup label="" icon="" value={config.accent} options={ACCENTS} onChange={v => setConfig({...config, accent: v as any})} />
               <ConfigButtonGroup label="" icon="" value={config.speed} options={SPEEDS} onChange={v => setConfig({...config, speed: v as any})} />
               
-              {/* Outfit Mode Toggle */}
               <div className="px-1 space-y-2">
                 <div className="flex flex-wrap gap-1">
                   {(['Thay trang phục', 'Cố định'] as OutfitMode[]).map(opt => (
@@ -344,7 +355,7 @@ export default function App() {
                 <select 
                   value={config.model} 
                   onChange={e => setConfig({...config, model: e.target.value})}
-                  className="bg-[#1c192b] border border-slate-800 rounded-lg px-2 py-1 text-[10px] focus:border-purple-500 outline-none cursor-pointer"
+                  className="bg-[#1c192b] border border-slate-800 rounded-lg px-2 py-1 text-[10px] focus:border-[#F31B17] outline-none cursor-pointer"
                 >
                   {VIDEO_MODELS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                 </select>
@@ -356,12 +367,12 @@ export default function App() {
               value={rawTranscript}
               onChange={e => setRawTranscript(e.target.value)}
               placeholder="Dán nội dung script..."
-              className="w-full h-24 bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs focus:border-purple-500 outline-none transition-colors"
+              className="w-full h-24 bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs focus:border-[#F31B17] outline-none transition-colors"
             />
             <button 
               disabled={!rawTranscript || !mainChar || loading}
               onClick={handleGenerateScript}
-              className="w-full py-3 bg-purple-600 hover:bg-purple-500 disabled:opacity-30 disabled:cursor-not-allowed rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-purple-900/20 active:scale-95 transition-all"
+              className="w-full py-3 bg-[#F31B17] hover:bg-[#d11713] disabled:opacity-30 disabled:cursor-not-allowed rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-900/20 active:scale-95 transition-all"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -373,34 +384,64 @@ export default function App() {
               )}
             </button>
           </section>
-          
-          <footer className="mt-auto py-4 text-center">
-            <span className="text-[9px] text-slate-600 font-mono">APP VERSION 0.1.3</span>
-          </footer>
+        </div>
+        {/* License Info pinned to bottom */}
+        <div className="mt-auto pt-4 border-t border-white/5 shrink-0">
+          <LicenseStatus />
         </div>
       </aside>
       {/* Main Content */}
-      <main className="flex-1 flex flex-col relative overflow-hidden bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-from),_transparent_40%)] from-purple-900/10 transition-all duration-300">
+      <main className="flex-1 flex flex-col relative overflow-hidden bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-from),_transparent_40%)] from-red-900/10 transition-all duration-300">
         
         {status && (
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 bg-black/80 border border-purple-500/30 backdrop-blur-xl px-4 py-2 rounded-full flex items-center gap-3 shadow-2xl">
-            <div className="w-4 h-4 border-2 border-purple-500/20 border-t-purple-500 rounded-full animate-spin" />
-            <span className="text-xs font-medium text-purple-200">{status}</span>
-            {mergeProgress > 0 && <span className="text-xs font-bold text-purple-400">{mergeProgress}%</span>}
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 bg-black/80 border border-red-500/30 backdrop-blur-xl px-4 py-2 rounded-full flex items-center gap-3 shadow-2xl">
+            <div className="w-4 h-4 border-2 border-red-500/20 border-t-[#F31B17] rounded-full animate-spin" />
+            <span className="text-xs font-medium text-red-200">{status}</span>
+            {mergeProgress > 0 && <span className="text-xs font-bold text-[#F31B17]">{mergeProgress}%</span>}
           </div>
         )}
         <div className="flex-1 overflow-y-auto p-4 md:p-8">
           {!shots.length ? (
-            <div className="h-full flex flex-col items-center justify-center text-center opacity-40">
-              <span className="material-symbols-outlined text-6xl mb-4 text-purple-400">movie</span>
-              <h2 className="text-2xl font-black uppercase italic">Sẵn sàng để sáng tạo?</h2>
-              <p className="text-slate-400 max-w-xs mt-2">Tải ảnh nhân vật và dán script để bắt đầu kịch bản đầu tiên.</p>
+            <div className="h-full flex flex-col items-center justify-center text-center">
+              <div className="max-w-xl bg-[#12101a]/50 border border-white/5 p-8 rounded-3xl backdrop-blur-sm">
+                <span className="material-symbols-outlined text-6xl mb-4 text-[#F31B17]">movie</span>
+                <h2 className="text-2xl font-black uppercase italic mb-2 text-white">Sáng tạo không giới hạn</h2>
+                <p className="text-slate-400 text-sm mb-8">Tải ảnh nhân vật và dán script để bắt đầu kịch bản đầu tiên.</p>
+                
+                <div className="text-left space-y-4">
+                  <h3 className="text-sm font-black text-[#F31B17] uppercase tracking-wide">
+                    Dưới đây là những định dạng content "hái ra tiền" và phù hợp nhất với app của bạn:
+                  </h3>
+                  <ul className="space-y-2 text-xs text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#F31B17] font-bold">1.</span> 
+                      <span>Kiến thức Công nghệ, AI & Crypto (Tech & Edu-tainment)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#F31B17] font-bold">2.</span> 
+                      <span>Kinh doanh, Tài chính & Phát triển bản thân (Hustle/Motivation)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#F31B17] font-bold">3.</span> 
+                      <span>"Bách khoa toàn thư" & Sự thật thú vị (Did You Know?)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#F31B17] font-bold">4.</span> 
+                      <span>Kịch bản tình huống kịch tính & Bóc phốt (Drama/Storytelling)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#F31B17] font-bold">5.</span> 
+                      <span>Review Sản phẩm "Chốt Sale" chớp nhoáng (Flash Promo)</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="max-w-4xl mx-auto space-y-12">
               <header className="flex flex-col md:flex-row items-center justify-between border-b border-white/5 pb-6 gap-4">
                 <div>
-                  <span className="text-[10px] bg-purple-500 text-white px-2 py-0.5 rounded font-black uppercase tracking-tighter">Phase {step}</span>
+                  <span className="text-[10px] bg-[#F31B17] text-white px-2 py-0.5 rounded font-black uppercase tracking-tighter">Phase {step}</span>
                   <h2 className="text-2xl md:text-3xl font-black uppercase mt-2">{step === 1 ? 'Thiết kế cảnh quay' : 'Xuất bản Video'}</h2>
                 </div>
                 {step === 1 ? (
@@ -438,7 +479,7 @@ export default function App() {
                       <div className="flex items-center gap-6">
                         <div className="flex flex-col">
                           <span className="text-[10px] font-bold text-slate-500 uppercase">Tiến độ tạo</span>
-                          <span className="text-xl font-black text-purple-400">
+                          <span className="text-xl font-black text-[#F31B17]">
                             {shots.filter(s => s.videoBase64).length} / {shots.length} Cảnh
                           </span>
                         </div>
@@ -446,7 +487,7 @@ export default function App() {
                       <div className="flex gap-3 w-full md:w-auto">
                         <button 
                           onClick={handleGenerateAll}
-                          className="flex-1 md:flex-none px-5 py-2.5 bg-purple-600 hover:bg-purple-500 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-purple-900/40"
+                          className="flex-1 md:flex-none px-5 py-2.5 bg-[#F31B17] hover:bg-[#d11713] rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-900/40"
                         >
                           <span className="material-symbols-outlined">play_circle</span>
                           Tạo toàn bộ
@@ -513,7 +554,7 @@ export default function App() {
             </div>
             
             <div className="bg-white/5 border border-white/10 p-6 rounded-2xl max-w-lg w-full">
-              <span className="text-[10px] font-black uppercase text-purple-400">Shot {previewShot.number} • {previewShot.duration}s</span>
+              <span className="text-[10px] font-black uppercase text-[#F31B17]">Shot {previewShot.number} • {previewShot.duration}s</span>
               <p className="mt-2 text-sm leading-relaxed text-slate-200">{previewShot.transcript}</p>
             </div>
           </div>
@@ -537,7 +578,7 @@ function ConfigButtonGroup({ label, icon, value, options, onChange }: { label: s
           <button 
             key={opt}
             onClick={() => onChange(opt)}
-            className={`flex-1 py-1.5 px-2 text-[10px] font-bold rounded-md border transition-all ${value === opt ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-900 border-slate-800 text-slate-500 hover:border-slate-700'}`}
+            className={`flex-1 py-1.5 px-2 text-[10px] font-bold rounded-md border transition-all ${value === opt ? 'bg-[#F31B17] border-red-400 text-white' : 'bg-slate-900 border-slate-800 text-slate-500 hover:border-slate-700'}`}
           >
             {opt}
           </button>
@@ -550,7 +591,7 @@ function ShotEditorCard({ shot, onChange, aspectRatio, charImage }: { shot: Shot
   const [w, h] = aspectRatio.split(':').map(Number);
   
   return (
-    <div className="bg-[#12101a] border border-white/5 rounded-3xl overflow-hidden shadow-2xl hover:border-purple-500/20 transition-all">
+    <div className="bg-[#12101a] border border-white/5 rounded-3xl overflow-hidden shadow-2xl hover:border-red-500/20 transition-all">
       <div className="flex flex-col md:flex-row">
         <div className="w-full md:w-48 bg-slate-900 shrink-0 relative overflow-hidden flex items-center justify-center p-4">
           <div 
@@ -575,7 +616,7 @@ function ShotEditorCard({ shot, onChange, aspectRatio, charImage }: { shot: Shot
               <textarea 
                 value={shot.prompt}
                 onChange={e => onChange({...shot, prompt: e.target.value})}
-                className="w-full h-24 bg-slate-900/50 border border-slate-800 rounded-xl p-3 text-xs focus:border-purple-500 outline-none"
+                className="w-full h-24 bg-slate-900/50 border border-slate-800 rounded-xl p-3 text-xs focus:border-red-500 outline-none"
               />
             </div>
             <div className="space-y-1.5">
@@ -583,7 +624,7 @@ function ShotEditorCard({ shot, onChange, aspectRatio, charImage }: { shot: Shot
               <textarea 
                 value={shot.transcript}
                 onChange={e => onChange({...shot, transcript: e.target.value})}
-                className="w-full h-24 bg-slate-900/50 border border-slate-800 rounded-xl p-3 text-xs focus:border-purple-500 outline-none"
+                className="w-full h-24 bg-slate-900/50 border border-slate-800 rounded-xl p-3 text-xs focus:border-red-500 outline-none"
               />
             </div>
           </div>
@@ -631,7 +672,7 @@ function ShotPreviewCard({ shot, aspectRatio, onGenerate, onDownload, onToggle, 
           <button 
             disabled={shot.isGenerating}
             onClick={onGenerate}
-            className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter transition-all ${shot.videoBase64 ? 'bg-slate-800 text-slate-400 hover:bg-purple-600 hover:text-white' : 'bg-purple-600 text-white hover:bg-purple-500'}`}
+            className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter transition-all ${shot.videoBase64 ? 'bg-slate-800 text-slate-400 hover:bg-[#F31B17] hover:text-white' : 'bg-[#F31B17] text-white hover:bg-[#d11713]'}`}
           >
             {shot.videoBase64 ? 'Tạo lại' : 'Tạo Video'}
           </button>
@@ -645,8 +686,8 @@ function ShotPreviewCard({ shot, aspectRatio, onGenerate, onDownload, onToggle, 
         >
           {shot.isGenerating ? (
             <div className="flex flex-col items-center gap-2">
-              <div className="w-6 h-6 border-2 border-purple-500/20 border-t-purple-500 rounded-full animate-spin" />
-              <span className="text-[8px] text-purple-400 uppercase font-black animate-pulse">Rendering</span>
+              <div className="w-6 h-6 border-2 border-red-500/20 border-t-[#F31B17] rounded-full animate-spin" />
+              <span className="text-[8px] text-[#F31B17] uppercase font-black animate-pulse">Rendering</span>
             </div>
           ) : shot.videoBase64 ? (
             <>
