@@ -1,0 +1,1 @@
+nếu config.outfitMode === 'Cố định' thì trong SYSTEM_PROMPT từ constant sẽ chỉnh đoạn "Mỗi shot phải có sự thay đổi về Text, Icon/Graphic, hoặc Background/Trang phục." thành  "Mỗi shot phải có sự thay đổi về Text, Icon/Graphic, hoặc Background" và "- Magic Transitions: Đổi phông nền chớp nhoáng, đổi trang phục tức thì." thành "- Magic Transitions: Đổi phông nền chớp nhoáng."
