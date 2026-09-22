@@ -79,9 +79,22 @@ export default function App() {
     setLoading(true);
     setStatus('Đang phân tích script & thiết kế cảnh quay...');
     try {
+      // Dynamic Prompt modification based on Outfit Mode
+      let finalSystemPrompt = SYSTEM_PROMPT;
+      if (config.outfitMode === 'Cố định') {
+        finalSystemPrompt = finalSystemPrompt
+          .replace(
+            "Mỗi shot phải có sự thay đổi về Text, Icon/Graphic, hoặc Background/Trang phục.",
+            "Mỗi shot phải có sự thay đổi về Text, Icon/Graphic, hoặc Background"
+          )
+          .replace(
+            "- Magic Transitions: Đổi phông nền chớp nhoáng, đổi trang phục tức thì.",
+            "- Magic Transitions: Đổi phông nền chớp nhoáng."
+          );
+      }
       const { text } = await Flow.generate.text(
         `SCRIPT:\n${rawTranscript}\n\nSelected Ratio: ${config.ratio}`,
-        { systemInstruction: SYSTEM_PROMPT, thinkingLevel: 'medium' }
+        { systemInstruction: finalSystemPrompt, thinkingLevel: 'medium' }
       );
       
       const jsonStr = text.replace(/```json|```/gi, '').trim();
@@ -113,7 +126,7 @@ export default function App() {
     try {
       const audioInstr = `VIETNAMESE AUDIO NARRATION ONLY. Voice Actor: ${config.gender}, ${config.accent} Vietnam accent. Speaking Speed: ${config.speed}. Spoken Text: "${shot.transcript}".`;
       
-      // Fix outfit logic
+      // Fix outfit logic for Video Generation
       let outfitConstraint = "";
       if (config.outfitMode === 'Cố định') {
         outfitConstraint = "\nSTRICT REQUIREMENT: The character's outfit and appearance MUST remain IDENTICAL to the provided reference image. Do not change or alter clothing.";
@@ -362,7 +375,7 @@ export default function App() {
           </section>
           
           <footer className="mt-auto py-4 text-center">
-            <span className="text-[9px] text-slate-600 font-mono">APP VERSION 0.1.2</span>
+            <span className="text-[9px] text-slate-600 font-mono">APP VERSION 0.1.3</span>
           </footer>
         </div>
       </aside>

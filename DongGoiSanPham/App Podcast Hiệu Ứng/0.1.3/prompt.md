@@ -1,7 +1,1 @@
-Appverison là 0.1.2 Bỏ dòng icon và text của Nam/Nữ , Giọng và  Tốc độ. 
-
-Chuyển nút bấm Ẩn khung cấu hình thành <<, Hiện cấu hình  thành >> và cho nằm ở bên trái khung cấu hình. 
-
-Bỏ dòng chữ Character Assets.
-
-Thêm lựa chọn dạng 2 nút bấm Thay trang phục, Cố định. Để khi tạo kịch bản, nếu chọn Cố định thì promt phải cố định â trong ảnh trang phục đã upload ở trên. Không tự ý đổi sang trang phục mới. Trường hợp không tải lên trang phục thì là cố định trang phục trong ảnh nhân vật.
+nếu config.outfitMode === 'Cố định' thì trong SYSTEM_PROMPT từ constant sẽ chỉnh đoạn "Mỗi shot phải có sự thay đổi về Text, Icon/Graphic, hoặc Background/Trang phục." thành  "Mỗi shot phải có sự thay đổi về Text, Icon/Graphic, hoặc Background" và "- Magic Transitions: Đổi phông nền chớp nhoáng, đổi trang phục tức thì." thành "- Magic Transitions: Đổi phông nền chớp nhoáng."
