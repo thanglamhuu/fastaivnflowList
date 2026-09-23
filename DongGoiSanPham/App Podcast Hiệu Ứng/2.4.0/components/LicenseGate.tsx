@@ -47,7 +47,7 @@ export function LicenseGate({ onSuccess }: LicenseGateProps) {
         <div className="flex gap-4 mb-6">
           <div className="px-3 py-1 bg-white/5 rounded-full border border-white/10 flex items-center gap-2">
             <span className="text-[9px] font-bold text-slate-500">VERSION</span>
-            <span className="text-[9px] font-black text-white">2.3.0</span>
+            <span className="text-[9px] font-black text-white">2.4.0</span>
           </div>
           <div className="px-3 py-1 bg-[#F31B17]/10 rounded-full border border-[#F31B17]/20 flex items-center gap-2">
             <span className="text-[9px] font-bold text-[#F31B17]">CREDITS</span>

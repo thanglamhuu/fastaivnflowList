@@ -153,14 +153,15 @@ export default function App() {
     }
   };
   const generateSingleVideo = async (shotIndex: number) => {
-    const shot = shots[shotIndex];
-    if (shot.isGenerating) return;
-    const updatedShots = [...shots];
-    updatedShots[shotIndex].isGenerating = true;
-    updatedShots[shotIndex].videoBase64 = undefined;
-    updatedShots[shotIndex].error = undefined;
-    setShots(updatedShots);
+    // Removed isGenerating check to allow re-triggering as per request
+    setShots(prev => prev.map((s, i) => i === shotIndex ? {
+      ...s,
+      isGenerating: true,
+      videoBase64: undefined,
+      error: undefined
+    } : s));
     try {
+      const shot = shots[shotIndex];
       const audioInstr = `VIETNAMESE AUDIO NARRATION ONLY. Voice Actor: ${config.gender}, ${config.accent} Vietnam accent. Speaking Speed: ${config.speed}. Spoken Text: "${shot.transcript}".`;
       
       let outfitConstraint = "";
@@ -191,19 +192,18 @@ export default function App() {
           throw genErr;
         }
       }
-      setShots(prev => {
-        const next = [...prev];
-        next[shotIndex].videoBase64 = video.base64;
-        next[shotIndex].isGenerating = false;
-        return next;
-      });
+      setShots(prev => prev.map((s, i) => i === shotIndex ? {
+        ...s,
+        videoBase64: video.base64,
+        isGenerating: false,
+        error: undefined
+      } : s));
     } catch (err: any) {
-      setShots(prev => {
-        const next = [...prev];
-        next[shotIndex].isGenerating = false;
-        next[shotIndex].error = err.message;
-        return next;
-      });
+      setShots(prev => prev.map((s, i) => i === shotIndex ? {
+        ...s,
+        isGenerating: false,
+        error: err.message || 'Lỗi không xác định'
+      } : s));
     }
   };
   const handleGenerateAll = async () => {
@@ -489,7 +489,6 @@ export default function App() {
                          </div>
                       </div>
                       
-                      {/* Refresh Button moved here */}
                       <button 
                         onClick={handleForgeCharacter}
                         disabled={isForging}
@@ -773,8 +772,13 @@ function ShotEditorCard({ shot, onChange, aspectRatio, charImage }: { shot: Shot
 function ShotPreviewCard({ shot, aspectRatio, onGenerate, onDownload, onToggle, onPreview }: { shot: Shot; aspectRatio: AspectRatio; onGenerate: () => void; onDownload: () => void; onToggle: () => void; onPreview: () => void }) {
   const [w, h] = aspectRatio.split(':').map(Number);
   
+  // Use a red highlight if there's an error
+  const btnLabel = shot.isGenerating ? 'Đang tạo...' : shot.error ? 'Thử lại' : shot.videoBase64 ? 'Tạo lại' : 'Tạo Video';
+  const btnClass = shot.error || !shot.videoBase64 
+    ? 'bg-[#F31B17] text-white hover:bg-[#d11713]' 
+    : 'bg-slate-800 text-slate-400 hover:bg-[#F31B17] hover:text-white';
   return (
-    <div className={`bg-[#12101a] border rounded-3xl overflow-hidden transition-all ${shot.videoBase64 ? 'border-emerald-500/20' : 'border-white/5'}`}>
+    <div className={`bg-[#12101a] border rounded-3xl overflow-hidden transition-all relative ${shot.error ? 'border-red-500/50 ring-1 ring-red-500/20' : shot.videoBase64 ? 'border-emerald-500/20' : 'border-white/5'}`}>
       <div className="p-4 flex items-center justify-between border-b border-white/5 bg-white/[0.02]">
         <div className="flex items-center gap-3">
           <input 
@@ -795,11 +799,11 @@ function ShotPreviewCard({ shot, aspectRatio, onGenerate, onDownload, onToggle, 
             </button>
           )}
           <button 
-            disabled={shot.isGenerating}
             onClick={onGenerate}
-            className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter transition-all ${shot.videoBase64 ? 'bg-slate-800 text-slate-400 hover:bg-[#F31B17] hover:text-white' : 'bg-[#F31B17] text-white hover:bg-[#d11713]'}`}
+            className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-tighter transition-all active:scale-95 flex items-center gap-1.5 ${btnClass}`}
           >
-            {shot.videoBase64 ? 'Tạo lại' : 'Tạo Video'}
+            {shot.isGenerating && <div className="w-2.5 h-2.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
+            {btnLabel}
           </button>
         </div>
       </div>
@@ -828,15 +832,29 @@ function ShotPreviewCard({ shot, aspectRatio, onGenerate, onDownload, onToggle, 
                 <span className="material-symbols-outlined text-white">zoom_in</span>
               </div>
             </>
+          ) : shot.error ? (
+            <div className="flex flex-col items-center gap-1 p-2 text-center">
+              <span className="material-symbols-outlined text-red-500 text-2xl">error</span>
+              <span className="text-[7px] text-red-400 font-bold uppercase">Lỗi Render</span>
+            </div>
           ) : (
             <span className="material-symbols-outlined text-slate-800 text-3xl">videocam_off</span>
           )}
         </div>
-        <div className="flex-1">
-          <p className="text-[10px] text-slate-500 leading-relaxed line-clamp-3 mb-2">{shot.transcript}</p>
-          <div className="flex items-center gap-2 text-[10px] font-bold">
+        <div className="flex-1 flex flex-col justify-between">
+          <div>
+            <p className="text-[10px] text-slate-500 leading-relaxed line-clamp-3 mb-2">{shot.transcript}</p>
+            {shot.error && (
+              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-2 mt-1">
+                <p className="text-[9px] text-red-400 font-bold leading-tight break-words">
+                  <span className="uppercase text-[8px] opacity-60 block mb-0.5">Chi tiết lỗi:</span>
+                  {shot.error}
+                </p>
+              </div>
+            )}
+          </div>
+          <div className="flex items-center gap-2 text-[10px] font-bold mt-2">
             <span className="bg-white/5 px-2 py-0.5 rounded text-slate-400">{shot.duration}s</span>
-            {shot.error && <span className="text-red-400 uppercase text-[9px]">{shot.error}</span>}
           </div>
         </div>
       </div>
