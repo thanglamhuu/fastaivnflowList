@@ -19,6 +19,7 @@ export default function App() {
   const [status, setStatus] = useState('');
   const [showConfig, setShowConfig] = useState(true);
   const [previewShot, setPreviewShot] = useState<Shot | null>(null);
+  const [zoomImage, setZoomImage] = useState<string | null>(null);
   
   // Config
   const [config, setConfig] = useState<ProjectConfig>({
@@ -32,8 +33,10 @@ export default function App() {
   });
   
   // Media
-  const [mainChar, setMainChar] = useState<{ mediaId: string; base64: string } | null>(null);
-  const [outfitRef, setOutfitRef] = useState<{ mediaId: string; base64: string } | null>(null);
+  const [mainChar, setMainChar] = useState<{ mediaId: string; base64: string; mimeType: string } | null>(null);
+  const [outfitRef, setOutfitRef] = useState<{ mediaId: string; base64: string; mimeType: string } | null>(null);
+  const [forgedChar, setForgedChar] = useState<{ mediaId: string; base64: string } | null>(null);
+  const [isForging, setIsForging] = useState(false);
   
   // Scripting
   const [rawTranscript, setRawTranscript] = useState('');
@@ -42,7 +45,6 @@ export default function App() {
   const [mergeProgress, setMergeProgress] = useState(0);
   // --- Init ---
   useEffect(() => {
-    // Check License on Startup
     checkLicense().then(result => {
       setIsLicensed(result.valid);
     });
@@ -53,7 +55,8 @@ export default function App() {
     try {
       const media = await Flow.media.select({ filter: 'image' });
       if (!media) return;
-      setMainChar({ mediaId: media.mediaId, base64: media.base64 });
+      setMainChar({ mediaId: media.mediaId, base64: media.base64, mimeType: media.mimeType });
+      setForgedChar(null); // Reset forge if main changes
       
       setStatus('Đang nhận diện giới tính...');
       const { text } = await Flow.generate.text(
@@ -70,7 +73,32 @@ export default function App() {
   };
   const handleUploadOutfit = async () => {
     const media = await Flow.media.select({ filter: 'image' });
-    if (media) setOutfitRef({ mediaId: media.mediaId, base64: media.base64 });
+    if (media) {
+      setOutfitRef({ mediaId: media.mediaId, base64: media.base64, mimeType: media.mimeType });
+      setForgedChar(null); // Reset forge if outfit changes
+    }
+  };
+  const handleForgeCharacter = async () => {
+    if (!mainChar) return;
+    setIsForging(true);
+    setStatus('Đang ghép trang phục cho nhân vật...');
+    try {
+      const prompt = `Full body portrait of the exact person from the first reference image, wearing the exact outfit and clothing from the second reference image. Maintain anatomical facial features, exact eyes, nose, lips, and hairstyle of the original person. High fidelity, studio cinematic lighting, clean solid background, sharp detail.`;
+      
+      const result = await Flow.generate.image({
+        prompt,
+        referenceImageMediaIds: outfitRef ? [mainChar.mediaId, outfitRef.mediaId] : [mainChar.mediaId],
+        modelDisplayName: '🍌 Nano Banana Pro',
+        aspectRatio: config.ratio
+      });
+      setForgedChar({ mediaId: result.mediaId, base64: result.base64 });
+    } catch (err) {
+      console.error(err);
+      alert('Không thể tạo nhân vật. Vui lòng thử lại.');
+    } finally {
+      setIsForging(false);
+      setStatus('');
+    }
   };
   const calculateDuration = useCallback((text: string, speedStr: string) => {
     const wordCount = text.split(/\s+/).length;
@@ -84,7 +112,7 @@ export default function App() {
     return dur;
   }, []);
   const handleGenerateScript = async () => {
-    if (!rawTranscript || !mainChar) return;
+    if (!rawTranscript || (!mainChar && !forgedChar)) return;
     setLoading(true);
     setStatus('Đang phân tích script & thiết kế cảnh quay...');
     try {
@@ -96,7 +124,7 @@ export default function App() {
             "Mỗi shot phải có sự thay đổi về Text, Icon/Graphic, hoặc Background"
           )
           .replace(
-            "- Magic Transitions: Đổi phông nền chớp nhoáng, đổi trang phục tức thì.",
+            "- Magic Transitions: Đổi phông nền chớp nóng, đổi trang phục tức thì.",
             "- Magic Transitions: Đổi phông nền chớp nhoáng."
           );
       }
@@ -126,9 +154,10 @@ export default function App() {
   };
   const generateSingleVideo = async (shotIndex: number) => {
     const shot = shots[shotIndex];
-    if (shot.videoBase64 || shot.isGenerating) return;
+    if (shot.isGenerating) return;
     const updatedShots = [...shots];
     updatedShots[shotIndex].isGenerating = true;
+    updatedShots[shotIndex].videoBase64 = undefined;
     updatedShots[shotIndex].error = undefined;
     setShots(updatedShots);
     try {
@@ -138,16 +167,30 @@ export default function App() {
       if (config.outfitMode === 'Cố định') {
         outfitConstraint = "\nSTRICT REQUIREMENT: The character's outfit and appearance MUST remain IDENTICAL to the provided reference image. Do not change or alter clothing.";
       }
-      const fullPrompt = `${shot.prompt}${outfitConstraint}\n\n${audioInstr}`;
-      const video = await Flow.generate.video({
-        prompt: fullPrompt,
-        referenceImageMediaIds: outfitRef 
-          ? [mainChar!.mediaId, outfitRef.mediaId] 
-          : [mainChar!.mediaId],
-        modelDisplayName: config.model,
-        aspectRatio: config.ratio === '16:9' || config.ratio === '9:16' ? config.ratio : '16:9',
-        durationSeconds: shot.duration as any
-      });
+      let fullPrompt = `${shot.prompt}${outfitConstraint}\n\n${audioInstr}`;
+      
+      const referenceId = forgedChar?.mediaId || mainChar?.mediaId;
+      if (!referenceId) throw new Error("No character reference available");
+      const mediaIds = [referenceId];
+      const callApi = async (modelName: string) => {
+        return await Flow.generate.video({
+          prompt: fullPrompt,
+          referenceImageMediaIds: mediaIds,
+          modelDisplayName: modelName,
+          aspectRatio: config.ratio === '16:9' || config.ratio === '9:16' ? config.ratio : '16:9',
+          durationSeconds: shot.duration as any
+        });
+      };
+      let video;
+      try {
+        video = await callApi(config.model);
+      } catch (genErr) {
+        if (config.model.includes('Veo')) {
+          video = await callApi('Omni 1.1 Flash');
+        } else {
+          throw genErr;
+        }
+      }
       setShots(prev => {
         const next = [...prev];
         next[shotIndex].videoBase64 = video.base64;
@@ -279,7 +322,7 @@ export default function App() {
           <a href="https://fastaivn.com" target="_blank" rel="noopener noreferrer" className="text-[9px] text-slate-500 hover:text-[#F31B17] mb-3">fastaivn.com</a>
           <h1 className="text-sm font-black uppercase tracking-tighter text-[#F31B17] flex items-center gap-2 text-center">
             <span className="material-symbols-outlined">movie_filter</span>
-            Podcast Hiệu Ứng Hiện Đại
+            Podcast Studio
           </h1>
         </header>
         <div className="flex-1 flex flex-col gap-6 overflow-y-auto mt-4 custom-scrollbar pr-1 pb-4">
@@ -296,14 +339,15 @@ export default function App() {
                ))}
              </div>
           </section>
+          {/* Media Section */}
           <section className="space-y-4">
             <div className="grid grid-cols-2 gap-2">
               <button 
                 onClick={handleUploadMain}
-                className={`aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all group ${mainChar ? 'border-[#F31B17] bg-[#F31B17]/10' : 'border-slate-800 hover:border-[#F31B17] hover:bg-[#F31B17]/5'}`}
+                className={`aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all group overflow-hidden ${mainChar ? 'border-[#F31B17] bg-[#F31B17]/10' : 'border-slate-800 hover:border-[#F31B17] hover:bg-[#F31B17]/5'}`}
               >
                 {mainChar ? (
-                  <img src={`data:image/jpeg;base64,${mainChar.base64}`} className="w-full h-full object-cover rounded-lg" />
+                  <img src={`data:image/jpeg;base64,${mainChar.base64}`} className="w-full h-full object-cover" />
                 ) : (
                   <>
                     <span className="material-symbols-outlined text-slate-500 group-hover:text-[#F31B17]">person_add</span>
@@ -313,10 +357,10 @@ export default function App() {
               </button>
               <button 
                 onClick={handleUploadOutfit}
-                className={`aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all group ${outfitRef ? 'border-emerald-500 bg-emerald-500/10' : 'border-slate-800 hover:border-emerald-500 hover:bg-emerald-500/5'}`}
+                className={`aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all group overflow-hidden ${outfitRef ? 'border-emerald-500 bg-emerald-500/10' : 'border-slate-800 hover:border-emerald-500 hover:bg-emerald-500/5'}`}
               >
                 {outfitRef ? (
-                  <img src={`data:image/jpeg;base64,${outfitRef.base64}`} className="w-full h-full object-cover rounded-lg" />
+                  <img src={`data:image/jpeg;base64,${outfitRef.base64}`} className="w-full h-full object-cover" />
                 ) : (
                   <>
                     <span className="material-symbols-outlined text-slate-500 group-hover:text-emerald-400">checkroom</span>
@@ -325,6 +369,30 @@ export default function App() {
                 )}
               </button>
             </div>
+            {/* Intermediate Forge Step */}
+            {mainChar && (
+              <div className="space-y-3 pt-2 border-t border-white/5">
+                <div className="flex items-center justify-between">
+                   <h3 className="text-[10px] font-black uppercase text-slate-500 tracking-wider">Xử lý nhân vật</h3>
+                   {forgedChar && <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Đã xong</span>}
+                </div>
+                
+                <button 
+                  disabled={isForging || !mainChar}
+                  onClick={handleForgeCharacter}
+                  className={`w-full py-2.5 disabled:opacity-50 border rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 ${forgedChar ? 'bg-slate-800 hover:bg-slate-700 border-slate-700' : 'bg-emerald-600 hover:bg-emerald-500 border-emerald-400'}`}
+                >
+                  {isForging ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-sm">{forgedChar ? 'refresh' : 'face_retouching_natural'}</span>
+                      <span className="text-[10px] font-bold uppercase">{forgedChar ? 'Ghép lại nhân vật' : 'Ghép nhân vật & đồ'}</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
           </section>
           <section className="space-y-4">
             <div className="space-y-4">
@@ -370,9 +438,9 @@ export default function App() {
               className="w-full h-24 bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs focus:border-[#F31B17] outline-none transition-colors"
             />
             <button 
-              disabled={!rawTranscript || !mainChar || loading}
+              disabled={!rawTranscript || (!mainChar && !forgedChar) || loading}
               onClick={handleGenerateScript}
-              className="w-full py-3 bg-[#F31B17] hover:bg-[#d11713] disabled:opacity-30 disabled:cursor-not-allowed rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-900/20 active:scale-95 transition-all"
+              className={`w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 ${!forgedChar && outfitRef ? 'bg-slate-800 text-slate-500 opacity-50' : 'bg-[#F31B17] hover:bg-[#d11713] text-white shadow-red-900/20'}`}
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -383,11 +451,14 @@ export default function App() {
                 </>
               )}
             </button>
+            {!forgedChar && outfitRef && (
+              <p className="text-[9px] text-amber-500 font-bold text-center italic">Vui lòng ghép nhân vật & đồ trước</p>
+            )}
           </section>
-        </div>
-        {/* License Info pinned to bottom */}
-        <div className="mt-auto pt-4 border-t border-white/5 shrink-0">
-          <LicenseStatus />
+          {/* License Status follows Step 1 naturally */}
+          <section className="mt-2 shrink-0">
+            <LicenseStatus />
+          </section>
         </div>
       </aside>
       {/* Main Content */}
@@ -404,34 +475,55 @@ export default function App() {
           {!shots.length ? (
             <div className="h-full flex flex-col items-center justify-center text-center">
               <div className="max-w-xl bg-[#12101a]/50 border border-white/5 p-8 rounded-3xl backdrop-blur-sm">
-                <span className="material-symbols-outlined text-6xl mb-4 text-[#F31B17]">movie</span>
-                <h2 className="text-2xl font-black uppercase italic mb-2 text-white">Sáng tạo không giới hạn</h2>
-                <p className="text-slate-400 text-sm mb-8">Tải ảnh nhân vật và dán script để bắt đầu kịch bản đầu tiên.</p>
+                {forgedChar ? (
+                   <div className="mb-6 flex flex-col items-center">
+                      <div 
+                        onClick={() => setZoomImage(`data:image/jpeg;base64,${forgedChar.base64}`)}
+                        className="relative w-48 rounded-2xl overflow-hidden border-2 border-[#F31B17]/30 shadow-2xl mb-4 group cursor-zoom-in bg-black transition-all"
+                        style={{ aspectRatio: config.ratio.replace(':', '/') }}
+                      >
+                         <img src={`data:image/jpeg;base64,${forgedChar.base64}`} className="w-full h-full object-cover" />
+                         <div className="absolute top-0 left-0 bg-[#F31B17] text-white text-[8px] font-black px-2 py-0.5 rounded-br-lg uppercase">Nhân vật tham chiếu</div>
+                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
+                            <span className="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                         </div>
+                      </div>
+                      
+                      {/* Refresh Button moved here */}
+                      <button 
+                        onClick={handleForgeCharacter}
+                        disabled={isForging}
+                        className="mb-4 px-6 py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-600 rounded-full flex items-center justify-center gap-2 transition-all active:scale-95"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">refresh</span>
+                        <span className="text-xs font-black uppercase">Làm mới ảnh</span>
+                      </button>
+                      <h3 className="text-sm font-black uppercase text-emerald-400">Đã sẵn sàng!</h3>
+                   </div>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined text-6xl mb-4 text-[#F31B17]">movie</span>
+                    <h2 className="text-2xl font-black uppercase italic mb-2 text-white">Podcast AI Studio</h2>
+                    <p className="text-slate-400 text-sm mb-8">Tải ảnh nhân vật, ghép trang phục và dán script để bắt đầu.</p>
+                  </>
+                )}
                 
                 <div className="text-left space-y-4">
                   <h3 className="text-sm font-black text-[#F31B17] uppercase tracking-wide">
-                    Dưới đây là những định dạng content "hái ra tiền" và phù hợp nhất với app của bạn:
+                    Quy trình tạo clip ổn định nhất:
                   </h3>
-                  <ul className="space-y-2 text-xs text-slate-300">
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#F31B17] font-bold">1.</span> 
-                      <span>Kiến thức Công nghệ, AI & Crypto (Tech & Edu-tainment)</span>
+                  <ul className="space-y-3 text-xs text-slate-300">
+                    <li className="flex items-start gap-2 bg-white/5 p-3 rounded-xl">
+                      <span className="text-[#F31B17] font-bold shrink-0">1.</span> 
+                      <span><b>Tải ảnh:</b> Tải ảnh nhân vật gốc (Face) và ảnh trang phục muốn mặc (Outfit).</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#F31B17] font-bold">2.</span> 
-                      <span>Kinh doanh, Tài chính & Phát triển bản thân (Hustle/Motivation)</span>
+                    <li className="flex items-start gap-2 bg-white/5 p-3 rounded-xl">
+                      <span className="text-[#F31B17] font-bold shrink-0">2.</span> 
+                      <span><b>Ghép trang phục:</b> Bấm "Ghép nhân vật & đồ" để AI tạo ra 1 ảnh tham chiếu duy nhất giữ nguyên mặt nhưng đổi áo.</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#F31B17] font-bold">3.</span> 
-                      <span>"Bách khoa toàn thư" & Sự thật thú vị (Did You Know?)</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#F31B17] font-bold">4.</span> 
-                      <span>Kịch bản tình huống kịch tính & Bóc phốt (Drama/Storytelling)</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#F31B17] font-bold">5.</span> 
-                      <span>Review Sản phẩm "Chốt Sale" chớp nhoáng (Flash Promo)</span>
+                    <li className="flex items-start gap-2 bg-white/5 p-3 rounded-xl">
+                      <span className="text-[#F31B17] font-bold shrink-0">3.</span> 
+                      <span><b>Tạo kịch bản:</b> Dán script và bấm "Bước 1". Ảnh đã ghép ở trên sẽ được dùng làm gốc cho mọi cảnh quay.</span>
                     </li>
                   </ul>
                 </div>
@@ -470,7 +562,7 @@ export default function App() {
                       shot={shot} 
                       onChange={(updated) => setShots(prev => prev.map((s, i) => i === idx ? updated : s))}
                       aspectRatio={config.ratio}
-                      charImage={mainChar?.base64}
+                      charImage={forgedChar?.base64 || mainChar?.base64}
                     />
                   ))
                 ) : (
@@ -556,6 +648,39 @@ export default function App() {
             <div className="bg-white/5 border border-white/10 p-6 rounded-2xl max-w-lg w-full">
               <span className="text-[10px] font-black uppercase text-[#F31B17]">Shot {previewShot.number} • {previewShot.duration}s</span>
               <p className="mt-2 text-sm leading-relaxed text-slate-200">{previewShot.transcript}</p>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Image Zoom Overlay */}
+      {zoomImage && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 cursor-zoom-out"
+          onClick={() => setZoomImage(null)}
+        >
+          <div className="relative max-w-full max-h-full flex flex-col items-center gap-4" onClick={e => e.stopPropagation()}>
+            <button 
+              onClick={() => setZoomImage(null)}
+              className="absolute -top-12 right-0 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center"
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+            
+            <div 
+              className="bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10"
+              style={{ 
+                aspectRatio: config.ratio.replace(':', '/'),
+                maxHeight: '85vh',
+                width: 'auto'
+              }}
+            >
+              <img 
+                src={zoomImage} 
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <div className="bg-[#F31B17] text-white text-xs font-black px-4 py-2 rounded-full uppercase tracking-widest shadow-xl">
+              Nhân vật tham chiếu • {config.ratio}
             </div>
           </div>
         </div>
