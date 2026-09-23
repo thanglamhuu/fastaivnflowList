@@ -1,0 +1,43 @@
+Dòng code cho mọi app flow 
+Chỉ cập nhật phần tạo video để hỗ trợ đầy đủ danh sách model sau:
+
+* Omni Flash
+* Veo 3.1 - Fast
+* Veo 3.1 - Lite
+* Veo 3.1 - Quality
+* Veo 3.1 - Lite [Lower Priority]
+
+Yêu cầu bắt buộc:
+
+* Không thay đổi bất kỳ node nào khác.
+* Không thay đổi prompt hiện tại.
+* Không thay đổi ảnh, video, edge, cấu trúc workflow, settings, dữ liệu đầu vào hoặc đầu ra.
+* Chỉ thêm danh sách model lựa chọn vào các node tạo video.
+* Mỗi node tạo video vẫn giữ nguyên model đang chọn hiện tại nếu đã có.
+* Nếu chưa có model mặc định thì dùng: Veo 3.1 - Lite [Lower Priority].
+* Khi tạo video, Flow phải hiển thị đủ 5 model trên để tôi có thể chọn nhanh.
+* Các videoGen node vẫn chạy bình thường với duration, aspect ratio, mode và prompt hiện tại.
+
+Áp dụng cho tất cả video node:
+type: videoGen
+
+Thêm hoặc cập nhật params như sau:
+
+{
+"availableModels": [
+"Omni Flash",
+"Veo 3.1 - Fast",
+"Veo 3.1 - Lite",
+"Veo 3.1 - Quality",
+"Veo 3.1 - Lite [Lower Priority]"
+],
+"modelOptions": [
+"Omni Flash",
+"Veo 3.1 - Fast",
+"Veo 3.1 - Lite",
+"Veo 3.1 - Quality",
+"Veo 3.1 - Lite [Lower Priority]"
+]
+}
+
+Không được xóa, đổi tên, nối lại hoặc chỉnh sửa bất kỳ thành phần nào khác của workflow.
