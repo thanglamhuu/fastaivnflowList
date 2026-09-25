@@ -6,10 +6,11 @@ import {
   VIDEO_MODELS, THREAD_OPTIONS, SYSTEM_PROMPT,
   ALLOWED_DURATIONS
 } from './constants';
-import { ProjectConfig, Shot, AspectRatio, Gender, Accent, Speed, OutfitMode } from './types';
+import { ProjectConfig, Shot, AspectRatio, Gender, Accent, Speed, OutfitMode, Resolution } from './types';
 import { checkLicense } from './license/aifastLicenseManager';
 import { LicenseGate } from './components/LicenseGate';
 import { LicenseStatus } from './components/LicenseStatus';
+import { ConfigControls } from './components/ConfigControls';
 export default function App() {
   // --- Licensing ---
   const [isLicensed, setIsLicensed] = useState<boolean | null>(null);
@@ -29,7 +30,8 @@ export default function App() {
     speed: '1x',
     outfitMode: 'Thay trang phục',
     model: 'Omni 1.1 Flash',
-    threads: 1
+    threads: 1,
+    resolution: '720p'
   });
   
   // Media
@@ -153,7 +155,6 @@ export default function App() {
     }
   };
   const generateSingleVideo = async (shotIndex: number) => {
-    // Removed isGenerating check to allow re-triggering as per request
     setShots(prev => prev.map((s, i) => i === shotIndex ? {
       ...s,
       isGenerating: true,
@@ -179,7 +180,8 @@ export default function App() {
           referenceImageMediaIds: mediaIds,
           modelDisplayName: modelName,
           aspectRatio: config.ratio === '16:9' || config.ratio === '9:16' ? config.ratio : '16:9',
-          durationSeconds: shot.duration as any
+          durationSeconds: shot.duration as any,
+          resolution: config.resolution
         });
       };
       let video;
@@ -317,28 +319,16 @@ export default function App() {
       </button>
       {/* Sidebar */}
       <aside className={`border-r border-red-900/10 bg-[#12101a] flex flex-col transition-all duration-300 relative z-[60] ${showConfig ? 'w-80 p-5' : 'w-0 p-0 overflow-hidden opacity-0 pointer-events-none'}`}>
-        <header className="mb-2 shrink-0 flex flex-col items-center">
-          <img src="https://fastaivn.com/baner.png" alt="FastAI Logo" className="h-[40px] w-[120px] object-contain mb-1" />
-          <a href="https://fastaivn.com" target="_blank" rel="noopener noreferrer" className="text-[9px] text-slate-500 hover:text-[#F31B17] mb-3">fastaivn.com</a>
+        <header className="mb-0 shrink-0 flex flex-col items-center">
+          <img src="https://fastaivn.com/baner.png" alt="FastAI Logo" className="h-[40px] w-[120px] object-contain mb-0" />
+          <a href="https://fastaivn.com" target="_blank" rel="noopener noreferrer" className="text-[9px] text-slate-500 hover:text-[#F31B17] mb-0">fastaivn.com</a>
           <h1 className="text-sm font-black uppercase tracking-tighter text-[#F31B17] flex items-center gap-2 text-center">
             <span className="material-symbols-outlined">movie_filter</span>
             Podcast Studio
           </h1>
         </header>
-        <div className="flex-1 flex flex-col gap-6 overflow-y-auto mt-4 custom-scrollbar pr-1 pb-4">
-          <section className="space-y-3">
-             <div className="flex flex-wrap gap-1">
-               {ASPECT_RATIOS.map(r => (
-                 <button 
-                   key={r}
-                   onClick={() => setConfig({...config, ratio: r as any})}
-                   className={`flex-1 min-w-[50px] py-2 text-[10px] font-black rounded-lg border transition-all ${config.ratio === r ? 'bg-[#F31B17] border-red-400' : 'bg-slate-900 border-slate-800 text-slate-500'}`}
-                 >
-                   {r}
-                 </button>
-               ))}
-             </div>
-          </section>
+        <div className="flex-1 flex flex-col gap-2 overflow-y-auto custom-scrollbar pr-1 pb-4">
+          <ConfigControls config={config} onChange={setConfig} />
           {/* Media Section */}
           <section className="space-y-4">
             <div className="grid grid-cols-2 gap-2">
@@ -380,7 +370,7 @@ export default function App() {
                 <button 
                   disabled={isForging || !mainChar}
                   onClick={handleForgeCharacter}
-                  className={`w-full py-2.5 disabled:opacity-50 border rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 ${forgedChar ? 'bg-slate-800 hover:bg-slate-700 border-slate-700' : 'bg-emerald-600 hover:bg-emerald-500 border-emerald-400'}`}
+                  className={`w-full py-2 disabled:opacity-50 border rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 ${forgedChar ? 'bg-slate-800 hover:bg-slate-700 border-slate-700' : 'bg-emerald-600 hover:bg-emerald-500 border-emerald-400'}`}
                 >
                   {isForging ? (
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -395,12 +385,11 @@ export default function App() {
             )}
           </section>
           <section className="space-y-4">
-            <div className="space-y-4">
+            <div className="space-y-2">
               <ConfigButtonGroup label="" icon="" value={config.gender} options={GENDERS} onChange={v => setConfig({...config, gender: v as any})} />
               <ConfigButtonGroup label="" icon="" value={config.accent} options={ACCENTS} onChange={v => setConfig({...config, accent: v as any})} />
-              <ConfigButtonGroup label="" icon="" value={config.speed} options={SPEEDS} onChange={v => setConfig({...config, speed: v as any})} />
               
-              <div className="px-1 space-y-2">
+              <div className="px-1 space-y-1">
                 <div className="flex flex-wrap gap-1">
                   {(['Thay trang phục', 'Cố định'] as OutfitMode[]).map(opt => (
                     <button 
@@ -412,21 +401,6 @@ export default function App() {
                     </button>
                   ))}
                 </div>
-              </div>
-              <ConfigButtonGroup label="Số luồng" icon="bolt" value={config.threads} options={THREAD_OPTIONS} onChange={v => setConfig({...config, threads: Number(v)})} />
-              
-              <div className="flex items-center justify-between gap-2 px-1">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[14px] text-slate-500">model_training</span>
-                  <span className="text-[11px] font-bold text-slate-500 uppercase">Model</span>
-                </div>
-                <select 
-                  value={config.model} 
-                  onChange={e => setConfig({...config, model: e.target.value})}
-                  className="bg-[#1c192b] border border-slate-800 rounded-lg px-2 py-1 text-[10px] focus:border-[#F31B17] outline-none cursor-pointer"
-                >
-                  {VIDEO_MODELS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-                </select>
               </div>
             </div>
           </section>
@@ -455,8 +429,8 @@ export default function App() {
               <p className="text-[9px] text-amber-500 font-bold text-center italic">Vui lòng ghép nhân vật & đồ trước</p>
             )}
           </section>
-          {/* License Status follows Step 1 naturally */}
-          <section className="mt-2 shrink-0">
+          {/* License Status */}
+          <section className="mt-auto pt-2 shrink-0">
             <LicenseStatus />
           </section>
         </div>

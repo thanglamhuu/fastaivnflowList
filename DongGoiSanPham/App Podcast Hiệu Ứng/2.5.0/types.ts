@@ -3,6 +3,7 @@ export type Gender = 'Nam' | 'Nữ';
 export type Accent = 'Miền Bắc' | 'Miền Trung' | 'Miền Nam';
 export type Speed = '0.75x' | '1x' | '1.25x' | '1.5x';
 export type OutfitMode = 'Thay trang phục' | 'Cố định';
+export type Resolution = '360p' | '720p';
 export interface Shot {
   number: number;
   duration: number;
@@ -21,4 +22,5 @@ export interface ProjectConfig {
   outfitMode: OutfitMode;
   model: string;
   threads: number;
+  resolution: Resolution;
 }
