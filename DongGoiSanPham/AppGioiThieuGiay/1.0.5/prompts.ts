@@ -54,7 +54,7 @@ export const CAMPAIGN_THEMES: Record<string, ThemeConfig> = {
       },
       {
         id: 'st_3', label: 'Mang giày trên nền đen phản chiếu', lockType: 'product_and_feet',
-        prompt_template: 'Khung hình từ đầu gối trở xuống, nhân vật tham chiếu đứng vững với đúng đôi giày trên sàn đen phản chiếu nhẹ. Góc thấp 3/4 làm rõ mũi, bên hông và cạnh đế; đèn viền cùng đèn chính đủ sáng để thấy đúng màu. Không lộ mặt hoặc kéo dài chân, phản chiếu vật lý chính xác.',
+        prompt_template: 'Khung hình từ đầu gối trở xuống, nhân vật tham chiếu đứng vững with đúng đôi giày trên sàn đen phản chiếu nhẹ. Góc thấp 3/4 làm rõ mũi, bên hông và cạnh đế; đèn viền cùng đèn chính đủ sáng để thấy đúng màu. Không lộ mặt hoặc kéo dài chân, phản chiếu vật lý chính xác.',
         video_action_context: '8-second slow push-in. One foot pivots slightly while the other stays planted; reflection follows accurately. Shoe details remain consistent. No speech or on-screen text.'
       },
       {

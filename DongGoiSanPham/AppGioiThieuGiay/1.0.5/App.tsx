@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Flow } from 'flow-sdk';
-import { StoryboardCardData, AppSettings, AspectRatio, MediaItem } from './types';
+import { StoryboardCardData, ProjectConfig, AspectRatio, MediaItem } from './types';
 import { StoryboardCard } from './components/StoryboardCard';
 import { ActionButton, UploadBox, Badge } from './components/Primitives';
 import { MergedVideoCard } from './components/MergedVideoCard';
 import { ffmpegService } from './services/ffmpegService';
 import { Lightbox } from './components/Lightbox';
+import { ConfigControls } from './components/ConfigControls';
 // --- DATA & THEMES ---
 import { CAMPAIGN_THEMES } from './prompts';
 // --- LICENSE IMPORTS ---
@@ -13,13 +14,6 @@ import { checkLicense } from './license/aifastLicenseManager';
 import { LicenseGate } from './components/LicenseGate';
 import { LicenseStatus } from './components/LicenseStatus';
 const APP_VERSION = "1.0.4";
-const DEFAULT_MODEL = 'Omni 1.1 Flash';
-const MODELS = [
-  'Omni 1.1 Flash', 
-  'Veo 3.1 - Lite', 
-  'Veo 3.1 - Fast', 
-  'Veo 3.1 - Quality'
-];
 // --- LOCK BLOCKS (VIETNAMESE FOR IMAGE PROMPTS) ---
 const IDENTITY_LOCK_VN = "giữ khuôn mặt, kiểu tóc, màu tóc, dáng người, chiều cao và làn da của nhân vật chính xác 100% như ảnh tham chiếu, không thay đổi nhận diện, không làm đẹp ảo hóa";
 const OUTFIT_LOCK_VN = "giữ nguyên chính xác bộ trang phục như trong ảnh tham chiếu, cùng phong cách, màu sắc, chất liệu vải và họa tiết, không thay đổi hay thêm bớt phụ kiện";
@@ -52,10 +46,14 @@ export default function StoryboardStudio() {
       isAnalyzing: false
     }))
   );
-  const [settings, setSettings] = useState<AppSettings>({
-    productReferences: [],
-    aspectRatio: '16:9',
-    videoModel: DEFAULT_MODEL
+  // --- CONSOLIDATED CONFIG STATE ---
+  const [config, setConfig] = useState<ProjectConfig>({
+    ratio: '16:9',
+    model: 'Omni 1.1 Flash',
+    threads: 4,
+    speed: '1.0x',
+    resolution: '720p',
+    productReferences: []
   });
   
   const [mergedVideo, setMergedVideo] = useState<MediaItem | null>(null);
@@ -107,13 +105,13 @@ export default function StoryboardStudio() {
   const handleUploadChar = async () => {
     try {
       const media = await Flow.media.select({ filter: 'image' });
-      setSettings(s => ({ ...s, charReference: media }));
+      setConfig(s => ({ ...s, charReference: media }));
     } catch (e) {}
   };
   const handleUploadProducts = async () => {
     try {
       const media = await Flow.media.selectMultiple({ filter: 'image' });
-      setSettings(s => ({ ...s, productReferences: [...s.productReferences, ...media] }));
+      setConfig(s => ({ ...s, productReferences: [...s.productReferences, ...media] }));
     } catch (e) {}
   };
   const handleAnalyzeImages = async () => {
@@ -129,7 +127,6 @@ export default function StoryboardStudio() {
           { images: [{ base64: card.image!.base64, mimeType: card.image!.mimeType }] }
         );
         
-        // Use logic from theme config
         const themeConfig = CAMPAIGN_THEMES[selectedThemeId].scenes.find(s => s.id === card.sceneId);
         let generatedPrompt = `${visionDescription}. ${themeConfig?.video_action_context || ''}.`;
         
@@ -157,11 +154,10 @@ export default function StoryboardStudio() {
     setIsMergedOutdated(true);
     
     try {
-      const refs = [settings.charReference, ...settings.productReferences].filter(Boolean).map(r => r!.mediaId);
+      const refs = [config.charReference, ...config.productReferences].filter(Boolean).map(r => r!.mediaId);
       
       let assembledPrompt = targetCard.promptTemplate;
       
-      // Smart Lock implementation
       if (targetCard.lockType === 'product_only') {
         assembledPrompt += ` ${PRODUCT_SHAPE_LOCK_VN} ${ENFORCE_PHOTOREAL}`;
       } else if (targetCard.lockType === 'product_and_feet') {
@@ -182,7 +178,7 @@ export default function StoryboardStudio() {
     } catch (e) {
       setCards(prev => prev.map(c => c.id === id ? { ...c, isGeneratingImage: false, error: 'Lỗi vẽ hình' } : c));
     }
-  }, [settings.charReference, settings.productReferences, cards]);
+  }, [config.charReference, config.productReferences, cards]);
   const animateCard = useCallback(async (id: string, currentAspectRatio: AspectRatio, currentModel: string) => {
     const targetCard = cards.find(c => c.id === id);
     if (!targetCard?.image || !targetCard.videoPrompt) return;
@@ -193,7 +189,7 @@ export default function StoryboardStudio() {
         prompt: targetCard.videoPrompt,
         firstFrameImageMediaId: targetCard.image.mediaId,
         modelDisplayName: currentModel,
-        aspectRatio: currentAspectRatio,
+        aspectRatio: currentAspectRatio as any,
         durationSeconds: 8
       });
       setCards(prev => prev.map(c => c.id === id ? { ...c, video: res, isGeneratingVideo: false } : c));
@@ -237,25 +233,24 @@ export default function StoryboardStudio() {
       setMergeProgress('Hoàn tất!');
     } catch (e) { setMergeError('Ghép video thất bại, vui lòng thử lại'); } finally { setIsMerging(false); }
   };
-  const handleDrawAll = () => cards.forEach(c => drawCard(c.id, settings.aspectRatio));
+  const handleDrawAll = () => cards.forEach(c => drawCard(c.id, config.ratio));
   
   const handleAnimateAll = async () => {
     const animationTargets = cards.filter(c => c.image && c.videoPrompt);
     if (animationTargets.length === 0) return;
     setAnimatingCount(0);
     
-    // Split into 2 batches for browser performance
     const firstBatch = animationTargets.slice(0, 3);
     const secondBatch = animationTargets.slice(3);
     
     await Promise.all(firstBatch.map(async c => {
-      const ok = await animateCard(c.id, settings.aspectRatio, settings.videoModel);
+      const ok = await animateCard(c.id, config.ratio, config.model);
       if (ok) setAnimatingCount(prev => (prev || 0) + 1);
     }));
     
     if (secondBatch.length > 0) {
       await Promise.all(secondBatch.map(async c => {
-        const ok = await animateCard(c.id, settings.aspectRatio, settings.videoModel);
+        const ok = await animateCard(c.id, config.ratio, config.model);
         if (ok) setAnimatingCount(prev => (prev || 0) + 1);
       }));
     }
@@ -267,19 +262,25 @@ export default function StoryboardStudio() {
     const card = cards[lightboxIndex];
     return card?.video || card?.image || null;
   }, [lightboxIndex, cards, mergedVideo]);
-  // --- PROTECTION BLOCKS ---
   if (isLicensed === null) return null;
   if (isLicensed === false) return <LicenseGate onSuccess={() => setIsLicensed(true)} />;
   return (
     <div className="flex flex-col h-screen w-full bg-[#F5F5F7] overflow-hidden text-[#1A1A1A] font-sans">
       <header className="h-16 px-4 lg:px-6 border-b border-[#E5E5EA] header-glass flex items-center justify-between z-30 shrink-0">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 lg:gap-4">
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className="w-10 h-10 rounded-xl flex items-center justify-center bg-black/5 hover:bg-black/10 transition-colors">
             <span className="material-symbols-outlined text-[20px]">{sidebarOpen ? 'menu_open' : 'menu'}</span>
           </button>
+          
+          {/* Logo shifted from Sidebar */}
+          <img src="https://fastaivn.com/baner.png" alt="FastAI Logo" className="h-[30px] lg:h-[34px] w-auto object-contain" />
+          
+          {/* Link shifted from Sidebar */}
+          <a href="https://fastaivn.com" className="hidden sm:block text-[11px] font-bold text-slate-500 hover:text-[#F31B17] transition-colors mt-0.5">fastaivn.com</a>
+          <div className="hidden md:block h-6 w-px bg-slate-200 mx-1" />
           <div className="flex items-baseline gap-2">
             <div className="flex items-center text-[18px] font-black tracking-tight">
-              <span>STORYBOARD</span><span className="text-[#F31B17] ml-1">STUDIO</span>
+              <span>REVIEW</span><span className="text-[#F31B17] ml-1">GIÀY</span>
             </div>
             <Badge color="red">v{APP_VERSION}</Badge>
           </div>
@@ -289,6 +290,7 @@ export default function StoryboardStudio() {
             icon="search" 
             disabled={analyzingStatus !== null}
             onClick={handleAnalyzeImages}
+            className="hidden sm:flex"
           >
             {analyzingStatus || "Phân tích ảnh"}
           </ActionButton>
@@ -300,27 +302,25 @@ export default function StoryboardStudio() {
           >
             {animatingCount !== null ? `Đang dựng (${animatingCount}/6)` : "Dựng toàn bộ"}
           </ActionButton>
-          <ActionButton variant="solid" icon="merge" disabled={isMerging} onClick={handleConcatenate}>Ghép clip</ActionButton>
+          <ActionButton variant="solid" icon="merge" disabled={isMerging} onClick={handleConcatenate} className="hidden lg:flex">Ghép clip</ActionButton>
         </div>
       </header>
       <div className="flex flex-1 overflow-hidden relative w-full">
         <aside className={`fixed lg:sticky top-0 left-0 z-40 h-full w-[320px] bg-white border-r border-[#E5E5EA] flex flex-col transition-transform duration-300 ease-in-out shrink-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:hidden'}`}>
           <div className="flex-1 overflow-y-auto sidebar-scroll p-6 flex flex-col gap-6">
-            <div className="flex flex-col mb-2">
-              <img src="https://fastaivn.com/baner.png" alt="FastAI Logo" className="h-[40px] w-[120px] object-contain mb-1" />
-              <a href="https://fastaivn.com" className="text-[9px] text-slate-500 hover:text-[#F31B17] mb-3 transition-colors">fastaivn.com</a>
-            </div>
+            
+            {/* Standard Config Controls Integration */}
+            <ConfigControls config={config} onChange={setConfig} />
             <UploadBox 
               label="1. Ảnh nhân vật (Mẫu)" icon="person" onUpload={handleUploadChar}
-              onClear={() => setSettings(s => ({ ...s, charReference: undefined }))}
-              items={[settings.charReference ? `data:${settings.charReference.mimeType};base64,${settings.charReference.base64}` : undefined]}
+              onClear={() => setConfig(s => ({ ...s, charReference: undefined }))}
+              items={[config.charReference ? `data:${config.charReference.mimeType};base64,${config.charReference.base64}` : undefined]}
             />
             <UploadBox 
               label="2. Ảnh sản phẩm (Giày)" icon="inventory_2" multiple onUpload={handleUploadProducts}
-              onClear={(idx) => setSettings(s => ({ ...s, productReferences: s.productReferences.filter((_, i) => i !== idx) }))}
-              items={settings.productReferences.map(r => `data:${r.mimeType};base64,${r.base64}`)}
+              onClear={(idx) => setConfig(s => ({ ...s, productReferences: s.productReferences.filter((_, i) => i !== idx) }))}
+              items={config.productReferences.map(r => `data:${r.mimeType};base64,${r.base64}`)}
             />
-            {/* Campaign Theme Selection Dropdown */}
             <div className="flex flex-col gap-3 border-t border-[#F2F2F7] pt-4">
               <p className="text-[12px] font-bold text-[#1A1A1A] flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[16px] text-[#F31B17]">movie_creation</span>
@@ -342,38 +342,8 @@ export default function StoryboardStudio() {
                 {currentTheme.description}
               </p>
             </div>
-            
-            <div className="flex flex-col gap-3">
-              <p className="text-[12px] font-bold text-[#1A1A1A]">4. Tỷ lệ khung hình</p>
-              <div className="flex gap-2">
-                {(['16:9', '9:16'] as AspectRatio[]).map(ratio => (
-                  <button key={ratio} onClick={() => setSettings(s => ({ ...s, aspectRatio: ratio }))}
-                    className={`flex-1 h-[48px] rounded-xl border flex items-center justify-center gap-2 transition-all ${
-                      settings.aspectRatio === ratio ? 'border-[#F31B17] bg-red-50 text-[#F31B17]' : 'border-[#D1D1D6] text-[#8E8E93]'
-                    }`}>
-                    <span className="material-symbols-outlined text-[20px]">{ratio === '16:9' ? 'rectangle' : 'smartphone'}</span>
-                    <span className="text-[13px] font-bold">{ratio}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-col gap-3">
-              <p className="text-[12px] font-bold text-[#1A1A1A]">5. Model tạo video</p>
-              <div className="flex flex-col border border-[#D1D1D6] rounded-xl overflow-hidden">
-                {MODELS.map(model => (
-                  <button key={model} onClick={() => setSettings(s => ({ ...s, videoModel: model }))}
-                    className={`w-full px-4 py-3 text-left flex items-center gap-3 border-b border-[#F2F2F7] last:border-0 transition-colors ${settings.videoModel === model ? 'bg-[#F2F2F7]' : 'bg-white hover:bg-[#F2F2F7]'}`}>
-                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${settings.videoModel === model ? 'border-[#F31B17]' : 'border-[#D1D1D6]'}`}>
-                      {settings.videoModel === model && <div className="w-2 h-2 rounded-full bg-[#F31B17]" />}
-                    </div>
-                    <span className={`text-[13px] font-medium ${settings.videoModel === model ? 'text-[#1A1A1A]' : 'text-[#8E8E93]'}`}>{model}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
             <div className="mt-auto pt-6 flex flex-col gap-2">
               <LicenseStatus />
-              <p className="text-[9px] text-center text-slate-600 mt-2">App version {APP_VERSION}</p>
             </div>
           </div>
           <div className="p-4 border-t border-[#E5E5EA] bg-white">
@@ -404,8 +374,8 @@ export default function StoryboardStudio() {
               <StoryboardCard 
                 key={card.id} data={card} isProcessing={false}
                 onOpenLightbox={() => setLightboxIndex(idx)}
-                onDraw={() => drawCard(card.id, settings.aspectRatio)}
-                onAnimate={() => animateCard(card.id, settings.aspectRatio, settings.videoModel)}
+                onDraw={() => drawCard(card.id, config.ratio)}
+                onAnimate={() => animateCard(card.id, config.ratio, config.model)}
                 onPromptChange={(val) => setCards(prev => prev.map(c => c.id === card.id ? { ...c, videoPrompt: val } : c))}
                 onRestorePrompt={() => setCards(prev => prev.map(c => c.id === card.id ? { ...c, videoPrompt: c.originalVideoPrompt } : c))}
                 onClearError={() => setCards(prev => prev.map(c => c.id === card.id ? { ...c, error: undefined } : c))}
@@ -419,7 +389,7 @@ export default function StoryboardStudio() {
       {currentLightboxMedia && (
         <Lightbox 
           media={currentLightboxMedia} 
-          aspectRatio={settings.aspectRatio} 
+          aspectRatio={config.ratio as any} 
           onClose={() => setLightboxIndex(null)}
           onPrev={lightboxIndex !== 'merged' && (lightboxIndex as number) > 0 ? () => setLightboxIndex(lightboxIndex as number - 1) : undefined}
           onNext={lightboxIndex !== 'merged' && (lightboxIndex as number) < cards.length - 1 ? () => setLightboxIndex(lightboxIndex as number + 1) : undefined}

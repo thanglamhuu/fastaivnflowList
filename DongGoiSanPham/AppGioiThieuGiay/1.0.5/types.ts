@@ -20,23 +20,29 @@ export interface ThemeConfig {
 export interface StoryboardCardData {
   id: string;
   order: number;
-  sceneId?: string;       // ID của scene (vd: 'ls_1')
-  lockType?: LockType;    // Kiểu khóa prompt (sản phẩm, chân, hoặc toàn thân)
-  promptTemplate?: string; // Lưu lại template của scene để tái tạo prompt
+  sceneId?: string;
+  lockType?: LockType;
+  promptTemplate?: string;
   
   image?: MediaItem;
   video?: MediaItem;
-  videoPrompt?: string;         // Prompt video hiện tại (có thể chỉnh sửa)
-  originalVideoPrompt?: string; // Prompt video gốc do AI sinh ra
+  videoPrompt?: string;
+  originalVideoPrompt?: string;
   isGeneratingImage: boolean;
   isGeneratingVideo: boolean;
-  isAnalyzing?: boolean;        // Trạng thái đang phân tích ảnh
+  isAnalyzing?: boolean;
   error?: string;
 }
-export type AspectRatio = '16:9' | '9:16';
-export interface AppSettings {
+export type AspectRatio = '16:9' | '9:16' | '1:1' | '4:3' | '3:4';
+export type Speed = string;
+export type Resolution = string;
+export interface ProjectConfig {
+  ratio: AspectRatio;
+  model: string;
+  threads: number;
+  speed: string;
+  resolution: string;
+  // Refs and state
   charReference?: MediaItem;
   productReferences: MediaItem[];
-  aspectRatio: AspectRatio;
-  videoModel: string;
 }
