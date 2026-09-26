@@ -18,7 +18,7 @@ export default function App() {
   const [step, setStep] = useState<1 | 2>(1);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
-  const [showConfig, setShowConfig] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [previewShot, setPreviewShot] = useState<Shot | null>(null);
   const [zoomImage, setZoomImage] = useState<string | null>(null);
   
@@ -307,286 +307,300 @@ export default function App() {
     return <LicenseGate onSuccess={() => setIsLicensed(true)} />;
   }
   return (
-    <div className="flex h-full bg-[#0d0b14] text-white overflow-hidden font-sans relative">
-      {/* Configuration Toggle */}
-      <button 
-        onClick={() => setShowConfig(!showConfig)}
-        className={`absolute z-[70] top-1/2 -translate-y-1/2 w-6 h-12 bg-slate-800/90 border border-red-500/30 rounded-r-lg flex items-center justify-center transition-all duration-300 shadow-xl ${showConfig ? 'left-[320px]' : 'left-0'}`}
-      >
-        <span className="text-xs font-black text-[#F31B17]">
-          {showConfig ? '<<' : '>>'}
-        </span>
-      </button>
-      {/* Sidebar */}
-      <aside className={`border-r border-red-900/10 bg-[#12101a] flex flex-col transition-all duration-300 relative z-[60] ${showConfig ? 'w-80 p-5' : 'w-0 p-0 overflow-hidden opacity-0 pointer-events-none'}`}>
-        <header className="mb-0 shrink-0 flex flex-col items-center">
-          <img src="https://fastaivn.com/baner.png" alt="FastAI Logo" className="h-[40px] w-[120px] object-contain mb-0" />
-          <a href="https://fastaivn.com" target="_blank" rel="noopener noreferrer" className="text-[9px] text-slate-500 hover:text-[#F31B17] mb-0">fastaivn.com</a>
-          <h1 className="text-sm font-black uppercase tracking-tighter text-[#F31B17] flex items-center gap-2 text-center">
-            <span className="material-symbols-outlined">movie_filter</span>
-            Podcast Studio
-          </h1>
-        </header>
-        <div className="flex-1 flex flex-col gap-2 overflow-y-auto custom-scrollbar pr-1 pb-4">
-          <ConfigControls config={config} onChange={setConfig} />
-          {/* Media Section */}
-          <section className="space-y-4">
-            <div className="grid grid-cols-2 gap-2">
-              <button 
-                onClick={handleUploadMain}
-                className={`aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all group overflow-hidden ${mainChar ? 'border-[#F31B17] bg-[#F31B17]/10' : 'border-slate-800 hover:border-[#F31B17] hover:bg-[#F31B17]/5'}`}
-              >
-                {mainChar ? (
-                  <img src={`data:image/jpeg;base64,${mainChar.base64}`} className="w-full h-full object-cover" />
-                ) : (
-                  <>
-                    <span className="material-symbols-outlined text-slate-500 group-hover:text-[#F31B17]">person_add</span>
-                    <span className="text-[9px] text-center px-2 text-slate-500 group-hover:text-[#F31B17]">Ảnh nhân vật</span>
-                  </>
-                )}
-              </button>
-              <button 
-                onClick={handleUploadOutfit}
-                className={`aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all group overflow-hidden ${outfitRef ? 'border-emerald-500 bg-emerald-500/10' : 'border-slate-800 hover:border-emerald-500 hover:bg-emerald-500/5'}`}
-              >
-                {outfitRef ? (
-                  <img src={`data:image/jpeg;base64,${outfitRef.base64}`} className="w-full h-full object-cover" />
-                ) : (
-                  <>
-                    <span className="material-symbols-outlined text-slate-500 group-hover:text-emerald-400">checkroom</span>
-                    <span className="text-[9px] text-center px-2 text-slate-500 group-hover:text-emerald-400">Trang phục</span>
-                  </>
-                )}
-              </button>
-            </div>
-            {/* Intermediate Forge Step */}
-            {mainChar && (
-              <div className="space-y-3 pt-2 border-t border-white/5">
-                <div className="flex items-center justify-between">
-                   <h3 className="text-[10px] font-black uppercase text-slate-500 tracking-wider">Xử lý nhân vật</h3>
-                   {forgedChar && <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Đã xong</span>}
-                </div>
-                
+    <div className="flex flex-col h-full bg-[#0d0b14] text-white overflow-hidden font-sans">
+      
+      {/* Global Header */}
+      <header className="h-16 px-4 lg:px-6 border-b border-white/5 bg-[#12101a] flex items-center justify-between z-30 shrink-0">
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 hover:bg-white/5 rounded-lg transition-colors flex items-center justify-center text-[#F31B17]"
+          >
+            <span className="material-symbols-outlined">{sidebarOpen ? 'menu_open' : 'menu'}</span>
+          </button>
+          <div className="flex items-center gap-3">
+            <img src="https://fastaivn.com/baner.png" alt="FastAI Logo" className="h-8 object-contain" />
+            <h1 className="hidden sm:block text-sm font-black uppercase tracking-tighter text-[#F31B17] flex items-center gap-2">
+              Podcast Studio
+            </h1>
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <a href="https://fastaivn.com" target="_blank" rel="noopener noreferrer" className="text-[10px] text-slate-500 hover:text-[#F31B17] transition-colors">fastaivn.com</a>
+        </div>
+      </header>
+      <div className="flex flex-1 overflow-hidden relative w-full">
+        
+        {/* Mobile Overlay */}
+        {sidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/60 z-30 lg:hidden backdrop-blur-sm" 
+            onClick={() => setSidebarOpen(false)} 
+          />
+        )}
+        {/* Sidebar (Left) */}
+        <aside className={`fixed lg:sticky top-0 left-0 z-40 h-full w-[320px] bg-[#12101a] border-r border-white/5 flex flex-col transition-transform duration-300 ease-in-out shrink-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:hidden'}`}>
+          <div className="flex-1 flex flex-col gap-4 overflow-y-auto custom-scrollbar p-5 pb-8">
+            <ConfigControls config={config} onChange={setConfig} />
+            {/* Media Section */}
+            <section className="space-y-4">
+              <div className="grid grid-cols-2 gap-2">
                 <button 
-                  disabled={isForging || !mainChar}
-                  onClick={handleForgeCharacter}
-                  className={`w-full py-2 disabled:opacity-50 border rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 ${forgedChar ? 'bg-slate-800 hover:bg-slate-700 border-slate-700' : 'bg-emerald-600 hover:bg-emerald-500 border-emerald-400'}`}
+                  onClick={handleUploadMain}
+                  className={`aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all group overflow-hidden ${mainChar ? 'border-[#F31B17] bg-[#F31B17]/10' : 'border-slate-800 hover:border-[#F31B17] hover:bg-[#F31B17]/5'}`}
                 >
-                  {isForging ? (
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  {mainChar ? (
+                    <img src={`data:image/jpeg;base64,${mainChar.base64}`} className="w-full h-full object-cover" />
                   ) : (
                     <>
-                      <span className="material-symbols-outlined text-sm">{forgedChar ? 'refresh' : 'face_retouching_natural'}</span>
-                      <span className="text-[10px] font-bold uppercase">{forgedChar ? 'Ghép lại nhân vật' : 'Ghép nhân vật & đồ'}</span>
+                      <span className="material-symbols-outlined text-slate-500 group-hover:text-[#F31B17]">person_add</span>
+                      <span className="text-[9px] text-center px-2 text-slate-500 group-hover:text-[#F31B17]">Ảnh nhân vật</span>
+                    </>
+                  )}
+                </button>
+                <button 
+                  onClick={handleUploadOutfit}
+                  className={`aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all group overflow-hidden ${outfitRef ? 'border-emerald-500 bg-emerald-500/10' : 'border-slate-800 hover:border-emerald-500 hover:bg-emerald-500/5'}`}
+                >
+                  {outfitRef ? (
+                    <img src={`data:image/jpeg;base64,${outfitRef.base64}`} className="w-full h-full object-cover" />
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-slate-500 group-hover:text-emerald-400">checkroom</span>
+                      <span className="text-[9px] text-center px-2 text-slate-500 group-hover:text-emerald-400">Trang phục</span>
                     </>
                   )}
                 </button>
               </div>
-            )}
-          </section>
-          <section className="space-y-4">
-            <div className="space-y-2">
-              <ConfigButtonGroup label="" icon="" value={config.gender} options={GENDERS} onChange={v => setConfig({...config, gender: v as any})} />
-              <ConfigButtonGroup label="" icon="" value={config.accent} options={ACCENTS} onChange={v => setConfig({...config, accent: v as any})} />
-              
-              <div className="px-1 space-y-1">
-                <div className="flex flex-wrap gap-1">
-                  {(['Thay trang phục', 'Cố định'] as OutfitMode[]).map(opt => (
-                    <button 
-                      key={opt}
-                      onClick={() => setConfig({...config, outfitMode: opt})}
-                      className={`flex-1 py-1.5 px-2 text-[10px] font-bold rounded-md border transition-all ${config.outfitMode === opt ? 'bg-emerald-600 border-emerald-400 text-white' : 'bg-slate-900 border-slate-800 text-slate-500 hover:border-slate-700'}`}
-                    >
-                      {opt}
-                    </button>
-                  ))}
+              {/* Intermediate Forge Step */}
+              {mainChar && (
+                <div className="space-y-3 pt-2 border-t border-white/5">
+                  <div className="flex items-center justify-between">
+                     <h3 className="text-[10px] font-black uppercase text-slate-500 tracking-wider">Xử lý nhân vật</h3>
+                     {forgedChar && <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Đã xong</span>}
+                  </div>
+                  
+                  <button 
+                    disabled={isForging || !mainChar}
+                    onClick={handleForgeCharacter}
+                    className={`w-full py-2 disabled:opacity-50 border rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 ${forgedChar ? 'bg-slate-800 hover:bg-slate-700 border-slate-700' : 'bg-emerald-600 hover:bg-emerald-500 border-emerald-400'}`}
+                  >
+                    {isForging ? (
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <span className="material-symbols-outlined text-sm">{forgedChar ? 'refresh' : 'face_retouching_natural'}</span>
+                        <span className="text-[10px] font-bold uppercase">{forgedChar ? 'Ghép lại nhân vật' : 'Ghép nhân vật & đồ'}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </section>
+            <section className="space-y-4">
+              <div className="space-y-2">
+                <ConfigButtonGroup label="" icon="" value={config.gender} options={GENDERS} onChange={v => setConfig({...config, gender: v as any})} />
+                <ConfigButtonGroup label="" icon="" value={config.accent} options={ACCENTS} onChange={v => setConfig({...config, accent: v as any})} />
+                
+                <div className="px-1 space-y-1">
+                  <div className="flex flex-wrap gap-1">
+                    {(['Thay trang phục', 'Cố định'] as OutfitMode[]).map(opt => (
+                      <button 
+                        key={opt}
+                        onClick={() => setConfig({...config, outfitMode: opt})}
+                        className={`flex-1 py-1.5 px-2 text-[10px] font-bold rounded-md border transition-all ${config.outfitMode === opt ? 'bg-emerald-600 border-emerald-400 text-white' : 'bg-slate-900 border-slate-800 text-slate-500 hover:border-slate-700'}`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
-          <section className="space-y-3 shrink-0">
-            <textarea 
-              value={rawTranscript}
-              onChange={e => setRawTranscript(e.target.value)}
-              placeholder="Dán nội dung script..."
-              className="w-full h-24 bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs focus:border-[#F31B17] outline-none transition-colors"
-            />
-            <button 
-              disabled={!rawTranscript || (!mainChar && !forgedChar) || loading}
-              onClick={handleGenerateScript}
-              className={`w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 ${!forgedChar && outfitRef ? 'bg-slate-800 text-slate-500 opacity-50' : 'bg-[#F31B17] hover:bg-[#d11713] text-white shadow-red-900/20'}`}
-            >
-              {loading ? (
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  <span className="material-symbols-outlined">auto_fix</span>
-                  Bước 1: Tạo kịch bản
-                </>
-              )}
-            </button>
-            {!forgedChar && outfitRef && (
-              <p className="text-[9px] text-amber-500 font-bold text-center italic">Vui lòng ghép nhân vật & đồ trước</p>
-            )}
-          </section>
-          {/* License Status */}
-          <section className="mt-auto pt-2 shrink-0">
-            <LicenseStatus />
-          </section>
-        </div>
-      </aside>
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col relative overflow-hidden bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-from),_transparent_40%)] from-red-900/10 transition-all duration-300">
-        
-        {status && (
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 bg-black/80 border border-red-500/30 backdrop-blur-xl px-4 py-2 rounded-full flex items-center gap-3 shadow-2xl">
-            <div className="w-4 h-4 border-2 border-red-500/20 border-t-[#F31B17] rounded-full animate-spin" />
-            <span className="text-xs font-medium text-red-200">{status}</span>
-            {mergeProgress > 0 && <span className="text-xs font-bold text-[#F31B17]">{mergeProgress}%</span>}
-          </div>
-        )}
-        <div className="flex-1 overflow-y-auto p-4 md:p-8">
-          {!shots.length ? (
-            <div className="h-full flex flex-col items-center justify-center text-center">
-              <div className="max-w-xl bg-[#12101a]/50 border border-white/5 p-8 rounded-3xl backdrop-blur-sm">
-                {forgedChar ? (
-                   <div className="mb-6 flex flex-col items-center">
-                      <div 
-                        onClick={() => setZoomImage(`data:image/jpeg;base64,${forgedChar.base64}`)}
-                        className="relative w-48 rounded-2xl overflow-hidden border-2 border-[#F31B17]/30 shadow-2xl mb-4 group cursor-zoom-in bg-black transition-all"
-                        style={{ aspectRatio: config.ratio.replace(':', '/') }}
-                      >
-                         <img src={`data:image/jpeg;base64,${forgedChar.base64}`} className="w-full h-full object-cover" />
-                         <div className="absolute top-0 left-0 bg-[#F31B17] text-white text-[8px] font-black px-2 py-0.5 rounded-br-lg uppercase">Nhân vật tham chiếu</div>
-                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
-                            <span className="material-symbols-outlined text-white text-3xl">zoom_in</span>
-                         </div>
-                      </div>
-                      
-                      <button 
-                        onClick={handleForgeCharacter}
-                        disabled={isForging}
-                        className="mb-4 px-6 py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-600 rounded-full flex items-center justify-center gap-2 transition-all active:scale-95"
-                      >
-                        <span className="material-symbols-outlined text-[18px]">refresh</span>
-                        <span className="text-xs font-black uppercase">Làm mới ảnh</span>
-                      </button>
-                      <h3 className="text-sm font-black uppercase text-emerald-400">Đã sẵn sàng!</h3>
-                   </div>
+            </section>
+            <section className="space-y-3 shrink-0">
+              <textarea 
+                value={rawTranscript}
+                onChange={e => setRawTranscript(e.target.value)}
+                placeholder="Dán nội dung script..."
+                className="w-full h-24 bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs focus:border-[#F31B17] outline-none transition-colors"
+              />
+              <button 
+                disabled={!rawTranscript || (!mainChar && !forgedChar) || loading}
+                onClick={handleGenerateScript}
+                className={`w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 ${!forgedChar && outfitRef ? 'bg-slate-800 text-slate-500 opacity-50' : 'bg-[#F31B17] hover:bg-[#d11713] text-white shadow-red-900/20'}`}
+              >
+                {loading ? (
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   <>
-                    <span className="material-symbols-outlined text-6xl mb-4 text-[#F31B17]">movie</span>
-                    <h2 className="text-2xl font-black uppercase italic mb-2 text-white">Podcast AI Studio</h2>
-                    <p className="text-slate-400 text-sm mb-8">Tải ảnh nhân vật, ghép trang phục và dán script để bắt đầu.</p>
+                    <span className="material-symbols-outlined">auto_fix</span>
+                    Bước 1: Tạo kịch bản
                   </>
                 )}
-                
-                <div className="text-left space-y-4">
-                  <h3 className="text-sm font-black text-[#F31B17] uppercase tracking-wide">
-                    Quy trình tạo clip ổn định nhất:
-                  </h3>
-                  <ul className="space-y-3 text-xs text-slate-300">
-                    <li className="flex items-start gap-2 bg-white/5 p-3 rounded-xl">
-                      <span className="text-[#F31B17] font-bold shrink-0">1.</span> 
-                      <span><b>Tải ảnh:</b> Tải ảnh nhân vật gốc (Face) và ảnh trang phục muốn mặc (Outfit).</span>
-                    </li>
-                    <li className="flex items-start gap-2 bg-white/5 p-3 rounded-xl">
-                      <span className="text-[#F31B17] font-bold shrink-0">2.</span> 
-                      <span><b>Ghép trang phục:</b> Bấm "Ghép nhân vật & đồ" để AI tạo ra 1 ảnh tham chiếu duy nhất giữ nguyên mặt nhưng đổi áo.</span>
-                    </li>
-                    <li className="flex items-start gap-2 bg-white/5 p-3 rounded-xl">
-                      <span className="text-[#F31B17] font-bold shrink-0">3.</span> 
-                      <span><b>Tạo kịch bản:</b> Dán script và bấm "Bước 1". Ảnh đã ghép ở trên sẽ được dùng làm gốc cho mọi cảnh quay.</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="max-w-4xl mx-auto space-y-12">
-              <header className="flex flex-col md:flex-row items-center justify-between border-b border-white/5 pb-6 gap-4">
-                <div>
-                  <span className="text-[10px] bg-[#F31B17] text-white px-2 py-0.5 rounded font-black uppercase tracking-tighter">Phase {step}</span>
-                  <h2 className="text-2xl md:text-3xl font-black uppercase mt-2">{step === 1 ? 'Thiết kế cảnh quay' : 'Xuất bản Video'}</h2>
-                </div>
-                {step === 1 ? (
-                  <button 
-                    onClick={() => setStep(2)}
-                    className="w-full md:w-auto px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full font-bold flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg shadow-emerald-900/20"
-                  >
-                    Chốt kịch bản & Tiếp tục
-                    <span className="material-symbols-outlined">arrow_forward</span>
-                  </button>
-                ) : (
-                  <button 
-                    onClick={() => setStep(1)}
-                    className="w-full md:w-auto px-6 py-2 bg-slate-800 hover:bg-slate-700 rounded-full font-bold flex items-center justify-center gap-2 transition-all"
-                  >
-                    <span className="material-symbols-outlined">arrow_back</span>
-                    Quay lại chỉnh sửa
-                  </button>
-                )}
-              </header>
-              <div className="grid gap-6 pb-20">
-                {step === 1 ? (
-                  shots.map((shot, idx) => (
-                    <ShotEditorCard 
-                      key={idx} 
-                      shot={shot} 
-                      onChange={(updated) => setShots(prev => prev.map((s, i) => i === idx ? updated : s))}
-                      aspectRatio={config.ratio}
-                      charImage={forgedChar?.base64 || mainChar?.base64}
-                    />
-                  ))
-                ) : (
-                  <div className="space-y-8">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
-                      <div className="flex items-center gap-6">
-                        <div className="flex flex-col">
-                          <span className="text-[10px] font-bold text-slate-500 uppercase">Tiến độ tạo</span>
-                          <span className="text-xl font-black text-[#F31B17]">
-                            {shots.filter(s => s.videoBase64).length} / {shots.length} Cảnh
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex gap-3 w-full md:w-auto">
-                        <button 
-                          onClick={handleGenerateAll}
-                          className="flex-1 md:flex-none px-5 py-2.5 bg-[#F31B17] hover:bg-[#d11713] rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-900/40"
-                        >
-                          <span className="material-symbols-outlined">play_circle</span>
-                          Tạo toàn bộ
-                        </button>
-                        <button 
-                          onClick={handleMerge}
-                          disabled={!shots.some(s => s.videoBase64 && s.isSelected)}
-                          className="flex-1 md:flex-none px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-20 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/40"
-                        >
-                          <span className="material-symbols-outlined">merge</span>
-                          Ghép Video
-                        </button>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {shots.map((shot, idx) => (
-                        <ShotPreviewCard 
-                          key={idx}
-                          shot={shot}
-                          aspectRatio={config.ratio}
-                          onGenerate={() => generateSingleVideo(idx)}
-                          onDownload={() => handleDownloadSingle(shot)}
-                          onToggle={() => setShots(prev => prev.map((s, i) => i === idx ? {...s, isSelected: !s.isSelected} : s))}
-                          onPreview={() => setPreviewShot(shot)}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+              </button>
+              {!forgedChar && outfitRef && (
+                <p className="text-[9px] text-amber-500 font-bold text-center italic">Vui lòng ghép nhân vật & đồ trước</p>
+              )}
+            </section>
+          </div>
+          
+          <div className="p-5 border-t border-white/5">
+             <LicenseStatus />
+          </div>
+        </aside>
+        {/* Main Content (Right) */}
+        <main className="flex-1 flex flex-col relative overflow-y-auto bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-from),_transparent_40%)] from-red-900/10 transition-all duration-300">
+          
+          {status && (
+            <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-black/80 border border-red-500/30 backdrop-blur-xl px-4 py-2 rounded-full flex items-center gap-3 shadow-2xl lg:left-[calc(50%+160px)]">
+              <div className="w-4 h-4 border-2 border-red-500/20 border-t-[#F31B17] rounded-full animate-spin" />
+              <span className="text-xs font-medium text-red-200">{status}</span>
+              {mergeProgress > 0 && <span className="text-xs font-bold text-[#F31B17]">{mergeProgress}%</span>}
             </div>
           )}
-        </div>
-      </main>
+          <div className="flex-1 p-4 md:p-8">
+            {!shots.length ? (
+              <div className="h-full flex flex-col items-center justify-center text-center">
+                <div className="max-w-xl bg-[#12101a]/50 border border-white/5 p-8 rounded-3xl backdrop-blur-sm w-full">
+                  {forgedChar ? (
+                     <div className="mb-6 flex flex-col items-center">
+                        <div 
+                          onClick={() => setZoomImage(`data:image/jpeg;base64,${forgedChar.base64}`)}
+                          className="relative w-48 rounded-2xl overflow-hidden border-2 border-[#F31B17]/30 shadow-2xl mb-4 group cursor-zoom-in bg-black transition-all"
+                          style={{ aspectRatio: config.ratio.replace(':', '/') }}
+                        >
+                           <img src={`data:image/jpeg;base64,${forgedChar.base64}`} className="w-full h-full object-cover" />
+                           <div className="absolute top-0 left-0 bg-[#F31B17] text-white text-[8px] font-black px-2 py-0.5 rounded-br-lg uppercase">Nhân vật tham chiếu</div>
+                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
+                              <span className="material-symbols-outlined text-white text-3xl">zoom_in</span>
+                           </div>
+                        </div>
+                        
+                        <button 
+                          onClick={handleForgeCharacter}
+                          disabled={isForging}
+                          className="mb-4 px-6 py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-600 rounded-full flex items-center justify-center gap-2 transition-all active:scale-95"
+                        >
+                          <span className="material-symbols-outlined text-[18px]">refresh</span>
+                          <span className="text-xs font-black uppercase">Làm mới ảnh</span>
+                        </button>
+                        <h3 className="text-sm font-black uppercase text-emerald-400">Đã sẵn sàng!</h3>
+                     </div>
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-6xl mb-4 text-[#F31B17]">movie</span>
+                      <h2 className="text-2xl font-black uppercase italic mb-2 text-white">Podcast AI Studio</h2>
+                      <p className="text-slate-400 text-sm mb-8">Tải ảnh nhân vật, ghép trang phục và dán script để bắt đầu.</p>
+                    </>
+                  )}
+                  
+                  <div className="text-left space-y-4">
+                    <h3 className="text-sm font-black text-[#F31B17] uppercase tracking-wide">
+                      Quy trình tạo clip ổn định nhất:
+                    </h3>
+                    <ul className="space-y-3 text-xs text-slate-300">
+                      <li className="flex items-start gap-2 bg-white/5 p-3 rounded-xl">
+                        <span className="text-[#F31B17] font-bold shrink-0">1.</span> 
+                        <span><b>Tải ảnh:</b> Tải ảnh nhân vật gốc (Face) và ảnh trang phục muốn mặc (Outfit).</span>
+                      </li>
+                      <li className="flex items-start gap-2 bg-white/5 p-3 rounded-xl">
+                        <span className="text-[#F31B17] font-bold shrink-0">2.</span> 
+                        <span><b>Ghép trang phục:</b> Bấm "Ghép nhân vật & đồ" để AI tạo ra 1 ảnh tham chiếu duy nhất giữ nguyên mặt nhưng đổi áo.</span>
+                      </li>
+                      <li className="flex items-start gap-2 bg-white/5 p-3 rounded-xl">
+                        <span className="text-[#F31B17] font-bold shrink-0">3.</span> 
+                        <span><b>Tạo kịch bản:</b> Dán script và bấm "Bước 1". Ảnh đã ghép ở trên sẽ được dùng làm gốc cho mọi cảnh quay.</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="max-w-4xl mx-auto space-y-12">
+                <header className="flex flex-col md:flex-row items-center justify-between border-b border-white/5 pb-6 gap-4">
+                  <div>
+                    <span className="text-[10px] bg-[#F31B17] text-white px-2 py-0.5 rounded font-black uppercase tracking-tighter">Phase {step}</span>
+                    <h2 className="text-2xl md:text-3xl font-black uppercase mt-2">{step === 1 ? 'Thiết kế cảnh quay' : 'Xuất bản Video'}</h2>
+                  </div>
+                  {step === 1 ? (
+                    <button 
+                      onClick={() => setStep(2)}
+                      className="w-full md:w-auto px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full font-bold flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg shadow-emerald-900/20"
+                    >
+                      Chốt kịch bản & Tiếp tục
+                      <span className="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={() => setStep(1)}
+                      className="w-full md:w-auto px-6 py-2 bg-slate-800 hover:bg-slate-700 rounded-full font-bold flex items-center justify-center gap-2 transition-all"
+                    >
+                      <span className="material-symbols-outlined">arrow_back</span>
+                      Quay lại chỉnh sửa
+                    </button>
+                  )}
+                </header>
+                <div className="grid gap-6 pb-20">
+                  {step === 1 ? (
+                    shots.map((shot, idx) => (
+                      <ShotEditorCard 
+                        key={idx} 
+                        shot={shot} 
+                        onChange={(updated) => setShots(prev => prev.map((s, i) => i === idx ? updated : s))}
+                        aspectRatio={config.ratio}
+                        charImage={forgedChar?.base64 || mainChar?.base64}
+                      />
+                    ))
+                  ) : (
+                    <div className="space-y-8">
+                      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <div className="flex items-center gap-6">
+                          <div className="flex flex-col">
+                            <span className="text-[10px] font-bold text-slate-500 uppercase">Tiến độ tạo</span>
+                            <span className="text-xl font-black text-[#F31B17]">
+                              {shots.filter(s => s.videoBase64).length} / {shots.length} Cảnh
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex gap-3 w-full md:w-auto">
+                          <button 
+                            onClick={handleGenerateAll}
+                            className="flex-1 md:flex-none px-5 py-2.5 bg-[#F31B17] hover:bg-[#d11713] rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-900/40"
+                          >
+                            <span className="material-symbols-outlined">play_circle</span>
+                            Tạo toàn bộ
+                          </button>
+                          <button 
+                            onClick={handleMerge}
+                            disabled={!shots.some(s => s.videoBase64 && s.isSelected)}
+                            className="flex-1 md:flex-none px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-20 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/40"
+                          >
+                            <span className="material-symbols-outlined">merge</span>
+                            Ghép Video
+                          </button>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {shots.map((shot, idx) => (
+                          <ShotPreviewCard 
+                            key={idx}
+                            shot={shot}
+                            aspectRatio={config.ratio}
+                            onGenerate={() => generateSingleVideo(idx)}
+                            onDownload={() => handleDownloadSingle(shot)}
+                            onToggle={() => setShots(prev => prev.map((s, i) => i === idx ? {...s, isSelected: !s.isSelected} : s))}
+                            onPreview={() => setPreviewShot(shot)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
       {/* Video Zoom Overlay */}
       {previewShot && (
         <div 
