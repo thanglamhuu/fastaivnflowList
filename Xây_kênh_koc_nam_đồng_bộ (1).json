@@ -1,0 +1,1620 @@
+{
+  "id": "wf_1784879272864",
+  "name": "Xây kênh koc nam đồng bộ",
+  "version": 2,
+  "albumName": "",
+  "createdAt": "2026-07-24T10:15:24.808Z",
+  "nodes": [
+    {
+      "id": "node_205",
+      "type": "upload_image",
+      "x": 510,
+      "y": 675,
+      "config": {
+        "imagePath": "C:\\Users\\PC\\AppData\\Local\\Temp\\veo3_uploads\\ref_1784879402001.jpg",
+        "imageUrl": "/uploads/ref_1784879402001.jpg"
+      },
+      "status": null,
+      "_cachedInputPorts": [],
+      "_cachedOutputPorts": [
+        {
+          "name": "media",
+          "type": "any",
+          "color": "#22d3ee"
+        }
+      ],
+      "_emptyUploadBtn": null,
+      "customHeight": null,
+      "runStartTime": null,
+      "previewMedia": []
+    },
+    {
+      "id": "node_206",
+      "type": "generate_image",
+      "x": 855,
+      "y": 450,
+      "config": {
+        "ratio": "portrait",
+        "quantity": 1,
+        "quality": "native",
+        "imageModel": "nanobanana_pro",
+        "material": ""
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "prompt",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "ref img 1",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        },
+        {
+          "name": "ref img 2",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "image",
+          "type": "image",
+          "color": "#22d3ee"
+        }
+      ],
+      "_ratioPill": {
+        "x": 863,
+        "y": 594,
+        "w": 50,
+        "h": 20
+      },
+      "_qtyPill": {
+        "x": 917,
+        "y": 594,
+        "w": 32,
+        "h": 20
+      },
+      "_qualPill": {
+        "x": 953,
+        "y": 594,
+        "w": 46,
+        "h": 20
+      },
+      "_modelPill": {
+        "x": 1003,
+        "y": 594,
+        "w": 60,
+        "h": 20,
+        "isImage": true
+      },
+      "_modePill": null,
+      "_voicePill": null,
+      "_durationPill": null,
+      "runStartTime": null,
+      "previewMedia": [
+        {
+          "url": "/api/media-cache?f=C%3A%5CUsers%5CPC%5CAppData%5CLocal%5CTemp%5Cveo3_wf_cache%5Cmed_cache_9eb251f8-f649-4768-8a43-3c375580c0ce_u7hz6j.jpg",
+          "type": "image",
+          "localPath": "C:\\Users\\PC\\AppData\\Local\\Temp\\veo3_wf_cache\\med_cache_9eb251f8-f649-4768-8a43-3c375580c0ce_u7hz6j.jpg"
+        }
+      ]
+    },
+    {
+      "id": "node_212",
+      "type": "frame",
+      "x": 420,
+      "y": 330,
+      "config": {
+        "width": 1449.1693993424456,
+        "height": 1110.6725198122372,
+        "name": "Khung Nhóm",
+        "color": "#22ec76"
+      },
+      "status": null,
+      "_resizeHandles": {
+        "tl": {
+          "x": 420,
+          "y": 330,
+          "s": 16
+        },
+        "tr": {
+          "x": 1853.1693993424456,
+          "y": 330,
+          "s": 16
+        },
+        "bl": {
+          "x": 420,
+          "y": 1424.6725198122372,
+          "s": 16
+        },
+        "br": {
+          "x": 1853.1693993424456,
+          "y": 1424.6725198122372,
+          "s": 16
+        }
+      },
+      "_cachedInputPorts": [],
+      "_cachedOutputPorts": [],
+      "customName": "Tạo Ảnh koc",
+      "runStartTime": null,
+      "previewMedia": []
+    },
+    {
+      "id": "node_208",
+      "type": "upload_image",
+      "x": 1200,
+      "y": 765,
+      "config": {
+        "imagePath": "C:\\Users\\PC\\AppData\\Local\\Temp\\veo3_uploads\\ref_1784879406567.webp",
+        "imageUrl": "/uploads/ref_1784879406567.webp"
+      },
+      "status": null,
+      "_cachedInputPorts": [],
+      "_cachedOutputPorts": [
+        {
+          "name": "media",
+          "type": "any",
+          "color": "#22d3ee"
+        }
+      ],
+      "_emptyUploadBtn": null,
+      "customName": "ảnh sản phẩm",
+      "customHeight": null,
+      "previewMedia": [],
+      "runStartTime": null
+    },
+    {
+      "id": "node_216",
+      "type": "gemini_prompt",
+      "x": 1410,
+      "y": 1545,
+      "config": {
+        "promptTemplate": "Close-up video focusing on the high-quality fabric texture and intricate starfish pattern of the light green summer shirt, moving smoothly to show the casual drape and premium stitching.",
+        "useAdditionalText": true,
+        "additionalText": "trích xuất prompt 2\nChỉ trả về prompt không kèm hướng dẫn, không kèm bất cứ điều , text only dont generate img/video",
+        "kieModel": "gemini-2.5-flash",
+        "text": "Close-up video focusing on the high-quality fabric texture and intricate starfish pattern of the light green summer shirt, moving smoothly to show the casual drape and premium stitching.",
+        "geminiMode": "premium"
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "media 1",
+          "type": "any",
+          "color": "#86efac",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa"
+        }
+      ],
+      "_wrappedTextCacheKey": "Close-up video focusing on the high-quality fabric texture and intricate starfish pattern of the light green summer shirt, moving smoothly to show the casual drape and premium stitching._290",
+      "_wrappedLines": [
+        "Close-up video focusing on the high-quality fabric",
+        "texture and intricate starfish pattern of the light",
+        "green summer shirt, moving smoothly to show the",
+        "casual drape and premium stitching."
+      ],
+      "_expandBtn": null,
+      "customName": "Prompt vd 2",
+      "previewMedia": [
+        {
+          "url": "Close-up video focusing on the high-quality fabric texture and intricate starfish pattern of the light green summer shirt, moving smoothly to show the casual drape and premium stitching.",
+          "type": "text",
+          "localPath": null
+        }
+      ],
+      "runStartTime": null
+    },
+    {
+      "id": "node_217",
+      "type": "gemini_prompt",
+      "x": 1830,
+      "y": 1545,
+      "config": {
+        "promptTemplate": "A stylish man standing on a city sidewalk, wearing a summer resort outfit with a starfish print, panning shot from head to toe to showcase the full clothing set.",
+        "useAdditionalText": true,
+        "additionalText": "trích xuất prompt 3\nChỉ trả về prompt không kèm hướng dẫn, không kèm bất cứ điều , text only dont generate img/video",
+        "kieModel": "gemini-2.5-flash",
+        "text": "A stylish man standing on a city sidewalk, wearing a summer resort outfit with a starfish print, panning shot from head to toe to showcase the full clothing set.",
+        "geminiMode": "premium"
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "media 1",
+          "type": "any",
+          "color": "#86efac",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa"
+        }
+      ],
+      "_wrappedTextCacheKey": "A stylish man standing on a city sidewalk, wearing a summer resort outfit with a starfish print, panning shot from head to toe to showcase the full clothing set._290",
+      "_wrappedLines": [
+        "A stylish man standing on a city sidewalk, wearing",
+        "a summer resort outfit with a starfish print, panning",
+        "shot from head to toe to showcase the full clothing",
+        "set."
+      ],
+      "_expandBtn": null,
+      "customName": "Prompt vd 3",
+      "previewMedia": [
+        {
+          "url": "A stylish man standing on a city sidewalk, wearing a summer resort outfit with a starfish print, panning shot from head to toe to showcase the full clothing set.",
+          "type": "text",
+          "localPath": null
+        }
+      ],
+      "runStartTime": null
+    },
+    {
+      "id": "node_219",
+      "type": "gemini_prompt",
+      "x": 1410,
+      "y": 1890,
+      "config": {
+        "promptTemplate": "Dynamic slow-motion video of a fashionable man turning towards the camera, highlighting the aesthetic coordination of his light green patterned shirt and shorts set.",
+        "useAdditionalText": true,
+        "additionalText": "trích xuất prompt 5\nChỉ trả về prompt không kèm hướng dẫn, không kèm bất cứ điều , text only dont generate img/video",
+        "kieModel": "gemini-2.5-flash",
+        "text": "Dynamic slow-motion video of a fashionable man turning towards the camera, highlighting the aesthetic coordination of his light green patterned shirt and shorts set.",
+        "geminiMode": "premium"
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "media 1",
+          "type": "any",
+          "color": "#86efac",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa"
+        }
+      ],
+      "_wrappedTextCacheKey": "Dynamic slow-motion video of a fashionable man turning towards the camera, highlighting the aesthetic coordination of his light green patterned shirt and shorts set._290",
+      "_wrappedLines": [
+        "Dynamic slow-motion video of a fashionable man",
+        "turning towards the camera, highlighting the",
+        "aesthetic coordination of his light green patterned",
+        "shirt and shorts set."
+      ],
+      "_expandBtn": null,
+      "customName": "Prompt vd 5",
+      "previewMedia": [
+        {
+          "url": "Dynamic slow-motion video of a fashionable man turning towards the camera, highlighting the aesthetic coordination of his light green patterned shirt and shorts set.",
+          "type": "text",
+          "localPath": null
+        }
+      ],
+      "runStartTime": null
+    },
+    {
+      "id": "node_218",
+      "type": "gemini_prompt",
+      "x": 990,
+      "y": 1890,
+      "config": {
+        "promptTemplate": "POV style video of a man adjusting his collar and walking forward, wearing a relaxed-fit light green short-sleeve shirt and matching shorts, summer vacation aesthetic.",
+        "useAdditionalText": true,
+        "additionalText": "trích xuất prompt 4\nChỉ trả về prompt không kèm hướng dẫn, không kèm bất cứ điều , text only dont generate img/video",
+        "kieModel": "gemini-2.5-flash",
+        "text": "POV style video of a man adjusting his collar and walking forward, wearing a relaxed-fit light green short-sleeve shirt and matching shorts, summer vacation aesthetic.",
+        "geminiMode": "premium"
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "media 1",
+          "type": "any",
+          "color": "#86efac",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa"
+        }
+      ],
+      "_wrappedTextCacheKey": "POV style video of a man adjusting his collar and walking forward, wearing a relaxed-fit light green short-sleeve shirt and matching shorts, summer vacation aesthetic._290",
+      "_wrappedLines": [
+        "POV style video of a man adjusting his collar and",
+        "walking forward, wearing a relaxed-fit light green",
+        "short-sleeve shirt and matching shorts, summer",
+        "vacation aesthetic."
+      ],
+      "_expandBtn": null,
+      "customName": "Prompt vd 4",
+      "previewMedia": [
+        {
+          "url": "POV style video of a man adjusting his collar and walking forward, wearing a relaxed-fit light green short-sleeve shirt and matching shorts, summer vacation aesthetic.",
+          "type": "text",
+          "localPath": null
+        }
+      ],
+      "runStartTime": null,
+      "_isExpanded": false,
+      "customHeight": null
+    },
+    {
+      "id": "node_220",
+      "type": "gemini_prompt",
+      "x": 1830,
+      "y": 1890,
+      "config": {
+        "promptTemplate": "Professional fashion lookbook style, full body shot of a model wearing a starfish-printed casual summer set, natural outdoor environment, crisp details, 4k resolution.",
+        "useAdditionalText": true,
+        "additionalText": "trích xuất prompt 6\nChỉ trả về prompt không kèm hướng dẫn, không kèm bất cứ điều , text only dont generate img/video",
+        "kieModel": "gemini-2.5-flash",
+        "text": "Professional fashion lookbook style, full body shot of a model wearing a starfish-printed casual summer set, natural outdoor environment, crisp details, 4k resolution.",
+        "geminiMode": "premium"
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "media 1",
+          "type": "any",
+          "color": "#86efac",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa"
+        }
+      ],
+      "_wrappedTextCacheKey": "Professional fashion lookbook style, full body shot of a model wearing a starfish-printed casual summer set, natural outdoor environment, crisp details, 4k resolution._290",
+      "_wrappedLines": [
+        "Professional fashion lookbook style, full body shot",
+        "of a model wearing a starfish-printed casual",
+        "summer set, natural outdoor environment, crisp",
+        "details, 4k resolution."
+      ],
+      "_expandBtn": null,
+      "customName": "Prompt vd 6",
+      "previewMedia": [
+        {
+          "url": "Professional fashion lookbook style, full body shot of a model wearing a starfish-printed casual summer set, natural outdoor environment, crisp details, 4k resolution.",
+          "type": "text",
+          "localPath": null
+        }
+      ],
+      "runStartTime": null
+    },
+    {
+      "id": "node_221",
+      "type": "frame",
+      "x": 420,
+      "y": 1485,
+      "config": {
+        "width": 1831.7301444325071,
+        "height": 769.7603834099767,
+        "name": "Khung Nhóm",
+        "color": "#f3fb89"
+      },
+      "status": null,
+      "_resizeHandles": {
+        "tl": {
+          "x": 420,
+          "y": 1485,
+          "s": 16
+        },
+        "tr": {
+          "x": 2235.730144432507,
+          "y": 1485,
+          "s": 16
+        },
+        "bl": {
+          "x": 420,
+          "y": 2238.760383409977,
+          "s": 16
+        },
+        "br": {
+          "x": 2235.730144432507,
+          "y": 2238.760383409977,
+          "s": 16
+        }
+      },
+      "_cachedInputPorts": [],
+      "_cachedOutputPorts": [],
+      "runStartTime": null,
+      "customName": "Prompt Video",
+      "previewMedia": []
+    },
+    {
+      "id": "node_209",
+      "type": "generate_image",
+      "x": 1560,
+      "y": 465,
+      "config": {
+        "ratio": "portrait",
+        "quantity": 1,
+        "quality": "2K",
+        "imageModel": "nanobanana_pro",
+        "material": ""
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "prompt",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "ref img 1",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        },
+        {
+          "name": "ref img 2",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        },
+        {
+          "name": "ref img 3",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "image",
+          "type": "image",
+          "color": "#22d3ee"
+        }
+      ],
+      "_ratioPill": {
+        "x": 1568,
+        "y": 637,
+        "w": 50,
+        "h": 20
+      },
+      "_qtyPill": {
+        "x": 1622,
+        "y": 637,
+        "w": 32,
+        "h": 20
+      },
+      "_qualPill": {
+        "x": 1658,
+        "y": 637,
+        "w": 46,
+        "h": 20
+      },
+      "_modelPill": {
+        "x": 1708,
+        "y": 637,
+        "w": 60,
+        "h": 20,
+        "isImage": true
+      },
+      "_modePill": null,
+      "_voicePill": null,
+      "_durationPill": null,
+      "previewMedia": [
+        {
+          "url": "/api/media-cache?f=C%3A%5CUsers%5CPC%5CAppData%5CLocal%5CTemp%5Cveo3_wf_cache%5Cmed_cache_2db66c70-5a2b-4d8f-bfb9-2daef89803eb_t8y71h.jpg",
+          "type": "image",
+          "localPath": "C:\\Users\\PC\\AppData\\Local\\Temp\\veo3_wf_cache\\med_cache_2db66c70-5a2b-4d8f-bfb9-2daef89803eb_t8y71h.jpg"
+        }
+      ],
+      "runStartTime": null
+    },
+    {
+      "id": "node_215",
+      "type": "gemini_prompt",
+      "x": 990,
+      "y": 1545,
+      "config": {
+        "promptTemplate": "Cinematic shot of a young man wearing a light green starfish-patterned shirt and matching shorts walking confidently down a sunny urban street, soft natural lighting, high fashion style.",
+        "useAdditionalText": true,
+        "additionalText": "trích xuất prompt 1\nChỉ trả về prompt không kèm hướng dẫn, không kèm bất cứ điều , text only dont generate img/video",
+        "kieModel": "gemini-2.5-flash",
+        "text": "Cinematic shot of a young man wearing a light green starfish-patterned shirt and matching shorts walking confidently down a sunny urban street, soft natural lighting, high fashion style.",
+        "geminiMode": "premium"
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "media 1",
+          "type": "any",
+          "color": "#86efac",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa"
+        }
+      ],
+      "_wrappedTextCacheKey": "Cinematic shot of a young man wearing a light green starfish-patterned shirt and matching shorts walking confidently down a sunny urban street, soft natural lighting, high fashion style._290",
+      "_wrappedLines": [
+        "Cinematic shot of a young man wearing a light",
+        "green starfish-patterned shirt and matching shorts",
+        "walking confidently down a sunny urban street, soft",
+        "natural lighting, high fashion style."
+      ],
+      "_expandBtn": null,
+      "customName": "Prompt vd 1",
+      "previewMedia": [
+        {
+          "url": "Cinematic shot of a young man wearing a light green starfish-patterned shirt and matching shorts walking confidently down a sunny urban street, soft natural lighting, high fashion style.",
+          "type": "text",
+          "localPath": null
+        }
+      ],
+      "runStartTime": null
+    },
+    {
+      "id": "node_207",
+      "type": "prompt",
+      "x": 1200,
+      "y": 450,
+      "config": {
+        "text": "Use Image 1 as the exact identity and scene reference. Use Image 2 as the exact clothing reference.\n\nReplace only the outfit worn by the woman in Image 1 with the complete outfit shown in Image 2.\n\nPreserve the woman from Image 1 exactly:\n- same face and identity,\n- same facial proportions,\n- same hairstyle and hair color,\n- same skin tone,\n- same body shape and proportions,\n- same pink smartphone,\n- same mirror-selfie pose,\n- same camera angle,\n- same boutique background,\n- same lighting,\n- same illuminated 'SHOP_NAME' sign.\n\nPreserve the outfit from Image 2 exactly:\n- same garment type,\n- same colors,\n- same fabric appearance,\n- same pattern and print placement,\n- same neckline,\n- same sleeves,\n- same waist construction,\n- same buttons, zippers, ribbons, lace, stitching, pockets, trims, and accessories,\n- same garment length,\n- same silhouette,\n- same layers,\n- same fit and design details.\n\nFit the outfit naturally onto the woman from Image 1. Maintain realistic fabric folds, realistic gravity, correct garment structure, and natural contact between fabric and body.\n\nDo not redesign, simplify, beautify, recolor, shorten, lengthen, or change any part of the outfit. Do not alter the woman's identity, the boutique scene, the phone, or the shop sign."
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa"
+        }
+      ],
+      "_wrappedTextCacheKey": "Use Image 1 as the exact identity and scene reference. Use Image 2 as the exact clothing reference.\n\nReplace only the outfit worn by the woman in Image 1 with the complete outfit shown in Image 2.\n\nPreserve the woman from Image 1 exactly:\n- same face and identity,\n- same facial proportions,\n- same hairstyle and hair color,\n- same skin tone,\n- same body shape and proportions,\n- same pink smartphone,\n- same mirror-selfie pose,\n- same camera angle,\n- same boutique background,\n- same lighting,\n- same illuminated 'SHOP_NAME' sign.\n\nPreserve the outfit from Image 2 exactly:\n- same garment type,\n- same colors,\n- same fabric appearance,\n- same pattern and print placement,\n- same neckline,\n- same sleeves,\n- same waist construction,\n- same buttons, zippers, ribbons, lace, stitching, pockets, trims, and accessories,\n- same garment length,\n- same silhouette,\n- same layers,\n- same fit and design details.\n\nFit the outfit naturally onto the woman from Image 1. Maintain realistic fabric folds, realistic gravity, correct garment structure, and natural contact between fabric and body.\n\nDo not redesign, simplify, beautify, recolor, shorten, lengthen, or change any part of the outfit. Do not alter the woman's identity, the boutique scene, the phone, or the shop sign._240",
+      "_wrappedLines": [
+        "Use Image 1 as the exact identity and",
+        "scene reference. Use Image 2 as the",
+        "exact clothing reference.",
+        "Replace only the outfit worn by the",
+        "woman in Image 1 with the complete outfit",
+        "shown in Image 2.",
+        "Preserve the woman from Image 1",
+        "exactly:",
+        "- same face and identity,",
+        "- same facial proportions,",
+        "- same hairstyle and hair color,",
+        "- same skin tone,",
+        "- same body shape and proportions,",
+        "- same pink smartphone,",
+        "- same mirror-selfie pose,",
+        "- same camera angle,",
+        "- same boutique background,",
+        "- same lighting,",
+        "- same illuminated 'SHOP_NAME' sign.",
+        "Preserve the outfit from Image 2 exactly:",
+        "- same garment type,",
+        "- same colors,",
+        "- same fabric appearance,",
+        "- same pattern and print placement,",
+        "- same neckline,",
+        "- same sleeves,",
+        "- same waist construction,",
+        "- same buttons, zippers, ribbons, lace,",
+        "stitching, pockets, trims, and accessories,",
+        "- same garment length,",
+        "- same silhouette,",
+        "- same layers,",
+        "- same fit and design details.",
+        "Fit the outfit naturally onto the woman",
+        "from Image 1. Maintain realistic fabric",
+        "folds, realistic gravity, correct garment",
+        "structure, and natural contact between",
+        "fabric and body.",
+        "Do not redesign, simplify, beautify,",
+        "recolor, shorten, lengthen, or change any",
+        "part of the outfit. Do not alter the",
+        "woman's identity, the boutique scene, the",
+        "phone, or the shop sign."
+      ],
+      "_expandBtn": {
+        "x": 1200,
+        "y": 594,
+        "w": 240,
+        "h": 20
+      },
+      "_isEditing": false,
+      "_isExpanded": false,
+      "customHeight": null,
+      "customName": "Prompt thay đồ",
+      "runStartTime": null,
+      "previewMedia": []
+    },
+    {
+      "id": "node_204",
+      "type": "prompt",
+      "x": 495,
+      "y": 465,
+      "config": {
+        "text": "SUBJECT: A highly detailed fashion and lifestyle photo featuring [Subject] as the main visual focus, using [Model] as character reference.\n\nMODEL REFERENCE: [Model] — a handsome young Asian male with fair skin, slightly wavy layered hair styled naturally to the side, wearing clear/transparent thin-frame glasses, slim build, subtle relaxed facial expression with a natural, soft gaze slightly upward and to the side — not stiff, not overly posed, looking genuinely at ease as if caught in a candid moment.\n\nPOSITION: Standing upright outdoors, framed from mid-thigh up, body angled slightly to the side, one hand resting casually in the front pocket of the shorts, the other arm relaxed by the side, weight shifted naturally onto one leg for a candid, unposed stance.\n\nOUTFIT: [Outfit] — light blue long-sleeve button-up shirt with sleeves casually rolled up to the forearms, worn open over a plain white crew-neck t-shirt, paired with light beige/khaki tailored shorts, and a black wristwatch.\n\nQUALITY & STYLE: Candid street-style photography, natural everyday lifestyle aesthetic, realistic and unposed feel, high-quality smartphone camera look, sharp focus throughout the entire image — subject AND background both fully in focus, no depth-of-field blur, no bokeh effect, no cinematic look, no dramatic color grading, no film-style filters, flat natural color rendering true to real life.\n\nENVIRONMENT & BACKGROUND: An outdoor urban street setting, tall green trees and trimmed hedges lining a paved sidewalk, a low decorative stone/tile wall and street lamp post in the background, all background elements sharp and clearly visible, everyday realistic city atmosphere.\n\nLIGHTING & COMPOSITION: Soft, even, overcast-style natural daylight with no direct or visible sunlight, no harsh highlights, no golden-hour warm tones, diffused flat lighting similar to a cloudy day, realistic neutral skin tones, no dramatic shadows, balanced composition with the subject centered slightly off to one side, entire frame in sharp focus from foreground to background.\n\nASPECT RATIO 9:16"
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa"
+        }
+      ],
+      "_wrappedTextCacheKey": "SUBJECT: A highly detailed fashion and lifestyle photo featuring [Subject] as the main visual focus, using [Model] as character reference.\n\nMODEL REFERENCE: [Model] — a handsome young Asian male with fair skin, slightly wavy layered hair styled naturally to the side, wearing clear/transparent thin-frame glasses, slim build, subtle relaxed facial expression with a natural, soft gaze slightly upward and to the side — not stiff, not overly posed, looking genuinely at ease as if caught in a candid moment.\n\nPOSITION: Standing upright outdoors, framed from mid-thigh up, body angled slightly to the side, one hand resting casually in the front pocket of the shorts, the other arm relaxed by the side, weight shifted naturally onto one leg for a candid, unposed stance.\n\nOUTFIT: [Outfit] — light blue long-sleeve button-up shirt with sleeves casually rolled up to the forearms, worn open over a plain white crew-neck t-shirt, paired with light beige/khaki tailored shorts, and a black wristwatch.\n\nQUALITY & STYLE: Candid street-style photography, natural everyday lifestyle aesthetic, realistic and unposed feel, high-quality smartphone camera look, sharp focus throughout the entire image — subject AND background both fully in focus, no depth-of-field blur, no bokeh effect, no cinematic look, no dramatic color grading, no film-style filters, flat natural color rendering true to real life.\n\nENVIRONMENT & BACKGROUND: An outdoor urban street setting, tall green trees and trimmed hedges lining a paved sidewalk, a low decorative stone/tile wall and street lamp post in the background, all background elements sharp and clearly visible, everyday realistic city atmosphere.\n\nLIGHTING & COMPOSITION: Soft, even, overcast-style natural daylight with no direct or visible sunlight, no harsh highlights, no golden-hour warm tones, diffused flat lighting similar to a cloudy day, realistic neutral skin tones, no dramatic shadows, balanced composition with the subject centered slightly off to one side, entire frame in sharp focus from foreground to background.\n\nASPECT RATIO 9:16_240",
+      "_wrappedLines": [
+        "SUBJECT: A highly detailed fashion and",
+        "lifestyle photo featuring [Subject] as the",
+        "main visual focus, using [Model] as",
+        "character reference.",
+        "MODEL REFERENCE: [Model] — a",
+        "handsome young Asian male with fair",
+        "skin, slightly wavy layered hair styled",
+        "naturally to the side, wearing",
+        "clear/transparent thin-frame glasses, slim",
+        "build, subtle relaxed facial expression",
+        "with a natural, soft gaze slightly upward",
+        "and to the side — not stiff, not overly",
+        "posed, looking genuinely at ease as if",
+        "caught in a candid moment.",
+        "POSITION: Standing upright outdoors,",
+        "framed from mid-thigh up, body angled",
+        "slightly to the side, one hand resting",
+        "casually in the front pocket of the shorts,",
+        "the other arm relaxed by the side, weight",
+        "shifted naturally onto one leg for a candid,",
+        "unposed stance.",
+        "OUTFIT: [Outfit] — light blue long-sleeve",
+        "button-up shirt with sleeves casually",
+        "rolled up to the forearms, worn open over",
+        "a plain white crew-neck t-shirt, paired",
+        "with light beige/khaki tailored shorts, and",
+        "a black wristwatch.",
+        "QUALITY & STYLE: Candid street-style",
+        "photography, natural everyday lifestyle",
+        "aesthetic, realistic and unposed feel,",
+        "high-quality smartphone camera look,",
+        "sharp focus throughout the entire image",
+        "— subject AND background both fully in",
+        "focus, no depth-of-field blur, no bokeh",
+        "effect, no cinematic look, no dramatic",
+        "color grading, no film-style filters, flat",
+        "natural color rendering true to real life.",
+        "ENVIRONMENT & BACKGROUND: An",
+        "outdoor urban street setting, tall green",
+        "trees and trimmed hedges lining a paved",
+        "sidewalk, a low decorative stone/tile wall",
+        "and street lamp post in the background,",
+        "all background elements sharp and",
+        "clearly visible, everyday realistic city",
+        "atmosphere.",
+        "LIGHTING & COMPOSITION: Soft, even,",
+        "overcast-style natural daylight with no",
+        "direct or visible sunlight, no harsh",
+        "highlights, no golden-hour warm tones,",
+        "diffused flat lighting similar to a cloudy",
+        "day, realistic neutral skin tones, no",
+        "dramatic shadows, balanced composition",
+        "with the subject centered slightly off to",
+        "one side, entire frame in sharp focus from",
+        "foreground to background.",
+        "ASPECT RATIO 9:16"
+      ],
+      "_expandBtn": {
+        "x": 495,
+        "y": 609,
+        "w": 240,
+        "h": 20
+      },
+      "customName": "câu lệnh tạo ảnh koc",
+      "_isEditing": false,
+      "_isExpanded": false,
+      "customHeight": null,
+      "runStartTime": null,
+      "previewMedia": []
+    },
+    {
+      "id": "node_235",
+      "type": "frame",
+      "x": 1905,
+      "y": 495,
+      "config": {
+        "width": 1677.973085743747,
+        "height": 943.6798857278832,
+        "name": "Khung Nhóm"
+      },
+      "status": null,
+      "_resizeHandles": {
+        "tl": {
+          "x": 1905,
+          "y": 495,
+          "s": 16
+        },
+        "tr": {
+          "x": 3566.973085743747,
+          "y": 495,
+          "s": 16
+        },
+        "bl": {
+          "x": 1905,
+          "y": 1422.6798857278832,
+          "s": 16
+        },
+        "br": {
+          "x": 3566.973085743747,
+          "y": 1422.6798857278832,
+          "s": 16
+        }
+      },
+      "_cachedInputPorts": [],
+      "_cachedOutputPorts": [],
+      "previewMedia": [],
+      "runStartTime": null,
+      "customName": "Tạo Video Grok"
+    },
+    {
+      "id": "node_210",
+      "type": "prompt",
+      "x": 540,
+      "y": 1905,
+      "config": {
+        "text": "phân tích ảnh này và đưa ra 6  câu lệnh grok làm video về sản phẩm nhân vật đang mặc, mỗi prompt 1 dòng"
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa"
+        }
+      ],
+      "_wrappedTextCacheKey": "phân tích ảnh này và đưa ra 6  câu lệnh grok làm video về sản phẩm nhân vật đang mặc, mỗi prompt 1 dòng_240",
+      "_wrappedLines": [
+        "phân tích ảnh này và đưa ra 6  câu lệnh",
+        "grok làm video về sản phẩm nhân vật",
+        "đang mặc, mỗi prompt 1 dòng"
+      ],
+      "_expandBtn": null,
+      "_isEditing": false,
+      "_isExpanded": false,
+      "customHeight": null,
+      "customName": "phân tích hình ảnh",
+      "runStartTime": null,
+      "previewMedia": []
+    },
+    {
+      "id": "node_211",
+      "type": "gemini_prompt",
+      "x": 510,
+      "y": 1590,
+      "config": {
+        "promptTemplate": "Cinematic shot of a young man wearing a light green starfish-patterned shirt and matching shorts walking confidently down a sunny urban street, soft natural lighting, high fashion style.\nClose-up video focusing on the high-quality fabric texture and intricate starfish pattern of the light green summer shirt, moving smoothly to show the casual drape and premium stitching.\nA stylish man standing on a city sidewalk, wearing a summer resort outfit with a starfish print, panning shot from head to toe to showcase the full clothing set.\nPOV style video of a man adjusting his collar and walking forward, wearing a relaxed-fit light green short-sleeve shirt and matching shorts, summer vacation aesthetic.\nDynamic slow-motion video of a fashionable man turning towards the camera, highlighting the aesthetic coordination of his light green patterned shirt and shorts set.\nProfessional fashion lookbook style, full body shot of a model wearing a starfish-printed casual summer set, natural outdoor environment, crisp details, 4k resolution.",
+        "useAdditionalText": true,
+        "additionalText": "Chỉ trả về prompt không kèm hướng dẫn, không kèm bất cứ điều , text only dont generate img/video",
+        "kieModel": "gemini-2.5-flash",
+        "text": "Cinematic shot of a young man wearing a light green starfish-patterned shirt and matching shorts walking confidently down a sunny urban street, soft natural lighting, high fashion style.\nClose-up video focusing on the high-quality fabric texture and intricate starfish pattern of the light green summer shirt, moving smoothly to show the casual drape and premium stitching.\nA stylish man standing on a city sidewalk, wearing a summer resort outfit with a starfish print, panning shot from head to toe to showcase the full clothing set.\nPOV style video of a man adjusting his collar and walking forward, wearing a relaxed-fit light green short-sleeve shirt and matching shorts, summer vacation aesthetic.\nDynamic slow-motion video of a fashionable man turning towards the camera, highlighting the aesthetic coordination of his light green patterned shirt and shorts set.\nProfessional fashion lookbook style, full body shot of a model wearing a starfish-printed casual summer set, natural outdoor environment, crisp details, 4k resolution.",
+        "geminiMode": "premium"
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "media 1",
+          "type": "any",
+          "color": "#86efac",
+          "optional": true
+        },
+        {
+          "name": "media 2",
+          "type": "any",
+          "color": "#86efac",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "text",
+          "type": "string",
+          "color": "#a78bfa"
+        }
+      ],
+      "_wrappedTextCacheKey": "Cinematic shot of a young man wearing a light green starfish-patterned shirt and matching shorts walking confidently down a sunny urban street, soft natural lighting, high fashion style.\nClose-up video focusing on the high-quality fabric texture and intricate starfish pattern of the light green summer shirt, moving smoothly to show the casual drape and premium stitching.\nA stylish man standing on a city sidewalk, wearing a summer resort outfit with a starfish print, panning shot from head to toe to showcase the full clothing set.\nPOV style video of a man adjusting his collar and walking forward, wearing a relaxed-fit light green short-sleeve shirt and matching shorts, summer vacation aesthetic.\nDynamic slow-motion video of a fashionable man turning towards the camera, highlighting the aesthetic coordination of his light green patterned shirt and shorts set.\nProfessional fashion lookbook style, full body shot of a model wearing a starfish-printed casual summer set, natural outdoor environment, crisp details, 4k resolution._290",
+      "_wrappedLines": [
+        "Cinematic shot of a young man wearing a light",
+        "green starfish-patterned shirt and matching shorts",
+        "walking confidently down a sunny urban street, soft",
+        "natural lighting, high fashion style.",
+        "Close-up video focusing on the high-quality fabric",
+        "texture and intricate starfish pattern of the light",
+        "green summer shirt, moving smoothly to show the",
+        "casual drape and premium stitching.",
+        "A stylish man standing on a city sidewalk, wearing",
+        "a summer resort outfit with a starfish print, panning",
+        "shot from head to toe to showcase the full clothing",
+        "set.",
+        "POV style video of a man adjusting his collar and",
+        "walking forward, wearing a relaxed-fit light green",
+        "short-sleeve shirt and matching shorts, summer",
+        "vacation aesthetic.",
+        "Dynamic slow-motion video of a fashionable man",
+        "turning towards the camera, highlighting the",
+        "aesthetic coordination of his light green patterned",
+        "shirt and shorts set.",
+        "Professional fashion lookbook style, full body shot",
+        "of a model wearing a starfish-printed casual",
+        "summer set, natural outdoor environment, crisp",
+        "details, 4k resolution."
+      ],
+      "_expandBtn": {
+        "x": 510,
+        "y": 1806,
+        "w": 290,
+        "h": 20
+      },
+      "runStartTime": null,
+      "previewMedia": [
+        {
+          "url": "Cinematic shot of a young man wearing a light green starfish-patterned shirt and matching shorts walking confidently down a sunny urban street, soft natural lighting, high fashion style.\nClose-up video focusing on the high-quality fabric texture and intricate starfish pattern of the light green summer shirt, moving smoothly to show the casual drape and premium stitching.\nA stylish man standing on a city sidewalk, wearing a summer resort outfit with a starfish print, panning shot from head to toe to showcase the full clothing set.\nPOV style video of a man adjusting his collar and walking forward, wearing a relaxed-fit light green short-sleeve shirt and matching shorts, summer vacation aesthetic.\nDynamic slow-motion video of a fashionable man turning towards the camera, highlighting the aesthetic coordination of his light green patterned shirt and shorts set.\nProfessional fashion lookbook style, full body shot of a model wearing a starfish-printed casual summer set, natural outdoor environment, crisp details, 4k resolution.",
+          "type": "text",
+          "localPath": null
+        }
+      ],
+      "_isExpanded": false,
+      "customHeight": null,
+      "_isEditing": false
+    },
+    {
+      "id": "node_234",
+      "type": "grok_imagine",
+      "x": 2025,
+      "y": 1005,
+      "config": {
+        "model_type": "grok-imagine/image-to-video",
+        "resolution": "720p",
+        "grokRatio": "9:16"
+      },
+      "status": null,
+      "previewMedia": [
+        {
+          "url": "https://tempfile.aiquickdraw.com/ggg/users/81aeaf1a-cf53-4b4c-8f98-00442e5f14cf/generated/9813e9a1-2240-4d2a-8213-f2f9c01a0dff/generated_video.mp4",
+          "type": "video",
+          "localPath": null
+        }
+      ],
+      "customName": "4",
+      "customHeight": null,
+      "_isExpanded": false,
+      "_cachedInputPorts": [
+        {
+          "name": "prompt",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "ref img 1",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        },
+        {
+          "name": "ref img 2",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "video",
+          "type": "video",
+          "color": "#fb923c"
+        }
+      ],
+      "_grokTypePill": {
+        "x": 2033,
+        "y": 1149,
+        "w": 100,
+        "h": 20
+      },
+      "_grokResPill": {
+        "x": 2137,
+        "y": 1149,
+        "w": 46,
+        "h": 20
+      },
+      "_grokModePill": {
+        "x": 2187,
+        "y": 1149,
+        "w": 56,
+        "h": 20
+      },
+      "_grokRatioPill": {
+        "x": 2247,
+        "y": 1149,
+        "w": 46,
+        "h": 20
+      },
+      "_grokDurPill": {
+        "x": 2297,
+        "y": 1149,
+        "w": 40,
+        "h": 20
+      },
+      "runStartTime": null
+    },
+    {
+      "id": "node_233",
+      "type": "grok_imagine",
+      "x": 2595,
+      "y": 1005,
+      "config": {
+        "model_type": "grok-imagine/image-to-video",
+        "resolution": "720p",
+        "grokRatio": "9:16"
+      },
+      "status": null,
+      "previewMedia": [
+        {
+          "url": "https://tempfile.aiquickdraw.com/ggg/users/f9412762-1b16-445d-bd95-737994dc46d4/generated/722a63e3-fd67-458b-a9be-f41e5aff3b05/generated_video.mp4",
+          "type": "video",
+          "localPath": null
+        }
+      ],
+      "customName": "5",
+      "customHeight": null,
+      "_isExpanded": false,
+      "_cachedInputPorts": [
+        {
+          "name": "prompt",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "ref img 1",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        },
+        {
+          "name": "ref img 2",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "video",
+          "type": "video",
+          "color": "#fb923c"
+        }
+      ],
+      "_grokTypePill": {
+        "x": 2603,
+        "y": 1149,
+        "w": 100,
+        "h": 20
+      },
+      "_grokResPill": {
+        "x": 2707,
+        "y": 1149,
+        "w": 46,
+        "h": 20
+      },
+      "_grokModePill": {
+        "x": 2757,
+        "y": 1149,
+        "w": 56,
+        "h": 20
+      },
+      "_grokRatioPill": {
+        "x": 2817,
+        "y": 1149,
+        "w": 46,
+        "h": 20
+      },
+      "_grokDurPill": {
+        "x": 2867,
+        "y": 1149,
+        "w": 40,
+        "h": 20
+      },
+      "runStartTime": null
+    },
+    {
+      "id": "node_232",
+      "type": "grok_imagine",
+      "x": 3150,
+      "y": 1005,
+      "config": {
+        "model_type": "grok-imagine/image-to-video",
+        "resolution": "720p",
+        "grokRatio": "9:16"
+      },
+      "status": null,
+      "previewMedia": [
+        {
+          "url": "https://tempfile.aiquickdraw.com/ggg/users/ac57e401-cda9-46f1-9949-2b3cf3d6b7b2/generated/766ce75e-bc87-452c-8edf-27e0bdffbb81/generated_video.mp4",
+          "type": "video",
+          "localPath": null
+        }
+      ],
+      "customName": "6",
+      "customHeight": null,
+      "_isExpanded": false,
+      "_cachedInputPorts": [
+        {
+          "name": "prompt",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "ref img 1",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        },
+        {
+          "name": "ref img 2",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "video",
+          "type": "video",
+          "color": "#fb923c"
+        }
+      ],
+      "_grokTypePill": {
+        "x": 3158,
+        "y": 1149,
+        "w": 100,
+        "h": 20
+      },
+      "_grokResPill": {
+        "x": 3262,
+        "y": 1149,
+        "w": 46,
+        "h": 20
+      },
+      "_grokModePill": {
+        "x": 3312,
+        "y": 1149,
+        "w": 56,
+        "h": 20
+      },
+      "_grokRatioPill": {
+        "x": 3372,
+        "y": 1149,
+        "w": 46,
+        "h": 20
+      },
+      "_grokDurPill": {
+        "x": 3422,
+        "y": 1149,
+        "w": 40,
+        "h": 20
+      },
+      "runStartTime": null
+    },
+    {
+      "id": "node_230",
+      "type": "grok_imagine",
+      "x": 2595,
+      "y": 540,
+      "config": {
+        "model_type": "grok-imagine/image-to-video",
+        "resolution": "720p",
+        "grokRatio": "9:16"
+      },
+      "status": null,
+      "previewMedia": [
+        {
+          "url": "https://tempfile.aiquickdraw.com/ggg/users/fa995742-22ca-42af-81e8-19be4e50129c/generated/f5e909e2-d759-43bb-9c19-c5458c586cfc/generated_video.mp4",
+          "type": "video",
+          "localPath": null
+        }
+      ],
+      "customName": "2",
+      "customHeight": null,
+      "_isExpanded": false,
+      "_cachedInputPorts": [
+        {
+          "name": "prompt",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "ref img 1",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        },
+        {
+          "name": "ref img 2",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "video",
+          "type": "video",
+          "color": "#fb923c"
+        }
+      ],
+      "_grokTypePill": {
+        "x": 2603,
+        "y": 684,
+        "w": 100,
+        "h": 20
+      },
+      "_grokResPill": {
+        "x": 2707,
+        "y": 684,
+        "w": 46,
+        "h": 20
+      },
+      "_grokModePill": {
+        "x": 2757,
+        "y": 684,
+        "w": 56,
+        "h": 20
+      },
+      "_grokRatioPill": {
+        "x": 2817,
+        "y": 684,
+        "w": 46,
+        "h": 20
+      },
+      "_grokDurPill": {
+        "x": 2867,
+        "y": 684,
+        "w": 40,
+        "h": 20
+      },
+      "runStartTime": null
+    },
+    {
+      "id": "node_231",
+      "type": "grok_imagine",
+      "x": 3150,
+      "y": 540,
+      "config": {
+        "model_type": "grok-imagine/image-to-video",
+        "resolution": "720p",
+        "grokRatio": "9:16"
+      },
+      "status": null,
+      "previewMedia": [
+        {
+          "url": "https://tempfile.aiquickdraw.com/ggg/users/b27d0996-6a3c-4f21-869d-e686f45ac6bd/generated/ffa08823-2de7-46cd-94e0-8af4eef28be7/generated_video.mp4",
+          "type": "video",
+          "localPath": null
+        }
+      ],
+      "customName": "3",
+      "customHeight": null,
+      "_isExpanded": false,
+      "_cachedInputPorts": [
+        {
+          "name": "prompt",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "ref img 1",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        },
+        {
+          "name": "ref img 2",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "video",
+          "type": "video",
+          "color": "#fb923c"
+        }
+      ],
+      "_grokTypePill": {
+        "x": 3158,
+        "y": 684,
+        "w": 100,
+        "h": 20
+      },
+      "_grokResPill": {
+        "x": 3262,
+        "y": 684,
+        "w": 46,
+        "h": 20
+      },
+      "_grokModePill": {
+        "x": 3312,
+        "y": 684,
+        "w": 56,
+        "h": 20
+      },
+      "_grokRatioPill": {
+        "x": 3372,
+        "y": 684,
+        "w": 46,
+        "h": 20
+      },
+      "_grokDurPill": {
+        "x": 3422,
+        "y": 684,
+        "w": 40,
+        "h": 20
+      },
+      "runStartTime": null
+    },
+    {
+      "id": "node_229",
+      "type": "grok_imagine",
+      "x": 2025,
+      "y": 540,
+      "config": {
+        "model_type": "grok-imagine/image-to-video",
+        "resolution": "720p",
+        "grokRatio": "9:16"
+      },
+      "status": null,
+      "_cachedInputPorts": [
+        {
+          "name": "prompt",
+          "type": "string",
+          "color": "#a78bfa",
+          "optional": true
+        },
+        {
+          "name": "ref img 1",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        },
+        {
+          "name": "ref img 2",
+          "type": "image",
+          "color": "#22d3ee",
+          "optional": true
+        }
+      ],
+      "_cachedOutputPorts": [
+        {
+          "name": "video",
+          "type": "video",
+          "color": "#fb923c"
+        }
+      ],
+      "_grokTypePill": {
+        "x": 2033,
+        "y": 684,
+        "w": 100,
+        "h": 20
+      },
+      "_grokResPill": {
+        "x": 2137,
+        "y": 684,
+        "w": 46,
+        "h": 20
+      },
+      "_grokModePill": {
+        "x": 2187,
+        "y": 684,
+        "w": 56,
+        "h": 20
+      },
+      "_grokRatioPill": {
+        "x": 2247,
+        "y": 684,
+        "w": 46,
+        "h": 20
+      },
+      "_grokDurPill": {
+        "x": 2297,
+        "y": 684,
+        "w": 40,
+        "h": 20
+      },
+      "customName": "1",
+      "runStartTime": null,
+      "previewMedia": [
+        {
+          "url": "https://tempfile.aiquickdraw.com/ggg/users/b84ff6d6-c9a2-4ff5-a24a-72e143f61271/generated/ed2957f5-8ac2-45db-a5ea-f6ee969c3053/generated_video.mp4",
+          "type": "video",
+          "localPath": null
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1783917733500_mvie",
+      "fromNode": "node_204",
+      "fromPort": 0,
+      "toNode": "node_206",
+      "toPort": 0
+    },
+    {
+      "id": "c1783917735364_ch0v",
+      "fromNode": "node_205",
+      "fromPort": 0,
+      "toNode": "node_206",
+      "toPort": 1
+    },
+    {
+      "id": "c1783918012093_togu",
+      "fromNode": "node_207",
+      "fromPort": 0,
+      "toNode": "node_209",
+      "toPort": 0
+    },
+    {
+      "id": "c1783918016636_xvto",
+      "fromNode": "node_206",
+      "fromPort": 0,
+      "toNode": "node_209",
+      "toPort": 1
+    },
+    {
+      "id": "c1783918018452_l7ri",
+      "fromNode": "node_208",
+      "fromPort": 0,
+      "toNode": "node_209",
+      "toPort": 2
+    },
+    {
+      "id": "c1783918674333_brj2",
+      "fromNode": "node_210",
+      "fromPort": 0,
+      "toNode": "node_211",
+      "toPort": 0
+    },
+    {
+      "id": "c1783918676533_b8c3",
+      "fromNode": "node_209",
+      "fromPort": 0,
+      "toNode": "node_211",
+      "toPort": 1
+    },
+    {
+      "id": "c1783924238947_8m4j",
+      "fromNode": "node_211",
+      "fromPort": 0,
+      "toNode": "node_215",
+      "toPort": 0
+    },
+    {
+      "id": "c1783924257724_kqz0",
+      "fromNode": "node_211",
+      "fromPort": 0,
+      "toNode": "node_216",
+      "toPort": 0
+    },
+    {
+      "id": "c1783924271132_bktx",
+      "fromNode": "node_211",
+      "fromPort": 0,
+      "toNode": "node_217",
+      "toPort": 0
+    },
+    {
+      "id": "c1783924284902_meis",
+      "fromNode": "node_211",
+      "fromPort": 0,
+      "toNode": "node_218",
+      "toPort": 0
+    },
+    {
+      "id": "c1783924295132_ezev",
+      "fromNode": "node_211",
+      "fromPort": 0,
+      "toNode": "node_219",
+      "toPort": 0
+    },
+    {
+      "id": "c1783924303795_34qn",
+      "fromNode": "node_211",
+      "fromPort": 0,
+      "toNode": "node_220",
+      "toPort": 0
+    },
+    {
+      "id": "c1784882902476_y7o7",
+      "fromNode": "node_209",
+      "fromPort": 0,
+      "toNode": "node_229",
+      "toPort": 1
+    },
+    {
+      "id": "c1784882905164_ynfs",
+      "fromNode": "node_215",
+      "fromPort": 0,
+      "toNode": "node_229",
+      "toPort": 0
+    },
+    {
+      "id": "c1784882914652_10rw",
+      "fromNode": "node_209",
+      "fromPort": 0,
+      "toNode": "node_230",
+      "toPort": 1
+    },
+    {
+      "id": "c1784882917899_xkh4",
+      "fromNode": "node_216",
+      "fromPort": 0,
+      "toNode": "node_230",
+      "toPort": 0
+    },
+    {
+      "id": "c1784882926244_kcps",
+      "fromNode": "node_217",
+      "fromPort": 0,
+      "toNode": "node_231",
+      "toPort": 0
+    },
+    {
+      "id": "c1784882932908_i1mm",
+      "fromNode": "node_209",
+      "fromPort": 0,
+      "toNode": "node_231",
+      "toPort": 1
+    },
+    {
+      "id": "c1784882946451_w0o7",
+      "fromNode": "node_209",
+      "fromPort": 0,
+      "toNode": "node_234",
+      "toPort": 1
+    },
+    {
+      "id": "c1784882949308_5mxz",
+      "fromNode": "node_218",
+      "fromPort": 0,
+      "toNode": "node_234",
+      "toPort": 0
+    },
+    {
+      "id": "c1784882963220_9h0v",
+      "fromNode": "node_209",
+      "fromPort": 0,
+      "toNode": "node_233",
+      "toPort": 1
+    },
+    {
+      "id": "c1784882967851_b2s6",
+      "fromNode": "node_219",
+      "fromPort": 0,
+      "toNode": "node_233",
+      "toPort": 0
+    },
+    {
+      "id": "c1784882989148_l35i",
+      "fromNode": "node_209",
+      "fromPort": 0,
+      "toNode": "node_232",
+      "toPort": 1
+    },
+    {
+      "id": "c1784882993076_6tma",
+      "fromNode": "node_220",
+      "fromPort": 0,
+      "toNode": "node_232",
+      "toPort": 0
+    }
+  ],
+  "viewport": {
+    "pan": {
+      "x": 11.790119355165075,
+      "y": 163.41395353119464
+    },
+    "zoom": 0.3098196869536299
+  }
+}
