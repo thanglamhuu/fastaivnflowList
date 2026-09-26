@@ -1,3 +1,5 @@
+import React from 'react';
+import { ProjectConfig, AspectRatio, Speed, Resolution } from '../types';
 import { ASPECT_RATIOS, VIDEO_MODELS, THREAD_OPTIONS, SPEEDS, RESOLUTIONS } from '../constants';
 interface ConfigControlsProps {
   config: ProjectConfig;

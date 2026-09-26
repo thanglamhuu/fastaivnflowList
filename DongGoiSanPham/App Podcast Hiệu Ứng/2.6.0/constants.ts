@@ -1,3 +1,5 @@
+export const ASPECT_RATIOS = ['9:16', '16:9', '1:1', '4:3', '3:4'] as const;
+export const GENDERS = ['Nam', 'Nữ'] as const;
 export const ACCENTS = ['Miền Bắc', 'Miền Trung', 'Miền Nam'] as const;
 export const SPEEDS = ['0.75x', '1x', '1.25x', '1.5x'] as const;
 export const VIDEO_MODELS = [
@@ -37,4 +39,4 @@ Chia shot theo Ý NGHĨA (Meaning Beat).
     }
   ]
 }
-Chỉ trả về JSON, không Markdown, không giải thích thêm.`;glm
+Chỉ trả về JSON, không Markdown, không giải thích thêm.`;
