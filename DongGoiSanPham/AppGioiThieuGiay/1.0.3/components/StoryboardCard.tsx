@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { StoryboardCardData } from '../types';
 import { SectionLabel, ActionButton, IconButton } from './Primitives';

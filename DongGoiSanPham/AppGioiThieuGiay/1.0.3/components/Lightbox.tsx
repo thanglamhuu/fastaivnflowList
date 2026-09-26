@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { MediaItem, AspectRatio } from '../types';
 import { Flow } from 'flow-sdk';

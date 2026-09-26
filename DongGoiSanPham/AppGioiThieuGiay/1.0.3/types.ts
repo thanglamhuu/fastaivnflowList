@@ -3,10 +3,27 @@ export interface MediaItem {
   base64: string;
   mimeType: string;
 }
+export type LockType = 'product_only' | 'product_and_feet' | 'full_body';
+export interface SceneConfig {
+  id: string;
+  label: string;
+  prompt_template: string;
+  video_action_context: string;
+  lockType: LockType;
+}
+export interface ThemeConfig {
+  id: string;
+  name: string;
+  description: string;
+  scenes: SceneConfig[];
+}
 export interface StoryboardCardData {
   id: string;
   order: number;
-  sceneId?: number;
+  sceneId?: string;       // ID của scene (vd: 'ls_1')
+  lockType?: LockType;    // Kiểu khóa prompt (sản phẩm, chân, hoặc toàn thân)
+  promptTemplate?: string; // Lưu lại template của scene để tái tạo prompt
+  
   image?: MediaItem;
   video?: MediaItem;
   videoPrompt?: string;         // Prompt video hiện tại (có thể chỉnh sửa)

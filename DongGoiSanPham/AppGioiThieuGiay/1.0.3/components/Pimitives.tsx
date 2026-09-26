@@ -1,4 +1,3 @@
-
 import React from 'react';
 export const SectionLabel: React.FC<{ children: React.ReactNode; dotColor?: string }> = ({ children, dotColor }) => (
   <div className="flex items-center gap-1.5 px-1">
