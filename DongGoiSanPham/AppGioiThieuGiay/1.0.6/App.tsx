@@ -13,7 +13,7 @@ import { CAMPAIGN_THEMES } from './prompts';
 import { checkLicense } from './license/aifastLicenseManager';
 import { LicenseGate } from './components/LicenseGate';
 import { LicenseStatus } from './components/LicenseStatus';
-const APP_VERSION = "1.0.5";
+const APP_VERSION = "1.0.6";
 // --- LOCK BLOCKS (VIETNAMESE FOR IMAGE PROMPTS) ---
 const IDENTITY_LOCK_VN = "giữ khuôn mặt, kiểu tóc, màu tóc, dáng người, chiều cao và làn da của nhân vật chính xác 100% như ảnh tham chiếu, không thay đổi nhận diện, không làm đẹp ảo hóa";
 const OUTFIT_LOCK_VN = "giữ nguyên chính xác bộ trang phục như trong ảnh tham chiếu, cùng phong cách, màu sắc, chất liệu vải và họa tiết, không thay đổi hay thêm bớt phụ kiện";
@@ -30,6 +30,9 @@ const NEGATIVE_PROMPT = "sketch, pencil drawing, line art, illustration, cartoon
 export default function StoryboardStudio() {
   // --- PROTECTION STATE ---
   const [isLicensed, setIsLicensed] = useState<boolean | null>(null);
+  // --- PRODUCT INFO STATE ---
+  const [productName, setProductName] = useState('');
+  const [productDesc, setProductDesc] = useState('');
   // --- THEME STATE ---
   const [selectedThemeId, setSelectedThemeId] = useState<string>('lifestyle');
   const currentTheme = useMemo(() => CAMPAIGN_THEMES[selectedThemeId], [selectedThemeId]);
@@ -46,7 +49,7 @@ export default function StoryboardStudio() {
       isAnalyzing: false
     }))
   );
-  // --- CONSOLIDATED CONFIG STATE (UPDATED FOR 1.0.5 - REMOVED OUTFIT_MODE) ---
+  // --- CONSOLIDATED CONFIG STATE ---
   const [config, setConfig] = useState<ProjectConfig>({
     ratio: '16:9',
     speed: '1x',
@@ -122,13 +125,23 @@ export default function StoryboardStudio() {
       setAnalyzingStatus(`Analyzing ${i + 1}/${readyCards.length}...`);
       setCards(prev => prev.map(c => c.id === card.id ? { ...c, isAnalyzing: true } : c));
       try {
+        // Step 1: Describe the image visual
         const { text: visionDescription } = await Flow.generate.text(
           "Describe this image in detail focusing on composition, subject, lighting, product placement, and character pose (if any). Be concise and accurate.",
           { images: [{ base64: card.image!.base64, mimeType: card.image!.mimeType }] }
         );
         
+        // Step 2: Generate transcript based on vision + product info
+        const { text: transcript } = await Flow.generate.text(
+          `Dựa trên mô tả hình ảnh: "${visionDescription}", tên sản phẩm: "${productName || 'Giày cao cấp'}", và mô tả sản phẩm: "${productDesc || 'Sản phẩm chất lượng cao'}", hãy viết một câu giới thiệu ngắn gọn, hấp dẫn bằng tiếng Việt để lồng tiếng cho cảnh quay này (tối đa 20 từ).`,
+          { systemInstruction: "Bạn là một chuyên gia viết kịch bản review sản phẩm giày chuyên nghiệp." }
+        );
         const themeConfig = CAMPAIGN_THEMES[selectedThemeId].scenes.find(s => s.id === card.sceneId);
-        let generatedPrompt = `${visionDescription}. ${themeConfig?.video_action_context || ''}.`;
+        
+        // Step 3: Construct the final video prompt with audio instructions
+        const audioInstr = `VIETNAMESE AUDIO NARRATION ONLY. Voice Actor: 24-year-old nữ người miền nam Vietnam accent. Style: Energetic, convincing, sales-oriented product review voice. Spoken Text: "${transcript}".`;
+        
+        let generatedPrompt = `${visionDescription}. ${themeConfig?.video_action_context || ''}. AUDIO: ${audioInstr}`;
         
         if (card.lockType === 'product_only') {
           generatedPrompt += ` PRODUCT_SHAPE: ${PRODUCT_SHAPE_LOCK_EN}.`;
@@ -138,7 +151,6 @@ export default function StoryboardStudio() {
           generatedPrompt += ` IDENTITY: ${IDENTITY_LOCK_EN}. OUTFIT: ${OUTFIT_LOCK_EN}. PRODUCT_SHAPE: ${PRODUCT_SHAPE_LOCK_EN}. FOCUS: ${FOCUS_LOCK_EN}.`;
         }
         
-        generatedPrompt += " no audio";
         setCards(prev => prev.map(c => c.id === card.id ? { ...c, videoPrompt: generatedPrompt, originalVideoPrompt: generatedPrompt, isAnalyzing: false } : c));
       } catch (err) {
         setCards(prev => prev.map(c => c.id === card.id ? { ...c, isAnalyzing: false, error: 'Phân tích lỗi' } : c));
@@ -309,6 +321,28 @@ export default function StoryboardStudio() {
             
             {/* Standard Config Controls Integration */}
             <ConfigControls config={config} onChange={setConfig} />
+            {/* Product Info Section */}
+            <div className="flex flex-col gap-3 border-t border-[#F2F2F7] pt-4">
+              <p className="text-[12px] font-bold text-[#1A1A1A] flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[16px] text-purple-500">shopping_bag</span>
+                Thông tin sản phẩm
+              </p>
+              <div className="space-y-2">
+                <input 
+                  type="text"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  placeholder="Tên sản phẩm (Ví dụ: Nike Air Force 1)"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-purple-500 outline-none"
+                />
+                <textarea 
+                  value={productDesc}
+                  onChange={(e) => setProductDesc(e.target.value)}
+                  placeholder="Mô tả ngắn gọn (Chất liệu, màu sắc, ưu điểm...)"
+                  className="w-full h-24 bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-purple-500 outline-none resize-none"
+                />
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-2">
               <UploadBox 
                 label="1. Ảnh nhân vật" icon="person" onUpload={handleUploadChar}

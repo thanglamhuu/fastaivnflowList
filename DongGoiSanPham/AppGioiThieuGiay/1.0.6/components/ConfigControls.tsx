@@ -1,6 +1,12 @@
 import React from 'react';
 import { ProjectConfig } from '../types';
-import { ASPECT_RATIOS, VIDEO_MODELS, THREAD_OPTIONS, SPEEDS, RESOLUTIONS } from '../constants';
+import { 
+  ASPECT_RATIOS, 
+  VIDEO_MODELS, 
+  THREAD_OPTIONS, 
+  SPEEDS, 
+  RESOLUTIONS
+} from '../constants';
 interface ConfigControlsProps {
   config: ProjectConfig;
   onChange: (config: ProjectConfig) => void;
@@ -10,7 +16,7 @@ export const ConfigControls: React.FC<ConfigControlsProps> = ({ config, onChange
     onChange({ ...config, [key]: value });
   };
   return (
-    <div className="space-y-2 bg-white/[0.02] rounded-xl p-1 border border-white/5 shadow-inner">
+    <div className="space-y-2.5 bg-white/[0.02] rounded-xl p-1 border border-white/5 shadow-inner">
       {/* Aspect Ratio Grid */}
       <div className="grid grid-cols-5 gap-1">
         {ASPECT_RATIOS.map(r => (
