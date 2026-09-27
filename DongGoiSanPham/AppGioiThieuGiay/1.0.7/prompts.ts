@@ -6,34 +6,113 @@ export const CAMPAIGN_THEMES: Record<string, ThemeConfig> = {
     description: 'Phong cách tự nhiên, gần gũi, dạo phố. Tuyệt vời cho Tiktok, Reels chốt sale.',
     scenes: [
       {
-        id: 'ls_1', label: 'Cầm giày trong công viên', lockType: 'product_only',
+        id: 'ls_1', label: 'Unboxing thấy rõ đôi giày', lockType: 'product_only',
+        prompt_template: 'Hộp giấy trung tính đã mở, giấy lót gấp gọn; đôi giày tham chiếu nằm trọn trong hộp và không bị che. Góc chéo từ trên xuống 45 độ, ảnh bán hàng sáng rõ, nền bàn gỗ đơn giản. Không tạo logo giả hoặc thêm phụ kiện ngoài ảnh tham chiếu.',
+        video_action_context: '8-second top-down shot. A hand folds back one tissue-paper edge, revealing more of the already visible pair; slow push-in and consistent product. Audio / ASMR: close tissue-paper crinkle, light cardboard friction as the paper is folded. Sounds occur only with their visible source, at natural volume.'
+      },
+      {
+        id: 'ls_2', label: 'Cầm giày trong công viên', lockType: 'product_only',
         prompt_template: 'Bàn tay nâng đôi giày tham chiếu ở góc 3/4, giày chiếm 60% khung hình, thấy rõ mũi, bên hông và đế. Lối đi công viên và cây xanh mờ phía sau; ánh sáng ban ngày dịu, bóng và tỉ lệ bàn tay chân thực. Giữ chính xác thiết kế, màu và logo theo ảnh sản phẩm; không tạo chữ.',
         video_action_context: '8-second stable medium close-up. Hand turns the pair slightly toward the camera; camera pans a few degrees to keep the side profile centered, then gently pushes in. Audio / ASMR: soft finger contact with the shoe surface, quiet park ambience and distant leaves rustling. Sounds occur only with their visible source, at natural volume.'
       },
       {
-        id: 'ls_2', label: 'Cầm giày với trang phục denim', lockType: 'product_only',
+        id: 'ls_3', label: 'Cầm giày với trang phục denim', lockType: 'product_only',
         prompt_template: 'Góc nhìn thứ nhất từ trên xuống: bàn tay cầm đôi giày đúng vị trí cấu tạo thực tế; bên dưới là quần denim và nền gạch phố trung tính. Giày ở tiền cảnh, đủ sáng, đúng tỉ lệ và rủ tự nhiên theo trọng lực. Không thêm dây, quai hoặc phụ kiện không có trên ảnh gốc.',
         video_action_context: '8-second POV shot. Hand adjusts its grip and lifts the shoes slightly, then lowers them with natural gravity; camera follows without sudden pans. Audio / ASMR: subtle fabric movement and a gentle shoe lift, restrained street ambience. Sounds occur only with their visible source, at natural volume.'
       },
       {
-        id: 'ls_3', label: 'Chân mang giày trên bậc thềm', lockType: 'product_and_feet',
+        id: 'ls_4', label: 'Chân mang giày trên bậc thềm', lockType: 'product_and_feet',
         prompt_template: 'Cận cảnh từ đầu gối trở xuống, nhân vật tham chiếu mang đúng đôi giày trên bậc thềm đá. Góc thấp 3/4 ngang tầm giày, hai chiếc đều rõ, chiếm 65% khung hình. Ánh sáng tự nhiên làm nổi chất liệu và form đế, nền vườn mờ, chân tiếp đất hợp lý; không lộ mặt.',
         video_action_context: '8-second low-angle shot. One foot shifts weight and turns outward slightly to reveal side and sole edge. Short stable camera move; both shoes stay grounded and consistent. Audio / ASMR: soft sole-to-stone taps and light outdoor ambience, synchronized with the foot movement. Sounds occur only with their visible source, at natural volume.'
       },
       {
-        id: 'ls_4', label: 'Lookbook bước đi ngoài trời', lockType: 'full_body',
+        id: 'ls_5', label: 'Lookbook bước đi ngoài trời', lockType: 'full_body',
         prompt_template: 'Nhân vật tham chiếu bước trên lối gạch cạnh công viên, trang phục giữ theo ảnh tham chiếu. Góc 3/4 hơi thấp, giày luôn hiện rõ ở nửa dưới khung, tư thế tự nhiên. Ánh sáng ban ngày mềm, màu sản phẩm trung thực, không để trang phục che giày.',
         video_action_context: '8-second full-body lookbook shot. Start with a waist-to-shoe tilt, then track two natural steps at a low three-quarter angle; keep footwear visible and consistent. Audio / ASMR: two natural footsteps on paving stones, light clothing rustle and distant park ambience. Sounds occur only with their visible source, at natural volume.'
       },
       {
-        id: 'ls_5', label: 'Giày bên cửa sổ ấm áp', lockType: 'product_only',
-        prompt_template: 'Đôi giày đặt vững trên vải cotton trắng cạnh cửa sổ rèm sáo; chiếc trước góc 3/4, chiếc sau cho thấy bên hông. Ánh sáng cửa sổ dịu phối đèn ấm vừa phải, bóng tiếp xúc thật. Giày sắc nét, hậu cảnh phòng ở mờ, không thêm hoặc đổi chi tiết sản phẩm.',
-        video_action_context: '8-second slow sideways camera slide revealing the second shoe. Gentle window light, shoes stationary and sharply focused. Audio / ASMR: quiet room tone, faint curtain or fabric rustle only if visible. Sounds occur only with their visible source, at natural volume.'
+        id: 'ls_6',
+        label: 'Đi bộ vỉa hè Việt Nam ban đêm',
+        lockType: 'full_body',
+        prompt_template: 'Nhân vật tham chiếu đi bộ tự nhiên trên vỉa hè đường phố Việt Nam vào buổi tối, trang phục giữ theo ảnh tham chiếu và mang chính xác đôi giày tham chiếu. Góc máy thấp 3/4 từ phía trước, tập trung vào chuyển động bước chân; giày luôn rõ nét và nổi bật ở nửa dưới khung hình. Vỉa hè lát gạch đặc trưng, phía sau là cửa hàng nhỏ, biển hiệu, xe máy và ánh đèn đường đô thị Việt Nam được làm mờ bằng độ sâu trường ảnh. Ánh sáng đèn đường và ánh sáng cửa hàng phản chiếu nhẹ trên mặt đường, tạo không khí streetwear chân thực về đêm. Giữ chính xác thiết kế, màu sắc, logo, dây và cấu trúc đế của giày tham chiếu; không để quần che mất giày, không tạo chữ mới.',
+        video_action_context: '8-second cinematic nighttime streetwear shot in Vietnam. Start from a low three-quarter front angle focused on the shoes, then smoothly track backward as the character takes three natural steps along the sidewalk. Add a subtle camera dip toward the footwear during the second step, followed by a gentle push-in so the shoes remain the visual focus. Natural body movement and realistic foot-to-ground contact; no slow-motion floating feet. Audio / ASMR: three distinct synchronized footsteps on tiled pavement, subtle sole friction during each heel-to-toe movement, light clothing rustle, restrained distant motorbike sounds and soft Vietnamese nighttime street ambience. A motorbike sound is heard only when a motorbike is visibly passing in the background. Footsteps remain the closest and clearest sound. No music, no artificial whoosh. All sounds occur only with their visible physical source and at natural volume.'
+      }
+    ]
+  },
+  asmr: {
+    id: 'asmr',
+    name: 'Review hiệu ứng ASMR',
+    description: 'Phong cách hiệu ứng âm thanh kích thích xúc giác, chân thực với khoảng lặng vật lý.',
+    scenes: [
+      {
+        id: 'asmr_1',
+        label: 'Bắt giày rơi vào tay',
+        lockType: 'product_only',
+        prompt_template: 'Một chiếc giày tham chiếu xuất hiện trên nền studio đen tuyền, được hai bàn tay đeo găng đen đón lấy từ phía dưới. Góc ngang chính diện hơi chếch 3/4, toàn bộ thân giày nằm rõ giữa khung hình và chiếm khoảng 60% khung. Ánh sáng studio viền mềm làm nổi form thân, mũi và đế trên nền tối. Giữ tuyệt đối chính xác thiết kế, màu sắc, vật liệu, logo, dây giày và cấu trúc đế theo ảnh tham chiếu; không tạo chữ hoặc chi tiết mới.',
+        video_action_context: '8-second cinematic product ASMR shot. The shoe drops gently and is caught by two hands; hold for 2 seconds (SILENCE), then hands adjust grip slightly once. Focus on the single landing sound and silence thereafter.'
       },
       {
-        id: 'ls_6', label: 'Unboxing thấy rõ đôi giày', lockType: 'product_only',
-        prompt_template: 'Hộp giấy trung tính đã mở, giấy lót gấp gọn; đôi giày tham chiếu nằm trọn trong hộp và không bị che. Góc chéo từ trên xuống 45 độ, ảnh bán hàng sáng rõ, nền bàn gỗ đơn giản. Không tạo logo giả hoặc thêm phụ kiện ngoài ảnh tham chiếu.',
-        video_action_context: '8-second top-down shot. A hand folds back one tissue-paper edge, revealing more of the already visible pair; slow push-in and consistent product. Audio / ASMR: close tissue-paper crinkle, light cardboard friction as the paper is folded. Sounds occur only with their visible source, at natural volume.'
+        id: 'asmr_2',
+        label: 'Vuốt kiểm tra chất liệu thân giày',
+        lockType: 'product_only',
+        prompt_template: 'Macro cận cảnh phần thân bên của chiếc giày tham chiếu trên nền studio đen. Một ngón tay đeo găng đen chạm trực tiếp vào bề mặt upper, cho thấy rõ kết cấu vải, đường dệt, đường may và lớp vật liệu. Giày chiếm gần toàn bộ khung hình, độ sâu trường ảnh rất nông nhưng vùng ngón tay tiếp xúc phải sắc nét. Giữ chính xác texture, logo, màu và cấu trúc nguyên bản của sản phẩm.',
+        video_action_context: '8-second tactile material shot. A fingertip slowly presses the upper, holds briefly (SILENCE), then releases and drags across the texture once. Sound only occurs during active movement/contact; total silence when finger is still or away.'
+      },
+      {
+        id: 'asmr_3',
+        label: 'Miết và bóp thử độ mềm',
+        lockType: 'product_only',
+        prompt_template: 'Cực cận cảnh phần upper và mép đế của giày tham chiếu. Hai đầu ngón tay đeo găng đen nhẹ nhàng bóp, miết và thả bề mặt vật liệu để thể hiện độ mềm và khả năng đàn hồi. Ánh sáng studio xiên nhẹ làm texture nổi rõ, nền đen hoàn toàn, không có vật thể thừa. Không làm biến dạng cấu trúc thật của sản phẩm.',
+        video_action_context: '8-second macro tactile demonstration. Two fingers pinch the upper once, release completely (SILENCE), wait for 1 second, then rub the material slowly. Ensure audio only triggers with physical displacement.'
+      },
+      {
+        id: 'asmr_4',
+        label: 'Kéo dây giày ASMR',
+        lockType: 'product_only',
+        prompt_template: 'Góc top-down chính xác từ trên xuống của một chiếc giày tham chiếu đặt giữa nền studio đen. Hai bàn tay đeo găng đen cầm hai đầu dây giày ở hai bên, phần lưỡi gà, lỗ xỏ dây và toàn bộ hệ thống dây hiện rõ. Giữ nguyên chính xác số lượng, vị trí và cách luồn dây theo ảnh sản phẩm; không tự tạo thêm lỗ, dây hoặc phụ kiện.',
+        video_action_context: '8-second lace ASMR shot. Hands pull the laces tight in one slow movement, hold the tension (SILENCE), then slowly release. Audio syncs exactly with the lace sliding friction and stops immediately when hands freeze.'
+      },
+      {
+        id: 'asmr_5',
+        label: 'Macro lỗ xỏ dây và đường may',
+        lockType: 'product_only',
+        prompt_template: 'Extreme macro của lỗ xỏ dây, dây giày và đường may trên giày tham chiếu. Khung hình cho thấy rõ kết cấu sợi dây, viền lỗ xỏ và bề mặt vải xung quanh. Ánh sáng studio mềm từ bên cạnh tạo highlight tinh tế trên vật liệu nhưng không cháy sáng. Mọi chi tiết cấu tạo phải bám chính xác ảnh sản phẩm.',
+        video_action_context: '8-second macro detail shot. The lace slides through the eyelet once, then stops (SILENCE). The camera racks focus while nothing moves visually; there must be no sound during this static period.'
+      },
+      {
+        id: 'asmr_6',
+        label: 'Vuốt logo và thân bên',
+        lockType: 'product_only',
+        prompt_template: 'Cận cảnh 3/4 phần hông của chiếc giày tham chiếu, logo và các panel thân giày nằm rõ giữa khung hình. Một ngón tay đeo găng đen nhẹ nhàng vuốt dọc từ phần thân trước về phía logo để làm nổi texture và các lớp vật liệu. Nền studio đen, ánh sáng tương phản cao nhưng sản phẩm vẫn giữ màu trung thực. Logo phải giữ chính xác, không sửa chữ hoặc hình dạng.',
+        video_action_context: '8-second side-profile ASMR. Finger traces the material across a seam, pauses for 1 second on the logo (SILENCE), then continues. The sound should clearly register the seam crossing then cut to silence when still.'
+      },
+      {
+        id: 'asmr_7',
+        label: 'Ấn thử độ đàn hồi đế',
+        lockType: 'product_only',
+        prompt_template: 'Macro phần đế giữa và mép đế của chiếc giày tham chiếu. Ngón tay đeo găng đen ấn trực tiếp vào vùng vật liệu đế có thể đàn hồi, thể hiện phản ứng vật lý chân thực. Góc máy ngang sát sản phẩm để nhìn rõ độ dày và cấu trúc đế. Không làm đế biến dạng quá mức hoặc thay đổi cấu trúc nguyên bản.',
+        video_action_context: '8-second macro cushioning shot. A thumb presses the midsole once, releases fully (SILENCE), wait 2 seconds, then light rapid taps (2 times) with a finger. Audio matches the impacts and releases with no background noise.'
+      },
+      {
+        id: 'asmr_8',
+        label: 'Lật giày soi toàn bộ đế',
+        lockType: 'product_only',
+        prompt_template: 'Hai bàn tay đeo găng đen cầm chắc chiếc giày tham chiếu trên nền studio đen và xoay để phần outsole hướng hoàn toàn về camera. Toàn bộ mặt đế nằm giữa khung hình, sắc nét và đủ sáng để nhìn rõ rãnh, pattern và vùng tiếp xúc. Giữ chính xác cấu trúc outsole theo sản phẩm tham chiếu; không sáng tạo pattern mới.',
+        video_action_context: '8-second rotation shot. Hands rotate the shoe to face the outsole toward camera, then hold perfectly still for 4 seconds (SILENCE). Audio only during the rotation movement friction.'
+      },
+      {
+        id: 'asmr_9',
+        label: 'Miết rãnh đế giày',
+        lockType: 'product_only',
+        prompt_template: 'Extreme macro mặt outsole của chiếc giày tham chiếu. Một ngón tay đeo găng đen chạm vào các rãnh và khối cao su trên đế, lần lượt ấn và trượt qua pattern để cho thấy chiều sâu và texture. Ánh sáng xiên làm các rãnh đế nổi khối rõ ràng. Pattern và logo trên đế phải giữ chính xác theo ảnh sản phẩm.',
+        video_action_context: '8-second outsole detail. Finger taps one tread block, slides to the next (SILENCE between), then rubs the rubber texture. Clear intermittent sound following the finger action.'
+      },
+      {
+        id: 'asmr_10',
+        label: 'Đặt đôi giày xuống bàn studio',
+        lockType: 'product_only',
+        prompt_template: 'Đôi giày tham chiếu được đặt cạnh nhau trên mặt bàn studio đen mờ. Góc thấp 3/4 cho thấy rõ mũi, thân bên và form đế của cả hai chiếc. Hai bàn tay đeo găng đen chỉnh nhẹ vị trí để đôi giày cân đối như hero product shot. Ánh sáng studio mềm tạo highlight viền và bóng tiếp xúc chân thực. Không thay đổi thiết kế, logo, màu hoặc tỉ lệ sản phẩm.',
+        video_action_context: '8-second final hero shot. Hands place both shoes on the table (two distinct impact sounds), adjust them slightly, then hands exit frame. Once hands exit and shoes are still, the remaining 4 seconds must be TOTAL SILENCE.'
       }
     ]
   },
@@ -61,6 +140,7 @@ export const CAMPAIGN_THEMES: Record<string, ThemeConfig> = {
         video_action_context: '8-second steady slow push-in toward the grounded shoes. Left text-safe space remains empty; no generated copy, speech or logos. Audio / ASMR: quiet studio ambience and a light airy transition, no spoken price or offer. Sounds occur only with their visible source, at natural volume.' }
     ]
   },
+  
   studio: {
     id: 'studio',
     name: 'Studio Sang Trọng',

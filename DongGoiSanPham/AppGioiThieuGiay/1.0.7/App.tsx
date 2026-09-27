@@ -13,7 +13,8 @@ import { CAMPAIGN_THEMES } from './prompts';
 import { checkLicense } from './license/aifastLicenseManager';
 import { LicenseGate } from './components/LicenseGate';
 import { LicenseStatus } from './components/LicenseStatus';
-const APP_VERSION = "1.0.6";
+const APP_VERSION = "1.0.8";
+const APP_NAME = "Review Giày 6 Phong Cách";
 // --- LOCK BLOCKS (VIETNAMESE FOR IMAGE PROMPTS) ---
 const IDENTITY_LOCK_VN = "giữ khuôn mặt, kiểu tóc, màu tóc, dáng người, chiều cao và làn da của nhân vật chính xác 100% như ảnh tham chiếu, không thay đổi nhận diện, không làm đẹp ảo hóa";
 const OUTFIT_LOCK_VN = "giữ nguyên chính xác bộ trang phục như trong ảnh tham chiếu, cùng phong cách, màu sắc, chất liệu vải và họa tiết, không thay đổi hay thêm bớt phụ kiện";
@@ -24,6 +25,28 @@ const IDENTITY_LOCK_EN = "keep the character's face, hairstyle, hair color, body
 const OUTFIT_LOCK_EN = "keep the exact same outfit as shown in the reference image, same style, color, fabric and pattern, no changes, no added or removed accessories";
 const FOCUS_LOCK_EN = "the product (shoes) must remain the sharpest focal point in the frame at all times, use shallow depth of field to emphasize the footwear over other body areas, lighting should prioritize the product";
 const PRODUCT_SHAPE_LOCK_EN = "keep the product's shape, structure, buckle/strap/lace type, material, color and all design details exactly identical to the original image, do not add or remove any structural details not present in the reference";
+// --- ASMR AUDIO RULES (CRITICAL FOR AUTHENTICITY) ---
+const ASMR_AUDIO_RULES = `
+AUDIO / ASMR RULES:
+- Generate close-mic tactile ASMR based only on physically visible interactions.
+- Every sound must have a visible physical source. 
+- Synchronize onset, duration and intensity precisely with the corresponding action. 
+- Use absolute SILENCE when no physical contact or movement is visible.
+- Different materials must produce physically appropriate sounds:
+  textile = soft dry brushing/rubbing;
+  laces = fine fiber friction;
+  rubber outsole = muted textured rubbing;
+  foam midsole = soft compression;
+  cardboard = dry friction;
+  tissue paper = crisp crinkle;
+  sole contacting a hard surface = short muted impact.
+- Sound intensity must respond naturally to movement speed and contact pressure.
+- Use micro-sounds and clear silence between interactions to avoid "continuous AI noise" loop.
+- No dialogue, narration or vocals.
+- No background music unless explicitly requested.
+- No cinematic whooshes, artificial impacts or sounds without a visible source.
+- Keep ASMR clean, intimate and realistic rather than exaggerated.
+`;
 // --- PHOTO PROMPT CONSTRAINTS ---
 const ENFORCE_PHOTOREAL = "phong cách ảnh chụp thực tế (photorealistic), chất lượng ảnh cao, ánh sáng studio chuyên nghiệp, chi tiết siêu thực, texture chất liệu rõ nét.";
 const NEGATIVE_PROMPT = "sketch, pencil drawing, line art, illustration, cartoon, anime, black and white drawing, paper texture, hand-drawn, watercolor, painting style, blurry product, out of focus shoes, low detail footwear";
@@ -131,18 +154,23 @@ export default function StoryboardStudio() {
           { images: [{ base64: card.image!.base64, mimeType: card.image!.mimeType }] }
         );
         
-        // Step 2: Generate transcript based on vision + product info
-        const { text: transcript } = await Flow.generate.text(
-          `Dựa trên mô tả hình ảnh: "${visionDescription}", tên sản phẩm: "${productName || 'Giày cao cấp'}", và mô tả sản phẩm: "${productDesc || 'Sản phẩm chất lượng cao'}", hãy viết một câu giới thiệu ngắn gọn, hấp dẫn bằng tiếng Việt để lồng tiếng cho cảnh quay này (tối đa 20 từ).`,
-          { systemInstruction: "Bạn là một chuyên gia viết kịch bản review sản phẩm giày chuyên nghiệp." }
-        );
         const themeConfig = CAMPAIGN_THEMES[selectedThemeId].scenes.find(s => s.id === card.sceneId);
+        let generatedPrompt = `${visionDescription}. ${themeConfig?.video_action_context || ''}.`;
+        // Logic switch based on Theme (ASMR vs Narration)
+        if (selectedThemeId === 'asmr') {
+          // Rule-based ASMR generation (No voiceover)
+          generatedPrompt += ` ${ASMR_AUDIO_RULES}`;
+        } else {
+          // Standard Narration-based generation
+          const { text: transcript } = await Flow.generate.text(
+            `Dựa trên mô tả hình ảnh: "${visionDescription}", tên sản phẩm: "${productName || 'Giày cao cấp'}", và mô tả sản phẩm: "${productDesc || 'Sản phẩm chất lượng cao'}", hãy viết một câu giới thiệu ngắn gọn, hấp dẫn bằng tiếng Việt để lồng tiếng cho cảnh quay này (tối đa 20 từ).`,
+            { systemInstruction: "Bạn là một chuyên gia viết kịch bản review sản phẩm giày chuyên nghiệp." }
+          );
+          const audioInstr = `VIETNAMESE AUDIO NARRATION ONLY. Voice Actor: 24-year-old nữ người miền nam Vietnam accent. Style: Energetic, convincing, sales-oriented product review voice. Spoken Text: "${transcript}".`;
+          generatedPrompt += ` AUDIO: ${audioInstr}`;
+        }
         
-        // Step 3: Construct the final video prompt with audio instructions
-        const audioInstr = `VIETNAMESE AUDIO NARRATION ONLY. Voice Actor: 24-year-old nữ người miền nam Vietnam accent. Style: Energetic, convincing, sales-oriented product review voice. Spoken Text: "${transcript}".`;
-        
-        let generatedPrompt = `${visionDescription}. ${themeConfig?.video_action_context || ''}. AUDIO: ${audioInstr}`;
-        
+        // Add visual locks
         if (card.lockType === 'product_only') {
           generatedPrompt += ` PRODUCT_SHAPE: ${PRODUCT_SHAPE_LOCK_EN}.`;
         } else if (card.lockType === 'product_and_feet') {
@@ -290,7 +318,7 @@ export default function StoryboardStudio() {
           <div className="hidden md:block h-6 w-px bg-slate-200 mx-1" />
           <div className="flex items-baseline gap-2">
             <div className="flex items-center text-[18px] font-black tracking-tight">
-              <span>REVIEW</span><span className="text-[#F31B17] ml-1">GIÀY</span>
+              <span>{APP_NAME.split(' ')[0]}</span><span className="text-[#F31B17] ml-1">{APP_NAME.split(' ').slice(1).join(' ')}</span>
             </div>
             <Badge color="red">v{APP_VERSION}</Badge>
           </div>
@@ -325,7 +353,7 @@ export default function StoryboardStudio() {
             <div className="flex flex-col gap-3 border-t border-[#F2F2F7] pt-4">
               <p className="text-[12px] font-bold text-[#1A1A1A] flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[16px] text-purple-500">shopping_bag</span>
-                Thông tin sản phẩm
+                Thông tin sản phẩm (Review)
               </p>
               <div className="space-y-2">
                 <input 
@@ -333,13 +361,13 @@ export default function StoryboardStudio() {
                   value={productName}
                   onChange={(e) => setProductName(e.target.value)}
                   placeholder="Tên sản phẩm (Ví dụ: Nike Air Force 1)"
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-purple-500 outline-none"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-[#F31B17] outline-none"
                 />
                 <textarea 
                   value={productDesc}
                   onChange={(e) => setProductDesc(e.target.value)}
-                  placeholder="Mô tả ngắn gọn (Chất liệu, màu sắc, ưu điểm...)"
-                  className="w-full h-24 bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-purple-500 outline-none resize-none"
+                  placeholder="Mô tả ngắn gọn để AI viết kịch bản lồng tiếng..."
+                  className="w-full h-24 bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white focus:border-[#F31B17] outline-none resize-none"
                 />
               </div>
             </div>
@@ -403,7 +431,7 @@ export default function StoryboardStudio() {
               <p className="text-[11px] font-bold text-[#8E8E93] uppercase tracking-widest">{currentTheme.description}</p>
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-6 w-full pb-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-6 w-full pb-20">
             {cards.map((card, idx) => (
               <StoryboardCard 
                 key={card.id} data={card} isProcessing={false}
