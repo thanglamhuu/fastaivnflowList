@@ -1,0 +1,4 @@
+interface:
+  display_name: "Đăng Facebook với ảnh"
+  short_description: "Đăng Facebook từ caption và ảnh trên máy"
+  default_prompt: "Dùng $facebook-post-with-image để đăng Facebook với caption và đường dẫn ảnh tôi cung cấp."
