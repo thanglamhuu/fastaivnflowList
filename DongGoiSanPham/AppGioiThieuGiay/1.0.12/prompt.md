@@ -1,0 +1,1 @@
+sửa để không cần bấm nút phân tích ảnh nữa mà với mỗi ảnh được tạo xong là tự chạy phân tích ảnh cho ảnh đó luôn. Khi tạo video thì phải tạo clip theo tốc độ được chọn, nếu không làm thế được thì giải thích và cho ghép video thì sẽ lấy config về tốc độ để tạo video được ghép theo tốc độ đó
