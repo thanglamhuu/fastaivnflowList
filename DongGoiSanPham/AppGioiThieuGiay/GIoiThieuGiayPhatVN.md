@@ -1,8 +1,9 @@
 Giày Thể Thao MoMiCo
 
-Giày xinh, linh hoạt, nhẹ đi lâu không đau chân. Chất liệu thông thoáng phù hợp cả ngày dài. 
-Đế Gai Êm chiều cao 5cm giúp hack dáng hiệu quả.
-chất liệu vải Knit Fabric cao cấp, màu trắng phối hồng, trắng phối xanh, phối với quần jean, váy, đồ thể thao đều đẹp
+GIÀY Giày Thể Thao MoMiCo XINH - NĂNG ĐỘNG – NHẸ ÊM TỪNG BƯỚC CHÂN ✨
+Sở hữu thiết kế trẻ trung, linh hoạt, đôi giày này mang đến cảm giác êm ái và thoải mái dù bạn di chuyển cả ngày dài. Chất liệu Knit Fabric cao cấp mềm nhẹ, thông thoáng, ôm chân vừa vặn, phù hợp cho mọi hoạt động hằng ngày.
+Điểm nhấn nổi bật là đế gai êm cao 5cm, giúp hack dáng hiệu quả, tạo cảm giác chân thon dài hơn mà vẫn giữ được độ chắc chắn khi bước đi.
+Với hai phối màu trắng hồng nữ tính và trắng xanh năng động, đôi giày dễ dàng kết hợp cùng quần jean, váy hoặc outfit thể thao, giúp bạn tự tin thể hiện phong cách ở mọi nơi.
 
 
 
