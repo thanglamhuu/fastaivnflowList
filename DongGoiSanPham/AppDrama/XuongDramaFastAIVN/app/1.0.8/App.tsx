@@ -100,9 +100,12 @@ export default function App() {
       setLoading(null);
     }
   };
-  const handleExtractAssetsAction = async () => {
-    if (!project.scriptMarkdown) return showToast("Vui lòng sinh kịch bản trước.");
-    setLoading("Đang bóc tách nhân vật...");
+  const handleExtractAssetsAction = async (): Promise<boolean> => {
+    if (!project.scriptMarkdown) {
+      showToast("Vui lòng sinh kịch bản trước.");
+      return false;
+    }
+    setLoading("Đang bóc tách tài nguyên...");
     try {
       const assets = await extractDramaAssets(project.scriptMarkdown);
       updateProject({
@@ -111,8 +114,10 @@ export default function App() {
         props: assets.props.map((p: any) => ({ ...p, id: `prop-${Date.now()}-${Math.random()}` })),
       });
       showToast("Bóc tách tài nguyên hoàn tất");
+      return true;
     } catch (err) {
       showToast("Lỗi khi bóc tách tài nguyên.");
+      return false;
     } finally {
       setLoading(null);
     }
@@ -262,6 +267,7 @@ export default function App() {
               project={project} 
               updateProject={updateProject} 
               onGenerateScript={handleGenerateScriptAction}
+              onExtractAssets={handleExtractAssetsAction}
               onNext={() => setActiveStep('assets')}
               loading={loading}
             />
@@ -311,7 +317,7 @@ export default function App() {
       <footer className="px-6 py-2 border-t border-slate-900 bg-slate-950/90 text-[10px] font-mono flex items-center justify-between text-slate-500 backdrop-blur-sm">
         <div className="flex items-center gap-6">
           <span className="flex items-center gap-1.5">
-            VER: <span className="text-red-500 font-black">1.0.6</span>
+            VER: <span className="text-red-500 font-black">1.0.8</span>
           </span>
           <span>STYLE: <span className="text-slate-300 font-bold">{project.style}</span></span>
           <span>ASPECT: <span className="text-slate-300 font-bold">{project.aspectRatio}</span></span>

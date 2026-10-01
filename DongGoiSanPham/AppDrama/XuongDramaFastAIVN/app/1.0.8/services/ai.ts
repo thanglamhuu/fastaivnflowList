@@ -4,18 +4,42 @@ import {
   DramaStyle, 
   CharacterAsset, 
   LocationAsset, 
+  PropAsset,
   DramaShot, 
   AspectRatio 
 } from '../types';
-const parseJsonFromAi = <T>(text: string, defaultValue: T): T => {
+/**
+ * Hàm phân giải JSON thông minh: 
+ * - Tự động tìm cặp ngoặc { ... } hoặc [ ... ]
+ * - Loại bỏ dấu phẩy thừa trước dấu đóng ngoặc (trailing commas)
+ */
+const parseJsonFromAi = <T,>(text: string, defaultValue: T): T => {
   try {
-    const jsonMatch = text.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
-    if (!jsonMatch) return defaultValue;
-    return JSON.parse(jsonMatch[0]);
+    // Tìm nội dung trong cặp ngoặc nhọn hoặc ngoặc vuông
+    const match = text.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+    if (!match) return defaultValue;
+    
+    let jsonStr = match[0];
+    
+    // Loại bỏ các dấu phẩy thừa ở cuối mảng hoặc object trước khi đóng ngoặc
+    // Ví dụ: [1, 2,] -> [1, 2] hoặc { "a": 1, } -> { "a": 1 }
+    jsonStr = jsonStr.replace(/,\s*([\}\]])/g, '$1');
+    
+    return JSON.parse(jsonStr) as T;
   } catch (error) {
     console.error('Lỗi phân giải JSON từ AI:', error);
     return defaultValue;
   }
+};
+/**
+ * Làm sạch kịch bản trước khi gửi cho AI trích xuất
+ */
+const cleanScriptForExtraction = (script: string): string => {
+  return script
+    .replace(/#{1,6}\s?/g, '') // Bỏ tiêu đề markdown
+    .replace(/\*{1,3}/g, '')    // Bỏ in đậm, in nghiêng
+    .replace(/\[\[.*?\]\]/g, '') // Bỏ các tag SFX/Ghi chú
+    .trim();
 };
 export const generateDramaScript = async (params: { 
   premise: string; 
@@ -52,13 +76,29 @@ Mô tả hành động: Ngắn gọn.
   return response.text;
 };
 export const extractDramaAssets = async (script: string) => {
+  const cleanedScript = cleanScriptForExtraction(script);
+  
   const prompt = `
-Phân tích kịch bản drama sau và liệt kê nhân vật, bối cảnh, đạo cụ dạng JSON.
-Kịch bản: ${script}
-JSON: { "characters": [], "locations": [], "props": [] }
+Phân tích kịch bản drama sau và bóc tách tất cả Nhân vật, Bối cảnh và Đạo cụ quan trọng.
+Kịch bản:
+---
+${cleanedScript}
+---
+Yêu cầu định dạng trả về là JSON duy nhất theo cấu trúc:
+{
+  "characters": [
+    { "name": "Tên nhân vật", "physicalDescription": "Mô tả khuôn mặt, tóc, độ tuổi", "defaultOutfit": "Trang phục mặc định", "voiceTone": "Chất giọng" }
+  ],
+  "locations": [
+    { "name": "Tên bối cảnh", "description": "Chi tiết không gian, ánh sáng" }
+  ],
+  "props": [
+    { "name": "Tên đạo cụ", "description": "Chi tiết vật phẩm quan trọng" }
+  ]
+}
   `;
   const response = await Flow.generate.text(prompt, {
-    systemInstruction: "Chuyên gia tiền kỳ bóc tách kịch bản."
+    systemInstruction: "Bạn là chuyên gia tiền kỳ phim (Line Producer). Trích xuất dữ liệu chính xác, không thêm văn bản rác bên ngoài JSON."
   });
   return parseJsonFromAi(response.text, { characters: [], locations: [], props: [] });
 };

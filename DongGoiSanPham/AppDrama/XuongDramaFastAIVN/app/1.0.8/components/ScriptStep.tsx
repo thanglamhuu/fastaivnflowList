@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DramaProject, DramaStyle, AspectRatio, DramaDuration } from '../types';
 interface ScriptStepProps {
   project: DramaProject;
   updateProject: (updates: Partial<DramaProject>) => void;
   onGenerateScript: () => Promise<void>;
+  onExtractAssets: () => Promise<boolean>;
   onNext: () => void;
   loading: string | null;
 }
@@ -11,10 +12,20 @@ export const ScriptStep: React.FC<ScriptStepProps> = ({
   project,
   updateProject,
   onGenerateScript,
+  onExtractAssets,
   onNext,
   loading
 }) => {
   const durations: DramaDuration[] = ['15s', '30s', '45s', '60s', '90s', '180s'];
+  const [isExtracting, setIsExtracting] = useState(false);
+  const handleFinalize = async () => {
+    setIsExtracting(true);
+    const success = await onExtractAssets();
+    setIsExtracting(false);
+    if (success) {
+      onNext();
+    }
+  };
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="space-y-6">
@@ -80,7 +91,7 @@ export const ScriptStep: React.FC<ScriptStepProps> = ({
             </div>
             <button
               onClick={onGenerateScript}
-              disabled={!!loading}
+              disabled={!!loading || isExtracting}
               className="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-black rounded-xl shadow-[0_4px_20px_rgba(220,38,38,0.3)] transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <span className={`material-symbols-outlined ${loading ? 'animate-spin' : ''}`}>
@@ -109,11 +120,21 @@ export const ScriptStep: React.FC<ScriptStepProps> = ({
           
           {project.scriptMarkdown && (
             <button
-              onClick={onNext}
-              className="w-full py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 text-white"
+              onClick={handleFinalize}
+              disabled={isExtracting || !!loading}
+              className="w-full py-3 bg-white text-slate-950 border border-slate-200 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 hover:bg-slate-100 disabled:opacity-50"
             >
-              CHỐT KỊCH BẢN & BÓC TÁCH ASSET
-              <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              {isExtracting ? (
+                <>
+                  <span className="material-symbols-outlined animate-spin text-sm">sync</span>
+                  ĐANG BÓC TÁCH ASSETS...
+                </>
+              ) : (
+                <>
+                  CHỐT KỊCH BẢN & BÓC TÁCH ASSET
+                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </>
+              )}
             </button>
           )}
         </section>
