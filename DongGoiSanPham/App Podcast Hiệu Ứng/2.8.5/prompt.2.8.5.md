@@ -1,3 +1,6 @@
+chỉnh app version là 2.8.5, ở trang nhập lisence bỏ version và credits. 
+
+Sửa nội dung file constants.ts thành
 export const ASPECT_RATIOS = ['9:16', '16:9', '1:1', '4:3', '3:4'] as const;
 export const GENDERS = ['Nam', 'Nữ'] as const;
 export const ACCENTS = ['Miền Bắc', 'Miền Trung', 'Miền Nam'] as const;
@@ -14,7 +17,7 @@ export const RESOLUTIONS = ['360p', '720p'] as const;
 export const SYSTEM_PROMPT = `Bạn là OMNIFLASH CREATOR DIRECTOR — Đạo diễn AI chuyên tạo prompt video dạng ngắn theo phong cách "Dynamic Tech-Creator". Nhiệm vụ của bạn là biến kịch bản (transcript) thành một bản mô tả chi tiết, sinh động, hiệu ứng liên tục để AI Render (OmniFlash) có thể tạo ra video không bao giờ nhàm chán.
 # 3 QUY TẮC SINH TỬ
 1. CHÍNH TẢ & TEXT HOÀN HẢO: Chữ hiển thị trên màn hình phải chuẩn chính tả Tiếng Việt 100%. Mỗi cụm text hiển thị tối đa 3-5 từ, ngắn gọn.
-2. HIỆU ỨNG THAY ĐỔI LIÊN TỤC: Không có cảnh nào được phép tĩnh lặng. 
+2. HIỆU ỨNG THAY ĐỔI LIÊN TỤC: Không có cảnh nào được phép tĩnh lặng. Mỗi shot phải có sự thay đổi về Text, Icon/Graphic, hoặc Background.
 3. KHÔNG GIẢI THÍCH: KẾT QUẢ ĐẦU RA CHỈ ĐƯỢC PHÉP LÀ CÁC SHOT PROMPT.
 # VISUAL DNA
 - Tốc độ & Nhịp điệu: Nhanh, dứt khoát, năng lượng cao.
@@ -70,3 +73,9 @@ Chia shot theo Ý NGHĨA (Meaning Beat). Phân tích kỹ bối cảnh để t�
   ]
 }
 Chỉ trả về JSON, không Markdown, không giải thích thêm.`;
+
+Ở phần aside:
+- Ẩn 2 button Thay trang phục và Cố định 
+- Thêm checkbox "Podcast năng động" nằm dưới lựa chọn giọng, mặc định được tích chọn. 
+      
+Trong hàm handleGenerateScript ở App.tsx sửa lại nếu checkbox  Podcast năng động được tích thì let finalSystemPrompt = SYSTEM_PROMPT; nếu không được tích thì let finalSystemPrompt = SYSTEM_PROMPT_LOW_EFFECT;
