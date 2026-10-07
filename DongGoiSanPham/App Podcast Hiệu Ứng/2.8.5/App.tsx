@@ -3,7 +3,7 @@ import { Flow } from 'flow-sdk';
 import { ffmpegService } from './services/ffmpegService';
 import { 
   ASPECT_RATIOS, GENDERS, ACCENTS, SPEEDS, 
-  VIDEO_MODELS, THREAD_OPTIONS, SYSTEM_PROMPT,
+  VIDEO_MODELS, THREAD_OPTIONS, SYSTEM_PROMPT, SYSTEM_PROMPT_LOW_EFFECT,
   ALLOWED_DURATIONS
 } from './constants';
 import { ProjectConfig, Shot, AspectRatio, Gender, Accent, Speed, OutfitMode, Resolution } from './types';
@@ -25,6 +25,7 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [previewShot, setPreviewShot] = useState<Shot | null>(null);
   const [zoomImage, setZoomImage] = useState<string | null>(null);
+  const [isDynamicPodcast, setIsDynamicPodcast] = useState(true);
   
   // Config
   const [config, setConfig] = useState<ProjectConfig>({
@@ -111,13 +112,7 @@ export default function App() {
     setLoading(true);
     setStatus('Đang phân tích script & thiết kế cảnh quay...');
     try {
-      let finalSystemPrompt = SYSTEM_PROMPT;
-      if (config.outfitMode === 'Cố định') {
-        finalSystemPrompt = finalSystemPrompt.replace(
-          "Mỗi shot phải có sự thay đổi về Text, Icon/Graphic, hoặc Background/Trang phục.",
-          "Mỗi shot phải có sự thay đổi về Text, Icon/Graphic, hoặc Background"
-        );
-      }
+      let finalSystemPrompt = isDynamicPodcast ? SYSTEM_PROMPT : SYSTEM_PROMPT_LOW_EFFECT;
       const { text } = await Flow.generate.text(
         `SCRIPT:\n${rawTranscript}\n\nSelected Ratio: ${config.ratio}`,
         { systemInstruction: finalSystemPrompt, thinkingLevel: 'medium' }
@@ -333,11 +328,23 @@ export default function App() {
           <div className="flex-1 flex flex-col gap-4 overflow-y-auto custom-scrollbar p-5 pb-8">
             <ConfigControls config={config} onChange={setConfig} />
             {/* Voice Selector Integration */}
-            <div className="pt-2">
+            <div className="pt-2 space-y-3">
               <VoiceSelector 
                 selectedVoice={selectedVoice} 
                 onVoiceChange={setSelectedVoice} 
               />
+              <div className="px-2 flex items-center gap-2">
+                <input 
+                  type="checkbox" 
+                  id="dynamicPodcast"
+                  checked={isDynamicPodcast}
+                  onChange={e => setIsDynamicPodcast(e.target.checked)}
+                  className="w-4 h-4 accent-[#F31B17] cursor-pointer"
+                />
+                <label htmlFor="dynamicPodcast" className="text-[11px] font-bold text-slate-300 cursor-pointer">
+                  Podcast năng động
+                </label>
+              </div>
             </div>
             {/* Media Section */}
             <section className="space-y-4">
@@ -392,21 +399,6 @@ export default function App() {
                   </button>
                 </div>
               )}
-            </section>
-            <section className="space-y-4">
-              <div className="px-1 space-y-1">
-                <div className="flex flex-wrap gap-1">
-                  {(['Thay trang phục', 'Cố định'] as OutfitMode[]).map(opt => (
-                    <button 
-                      key={opt}
-                      onClick={() => setConfig({...config, outfitMode: opt})}
-                      className={`flex-1 py-1.5 px-2 text-[10px] font-bold rounded-md border transition-all ${config.outfitMode === opt ? 'bg-emerald-600 border-emerald-400 text-white' : 'bg-slate-900 border-slate-800 text-slate-500 hover:border-slate-700'}`}
-                    >
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </section>
             <section className="space-y-3 shrink-0">
               <textarea 
