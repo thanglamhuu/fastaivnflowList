@@ -45,6 +45,54 @@ const snapDuration = (seconds: number): number => {
     Math.abs(curr - seconds) < Math.abs(prev - seconds) ? curr : prev
   );
 };
+/**
+ * Làm sạch Motion Prompt để tuân thủ chính sách an toàn AI.
+ */
+export const sanitizeMotionPrompt = (prompt: string): string => {
+  let sanitized = prompt.toLowerCase();
+  // 1. Thay thế các từ khóa tiếp xúc vật lý nhạy cảm
+  const physicalContactMap: Record<string, string> = {
+    "véo má": "gestures gently",
+    "nựng cằm": "gestures gently",
+    "ôm": "stands beside",
+    "lay bắp tay": "stands beside",
+    "chạm": "looking at each other",
+    "pinch cheek": "gestures gently",
+    "hug": "stands beside",
+    "touch": "looking at each other",
+    "grabbing": "gestures gently",
+    "shaking arm": "stands beside"
+  };
+  // 2. Thay thế mô tả giải phẫu chi tiết thành mô tả biểu cảm
+  const anatomyMap: Record<string, string> = {
+    "bắp tay": "gentle expression",
+    "đường viền hàm": "warm gaze",
+    "bicep": "gentle expression",
+    "jawline": "warm gaze",
+    "chest": "upper body",
+    "ngực": "phần thân trên"
+  };
+  // 3. Thay thế cảm xúc tiêu cực đối với trẻ em thành trung lập
+  const childrenEmotionsMap: Record<string, string> = {
+    "khóc": "preoccupied",
+    "sợ hãi": "apologetic look",
+    "crying": "preoccupied",
+    "scared": "apologetic look",
+    "screaming": "preoccupied",
+    "hét": "biểu cảm trầm tư"
+  };
+  // Thực hiện thay thế đồng loạt
+  Object.entries(physicalContactMap).forEach(([key, val]) => {
+    sanitized = sanitized.replace(new RegExp(key, 'gi'), val);
+  });
+  Object.entries(anatomyMap).forEach(([key, val]) => {
+    sanitized = sanitized.replace(new RegExp(key, 'gi'), val);
+  });
+  Object.entries(childrenEmotionsMap).forEach(([key, val]) => {
+    sanitized = sanitized.replace(new RegExp(key, 'gi'), val);
+  });
+  return sanitized;
+};
 export const analyzeCharacterImage = async (base64: string, mimeType: string) => {
   const prompt = `Phân tích ảnh nhân vật này để tạo bộ hồ sơ nhận dạng.
   Trích xuất chi tiết cực độ về:
@@ -117,10 +165,15 @@ export const breakdownScriptToShots = async (
   
   const prompt = `Phân rã kịch bản thành ${targetCount} shot JSON array. 
   Mỗi phần tử có: shotNumber, title, durationSeconds, cameraAngle, visualPrompt (mô tả cảnh chi tiết), videoMotionPrompt, characterNames (mảng các nhân vật XUẤT HIỆN trong shot này), dialogue { characterName, line, emotion }. 
+  
   Kịch bản: ${script}`;
   
   const response = await Flow.generate.text(prompt, {
-    systemInstruction: "Đảm bảo characterNames chứa đúng tên nhân vật trong hồ sơ."
+    systemInstruction: `Bạn là đạo diễn hình ảnh chuyên nghiệp. 
+    QUY TẮC AN TOÀN NGHIÊM NGẶT:
+    1. Tuyệt đối KHÔNG tạo hành động tiếp xúc thân thể giữa người lớn và trẻ em (không chạm, không bế, không nắm tay).
+    2. Ưu tiên diễn xuất qua ánh mắt, biểu cảm gương mặt và chuyển động camera.
+    3. Đảm bảo characterNames chứa đúng tên nhân vật trong hồ sơ.`
   });
   
   const shots = parseJsonFromAi<any[]>(response.text, []);
@@ -138,7 +191,7 @@ export const breakdownScriptToShots = async (
   }));
 };
 /**
- * SINH ẢNH CHO SHOT (Nâng cấp tính đồng nhất)
+ * SINH ẢNH CHO SHOT
  */
 export const generateShotImage = async (
   shot: DramaShot, 
@@ -147,37 +200,27 @@ export const generateShotImage = async (
   style: DramaStyle, 
   aspectRatio: AspectRatio
 ) => {
-  // 1. Logic nhận diện nhân vật thông minh (Smart Character Matching)
   const relevantChars = characters.filter(c => {
     if (!c.name) return false;
     const charNameLower = c.name.toLowerCase();
-    
-    // Kiểm tra trong danh sách tag của AI
     const isTagged = shot.characterNames?.some(name => {
       const sName = String(name).toLowerCase();
       return charNameLower.includes(sName) || sName.includes(charNameLower);
     });
-    
     if (isTagged) return true;
-    // Fallback: Kiểm tra xem tên có xuất hiện trong Visual Prompt không
     const visualPromptLower = (shot.visualPrompt || "").toLowerCase();
     return visualPromptLower.includes(charNameLower);
   });
-  // Thu thập mediaId từ những nhân vật được tìm thấy
   const charRefs = relevantChars
     .map(c => c.mediaId)
     .filter((id): id is string => !!id);
-  // 2. Nhận diện bối cảnh
   const visualPromptLower = (shot.visualPrompt || "").toLowerCase();
   const locRefs = locations
     .filter(l => l.name && visualPromptLower.includes(l.name.toLowerCase()))
     .map(l => l.mediaId)
     .filter((id): id is string => !!id);
-  // Gộp tham chiếu (Tối đa 10 ảnh cho model Banana Pro)
   const referenceImageMediaIds = [...new Set([...charRefs, ...locRefs])].slice(0, 10);
-  // 3. Xây dựng cấu trúc Prompt 'ACTOR LOCK'
-  const actorLockDirectives = relevantChars.map((c, idx) => {
-    // Tìm index của mediaId trong mảng tham chiếu để chỉ dẫn model
+  const actorLockDirectives = relevantChars.map((c) => {
     const refIndex = referenceImageMediaIds.indexOf(c.mediaId!);
     return `[CHARACTER: "${c.name}"]
 - IDENTITY: Match face from Reference Image #${refIndex + 1} exactly.
@@ -202,7 +245,7 @@ ${actorLockDirectives}
   });
 };
 /**
- * SINH VIDEO CHO SHOT (I2V)
+ * SINH VIDEO CHO SHOT (I2V) - Tối ưu Lip-sync và An toàn AI
  */
 export const generateShotVideo = async (params: {
   shot: DramaShot;
@@ -214,15 +257,22 @@ export const generateShotVideo = async (params: {
   const { shot, aspectRatio, model, resolution } = params;
   const validatedDuration = snapDuration(shot.durationSeconds);
   
-  const motionPrompt = shot.videoMotionPrompt || "Subtle cinematic camera movement and character expressions.";
-  const finalVideoPrompt = `
-[MOTION]: ${motionPrompt}.
-[DIALOGUE]: ${shot.dialogue ? `Character "${shot.dialogue.characterName}" speaks: "${shot.dialogue.line}"` : ''}
-[CONTINUITY]: Lock facial features and clothing patterns from the first frame. No morphing.
+  // Làm sạch motion prompt
+  const cleanedMotion = sanitizeMotionPrompt(shot.videoMotionPrompt || "Subtle cinematic camera movement.");
+  
+  // Tối ưu lip-sync: Không nhồi thoại tiếng Việt, chỉ dùng chỉ dẫn khẩu hình
+  const speechInstruction = shot.dialogue 
+    ? "character displays subtle, natural lip movement and talking expressions"
+    : "character maintains a steady, cinematic facial expression with no lip movement";
+  const fullPrompt = `
+Cinematic film scene, photorealistic style.
+[CAMERA & ACTION]: ${cleanedMotion}
+[ACTING & SPEECH]: ${speechInstruction}
+[STRICT CONTINUITY]: Smooth natural motion, no morphing, consistent with starting frame.
   `.trim();
   const targetRatio = (aspectRatio === '9:16' || aspectRatio === '16:9') ? aspectRatio : '16:9';
   return await Flow.generate.video({
-    prompt: finalVideoPrompt,
+    prompt: fullPrompt,
     firstFrameImageMediaId: shot.imageMediaId,
     durationSeconds: validatedDuration,
     aspectRatio: targetRatio,

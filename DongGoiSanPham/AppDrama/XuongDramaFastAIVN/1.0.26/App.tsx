@@ -116,11 +116,41 @@ export default function App() {
     setLoading("Đang phân tích kịch bản & storyboard...");
     try {
       const assets = await extractDramaAssets(project.scriptMarkdown);
-      const shots = await breakdownScriptToShots(project.scriptMarkdown, project.duration, project.characters);
+      
+      // Logic gộp nhân vật thông minh: giữ lại nhân vật đã có thông tin/ảnh, bổ sung nhân vật mới từ AI
+      const existingCharacters = project.characters.filter(c => 
+        c.mediaId || 
+        (c.physicalDescription && c.physicalDescription.trim() !== "") ||
+        (c.name && !c.name.includes("Nhân vật"))
+      );
+      const aiCharacters = assets.characters.map((c: any) => ({
+        ...c,
+        id: `char-ai-${Date.now()}-${Math.random()}`,
+        physicalDescription: c.physicalDescription || "",
+        defaultOutfit: c.defaultOutfit || "",
+        voiceTone: ""
+      }));
+      const newCharacters = aiCharacters.filter((ac: any) => 
+        !existingCharacters.some(ec => ec.name.toLowerCase() === ac.name.toLowerCase())
+      );
+      const mergedCharacters = [...existingCharacters, ...newCharacters];
+      // Tương tự cho bối cảnh
+      const existingLocations = project.locations.filter(l => l.mediaId || (l.description && l.description.trim() !== ""));
+      const aiLocations = assets.locations.map((l: any) => ({
+        ...l,
+        id: `loc-ai-${Date.now()}-${Math.random()}`,
+        description: l.description || ""
+      }));
+      const newLocations = aiLocations.filter((al: any) => 
+        !existingLocations.some(el => el.name.toLowerCase() === al.name.toLowerCase())
+      );
+      const mergedLocations = [...existingLocations, ...newLocations];
+      const shots = await breakdownScriptToShots(project.scriptMarkdown, project.duration, mergedCharacters);
       
       updateProject({
-        characters: project.characters.length > 0 ? project.characters : assets.characters.map((c: any) => ({ ...c, id: `char-${Date.now()}-${Math.random()}` })),
-        locations: project.locations.length > 0 ? project.locations : assets.locations.map((l: any) => ({ ...l, id: `loc-${Date.now()}-${Math.random()}` })),
+        aspectRatio: config.ratio, // Đồng bộ tỷ lệ khung hình từ Config Sidebar
+        characters: mergedCharacters.length > 0 ? mergedCharacters : aiCharacters,
+        locations: mergedLocations.length > 0 ? mergedLocations : aiLocations,
         props: assets.props.map((p: any) => ({ ...p, id: `prop-${Date.now()}-${Math.random()}` })),
         shots
       });

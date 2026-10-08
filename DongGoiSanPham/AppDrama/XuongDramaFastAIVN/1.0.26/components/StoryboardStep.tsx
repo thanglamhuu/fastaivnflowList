@@ -146,6 +146,15 @@ export const StoryboardStep: React.FC<StoryboardStepProps> = ({
     else next.add(id);
     setSelectedMergeIds(next);
   };
+  const getAspectRatioClass = (ratio: string) => {
+    switch (ratio) {
+      case '9:16': return 'aspect-[9/16]';
+      case '1:1': return 'aspect-square';
+      case '4:3': return 'aspect-[4/3]';
+      case '3:4': return 'aspect-[3/4]';
+      default: return 'aspect-[16/9]';
+    }
+  };
   const zoomedShot = project.shots.find(s => s.id === zoomedShotId);
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -202,7 +211,7 @@ export const StoryboardStep: React.FC<StoryboardStepProps> = ({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-32">
         {project.shots.map((shot) => {
-          const is916 = project.aspectRatio === '9:16';
+          const ratioClass = getAspectRatioClass(config.ratio);
           const currentMode = viewMode[shot.id] || (shot.videoUrl ? 'video' : 'image');
           const isVideoView = currentMode === 'video' && shot.videoUrl;
           const matchedChars = getMatchedCharacters(shot);
@@ -214,7 +223,7 @@ export const StoryboardStep: React.FC<StoryboardStepProps> = ({
             >
               <div 
                 onClick={() => (shot.imageUrl || shot.videoUrl) && setZoomedShotId(shot.id)}
-                className={`relative bg-slate-950 flex items-center justify-center overflow-hidden cursor-pointer group/media ${is916 ? 'aspect-[9/16]' : 'aspect-[16/9]'}`}
+                className={`relative bg-slate-950 flex items-center justify-center overflow-hidden cursor-pointer group/media ${ratioClass}`}
               >
                 {shot.isGeneratingVideo ? (
                   <div className="flex flex-col items-center gap-3">
@@ -321,7 +330,7 @@ export const StoryboardStep: React.FC<StoryboardStepProps> = ({
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-md" onClick={() => setShowMergeDialog(false)} />
           <div className="relative w-full max-w-3xl bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
-            <header className="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+            <header className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
               <div>
                 <h3 className="text-lg font-black uppercase tracking-tight flex items-center gap-2">
                   <span className="material-symbols-outlined text-red-500">merge</span>
@@ -394,7 +403,7 @@ export const StoryboardStep: React.FC<StoryboardStepProps> = ({
             <span className="material-symbols-outlined">close</span>
           </button>
           <div className="w-full h-full max-w-6xl flex flex-col md:flex-row gap-8 items-center justify-center">
-            <div className={`relative bg-black rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/10 max-h-[85vh] ${project.aspectRatio === '9:16' ? 'aspect-[9/16] h-full' : 'aspect-[16/9] w-full'}`}>
+            <div className={`relative bg-black rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/10 max-h-[85vh] ${getAspectRatioClass(config.ratio)} ${config.ratio === '9:16' || config.ratio === '3:4' ? 'h-full' : 'w-full'}`}>
               {zoomedShot.videoUrl ? (
                 <video src={zoomedShot.videoUrl} controls autoPlay loop className="w-full h-full object-contain" />
               ) : (

@@ -50,12 +50,16 @@ export async function adjustClipSpeed(base64: string, speedFactor: number): Prom
   }
   await conversion.execute();
   
-  const resultBase64 = btoa(
-    new Uint8Array(output.target.buffer!)
-      .reduce((data, byte) => data + String.fromCharCode(byte), '')
-  );
-  
-  return resultBase64;
+  // Chuyển Uint8Array sang Base64 an toàn bằng FileReader
+  const resultBlob = new Blob([output.target.buffer!], { type: 'video/mp4' });
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64Str = (reader.result as string).split(',')[1];
+      resolve(base64Str);
+    };
+    reader.readAsDataURL(resultBlob);
+  });
 }
 /**
  * Tính toán kích thước mục tiêu dựa trên Resolution và Aspect Ratio.
@@ -111,7 +115,7 @@ export async function concatVideos(
     '-map', '[outa]',
     '-c:v', 'libx264',
     '-preset', 'ultrafast',
-    '-crf', '22', // Cải thiện chất lượng một chút (mặc định 23)
+    '-crf', '22', 
     '-c:a', 'aac',
     '-b:a', '192k',
     '-pix_fmt', 'yuv420p',
@@ -125,7 +129,7 @@ export async function concatVideos(
     try { await ffmpegService.deleteFile(name); } catch(e) {}
   }
   try { await ffmpegService.deleteFile('output.mp4'); } catch(e) {}
-  // Chuyển Uint8Array sang Base64
+  // Chuyển Uint8Array sang Base64 an toàn
   const blob = new Blob([outputData.buffer], { type: 'video/mp4' });
   return new Promise((resolve) => {
     const reader = new FileReader();
