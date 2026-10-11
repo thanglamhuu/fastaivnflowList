@@ -1,0 +1,104 @@
+{
+  "project": {
+    "title": "Giữ Bí Mật Cho Mẹ",
+    "style": "Cinematic Photorealistic",
+    "aspectRatio": "9:16",
+    "duration": "24s",
+    "premise": "Mẹ dặn con gái giữ bí mật về chiếc bánh quy cuối cùng, nhưng khi bố vừa về đến nhà, lòng trung thành ngây thơ của cô bé đã khiến bí mật bị phanh phui ngay lập tức.",
+    "scriptMarkdown": "# GIỮ BÍ MẬT CHO MẸ\n\n**BỐI CẢNH: PHÒNG KHÁCH VÀ BÀN ĂN GIA ĐÌNH - BAN NGÀY**\n\nPhòng khách sáng sủa, ấm cúng. Con gái ngồi ở bàn ăn, hai tay giấu chiếc hộp thiếc rỗng sau lưng, ánh mắt đầy vẻ cảnh giác.\n\nBố vừa đi làm về, tay cầm cặp tài liệu, bước vào phòng khách với nụ cười rạng rỡ.\n\n**BỐ**\n(hào hứng, giọng ấm áp)\nBố về rồi đây! Ở nhà hôm nay có ai nhớ bố không nào?\n\nCon gái đứng phắt dậy, bước nhanh về phía bố với vẻ mặt cực kỳ nghiêm túc. Cô bé đưa ngón tay trỏ lên môi làm cử chỉ 'suỵt', mắt mở to.\n\n**CON GÁI**\n(thì thào rất to, dõng dạc)\nSuỵt! Con không được nói là mẹ vừa ăn hết hộp bánh của bố đâu đấy!\n\nBố sững người một nhịp rồi bật cười thích thú. Phía xa bên quầy bếp, mẹ đang lau ly thủy tinh liền dừng tay, mỉm cười bất lực trước màn 'giữ bí mật' của con gái.",
+    "characters": [
+      {
+        "id": "char-1",
+        "name": "Bố",
+        "physicalDescription": "Nam giới 35 tuổi, người châu Á, dáng người cao gọn gàng, đeo kính cận gọng đen, gương mặt hiền từ, nụ cười ấm áp, tóc đen cắt ngắn chỉn chu.",
+        "defaultOutfit": "Áo sơ mi màu xanh nhạt xắn tay nhẹ, quần âu tối màu, giày tây công sở.",
+        "voiceTone": "Nam Tri Kỷ (miền Bắc)"
+      },
+      {
+        "id": "char-2",
+        "name": "Mẹ",
+        "physicalDescription": "Nữ giới 28 tuổi, người châu Á, da sáng, tóc nâu dài uốn lọn nhẹ buộc nửa đầu gọn gàng, gương mặt dịu dàng, nụ cười tươi tắn.",
+        "defaultOutfit": "Váy liền thân màu be nhã nhặn, đeo tạp dề vải lanh kẻ sọc nhỏ.",
+        "voiceTone": "Nữ Trầm Bản Lĩnh (miền Bắc)"
+      },
+      {
+        "id": "char-3",
+        "name": "Con Gái",
+        "physicalDescription": "Bé gái người châu Á, gương mặt bầu bĩnh đáng yêu, đôi mắt to tròn trong sáng, tóc buộc hai búi củ tỏi gọn gàng hai bên.",
+        "defaultOutfit": "Áo thun trắng cổ tròn kín đáo bên trong, váy yếm màu xanh pastel dài ngang gối, đi tất trắng ngắn.",
+        "voiceTone": "Nữ Trẻ Thơ Trong Sáng (miền Bắc)"
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-1",
+        "name": "Phòng khách nối liền bàn ăn gia đình",
+        "description": "Không gian sinh hoạt chung hiện đại, ngập tràn ánh sáng tự nhiên ban ngày qua cửa sổ lớn. Bàn ăn gỗ sáng màu, ghế tựa chỉn chu, góc bếp mở ngăn nắp sạch sẽ."
+      }
+    ],
+    "props": [
+      {
+        "id": "prop-1",
+        "name": "Hộp thiếc bánh quy rỗng",
+        "description": "Chiếc hộp thiếc tròn nhỏ màu xanh dương đựng bánh quy, nắp đã mở hé nhẹ."
+      }
+    ],
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 8,
+        "title": "Bố về nhà và ánh mắt cảnh giác",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "Cinematic vertical 9:16 frame. Bright, clean family living room filled with soft daytime sunlight. At the wooden dining table, a cute Asian young daughter wearing neat double hair buns, a modest white t-shirt, and pastel blue overall dress sits upright, carefully hiding an empty round tin box behind her back. At the doorway, the Asian father wearing glasses and a light blue business shirt enters carrying a briefcase, smiling warmly at her.",
+        "videoMotionPrompt": "Camera gently pans from the little girl hiding the tin box towards the father entering the room, father waving lightly with a warm smile.",
+        "characterNames": ["Con Gái", "Bố"],
+        "dialogue": {
+          "characterName": "Bố",
+          "line": "Bố về rồi đây! Ở nhà hôm nay có ai nhớ bố không nào?",
+          "emotion": "Hào hứng, ấm áp"
+        },
+        "sfxAudioCue": "Tiếng mở cửa lách cách nhẹ và tiếng bước chân êm ái trên sàn gỗ"
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 8,
+        "title": "Lời nhắc nhở suỵt bí mật",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "Cinematic vertical 9:16 close-up. The young daughter stands firmly in front of her father. She brings her index finger to her lips in an innocent shushing gesture, round bright eyes opened wide with absolute seriousness. The father in the soft background tilts his head down with curiosity.",
+        "videoMotionPrompt": "Slow push-in on the little girl's cute serious face as she puts her finger to her lips, blinking sincerely.",
+        "characterNames": ["Con Gái", "Bố"],
+        "dialogue": {
+          "characterName": "Con Gái",
+          "line": "Suỵt! Con không được nói là mẹ vừa ăn hết hộp bánh của bố đâu đấy!",
+          "emotion": "Nghiêm túc, ngây thơ"
+        },
+        "sfxAudioCue": "Tiếng thở hắt nhẹ ngây thơ của cô bé trước khi nói"
+      },
+      {
+        "id": "shot-3",
+        "shotNumber": 3,
+        "durationSeconds": 8,
+        "title": "Payoff bật cười cả nhà",
+        "cameraAngle": "Wide Shot",
+        "visualPrompt": "Cinematic vertical 9:16 wide composition. In the center, the father bends his knees and bursts into gentle laughter, giving a high-five towards the daughter's tiny hand. In the kitchen counter background, the Asian mother wearing a beige dress and apron pauses washing a glass, smiling warmly while tapping her forehead playfully.",
+        "videoMotionPrompt": "Stable wide shot capturing father giving a gentle high-five to the daughter as she beams with pride, mother laughing in the background.",
+        "characterNames": ["Bố", "Con Gái", "Mẹ"],
+        "dialogue": {
+          "characterName": "Bố",
+          "line": "Bí mật này con giữ siêu quá rồi!",
+          "emotion": "Bật cười, vui vẻ"
+        },
+        "sfxAudioCue": "Tiếng cười ấm áp của bố và tiếng vỗ tay đập nhẹ high-five rộn ràng"
+      }
+    ]
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "360p"
+  }
+}
