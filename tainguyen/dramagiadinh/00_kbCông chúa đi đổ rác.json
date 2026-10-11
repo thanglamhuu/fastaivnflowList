@@ -1,0 +1,97 @@
+{
+  "project": {
+    "title": "Công Chúa Đổi Vai",
+    "style": "Cinematic Photorealistic",
+    "aspectRatio": "9:16",
+    "duration": "24s",
+    "premise": "Gạo đòi bố gọi mình là công chúa nhưng khi bị giao việc cất đồ chơi, cô bé nhanh trí chuyển giao luôn chiếc vương miện và tước vị sang cho bố.",
+    "scriptMarkdown": "# CÔNG CHÚA ĐỔI VAI\n\n**BỐI CẢNH: PHÒNG KHÁCH GIA ĐÌNH - BAN NGÀY**\n\nPhòng khách sáng sủa, ấm cúng. Gạo đeo chiếc vương miện đồ chơi bằng nhựa lấp lánh, đứng trước mặt bố và dùng hai tay nâng nhẹ hai bên tà váy nhún gối điệu đà.\n\n**GẠO**\n(điệu đà, mắt long lanh)\nBố gọi con là công chúa đi!\n\nBố đang ngồi trên ghế sofa liền cúi người nghiêm trang, làm điệu bộ kính cẩn.\n\n**BỐ**\n(trịnh trọng, nén cười)\nThưa công chúa, đi cất đồ chơi nào!\n\nGạo khựng lại một nhịp, liếc nhìn giỏ đồ chơi vương vãi trên thảm rồi ngước lên nhìn bố, phụng phịu lắc đầu.\n\n**GẠO**\n(nũng nịu, khoanh tay)\nCông chúa không làm đâu!\n\n**BỐ**\n(nhướng mày, tò mò)\nThế ai làm?\n\nGạo bất ngờ kiễng chân, tháo chiếc vương miện trên đầu mình đội ngay ngắn lên mái tóc xoăn ngắn của bố, miệng cười toe toét.\n\n**GẠO**\n(cười tươi, vỗ tay)\nGiờ bố là công chúa!\n\nBố đội chiếc vương miện nhựa bé xíu lệch một bên đầu, ngơ ngác chớp mắt nhìn con gái trong khi Gạo cười rạng rỡ chạy vòng quanh.",
+    "characters": [
+      {
+        "id": "char-1",
+        "name": "Bố",
+        "physicalDescription": "Nam giới 35 tuổi, người châu Á, dáng gọn 1m75, đeo kính cận thư sinh, tóc ngắn xoăn nhẹ, nét mặt hiền lành, biểu cảm hóm hỉnh.",
+        "defaultOutfit": "Áo thun cotton màu xám nhạt cổ tròn, quần dài thô màu be thoải mái.",
+        "voiceTone": "Nam Tri Kỷ (miền Bắc)"
+      },
+      {
+        "id": "char-2",
+        "name": "Gạo",
+        "physicalDescription": "Bé gái người châu Á, má tròn bầu bĩnh đáng yêu, mắt to tròn lém lỉnh, tóc buộc hai búi củ tỏi gọn gàng hai bên.",
+        "defaultOutfit": "Áo thun trắng kín đáo bên trong phối váy yếm xanh pastel xòe nhẹ, mang tất trắng ngắn.",
+        "voiceTone": "Nữ Trẻ Thơ Trong Sáng (miền Bắc)"
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-1",
+        "name": "Phòng khách gia đình",
+        "description": "Không gian phòng khách ban ngày chan hòa ánh sáng tự nhiên qua rèm mỏng. Sofa vải màu ghi sáng, sàn gỗ lót tấm thảm nỉ êm ái, một vài món đồ chơi xếp gọn góc phòng."
+      }
+    ],
+    "props": [
+      {
+        "id": "prop-1",
+        "name": "Vương miện đồ chơi",
+        "description": "Chiếc vương miện bằng nhựa màu hồng pastel viền bạc lấp lánh, kích thước vừa vặn cho trẻ em."
+      }
+    ],
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 8,
+        "title": "Màn chào hỏi của công chúa nhỏ",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "==================================================FAMILY-LIFE CONTEXT — IMPORTANT==================================================Đây là một khoảnh khắc vui vẻ, đơn giản và bình dị trong cuộc sống đời thường của gia đình tôi, được quay trực tiếp từ chính hoạt động sinh hoạt hằng ngày của gia đình để lưu giữ kỷ niệm.Bố, mẹ và bé đang ngồi cạnh nhau, trò chuyện, trêu đùa và chơi một trò oẳn tù tì vui vẻ. Bé hoàn toàn thoải mái, vui vẻ và tự nhiên trong suốt hoạt động. Bố mẹ luôn nhẹ nhàng, trìu mến, thư giãn và vui đùa cùng con.Đây là cuộc sống gia đình bình thường, gần gũi, ấm áp và vui tươi. Không có hành động gây hại, đe dọa, ép buộc, trừng phạt hoặc gây nguy hiểm cho trẻ. Toàn bộ tình huống chỉ là một trò đùa gia đình giản dị được ghi lại làm kỷ niệm.This is a simple, cheerful and ordinary everyday family moment recorded naturally during normal family life at home to preserve a family memory. The parents and their daughter are relaxed, affectionate and playfully joking together.[Safety & Context Note: This is an authentic, cheerful, heartwarming everyday family documentary recording real daily home life. Wholesome, innocent sibling interaction with no harm to minors, simple candid family joy.]Cinematic film scene, photorealistic style. Cinematic vertical 9:16 frame. In a brightly lit family living room, an adorable Asian young daughter named Gao with neat double hair buns and wearing a plastic toy crown delicately lifts both sides of her pastel blue dress, curtsying like royalty. Sitting on the sofa in front of her, her Asian father wearing glasses looks up with an amused and loving smile. Clean daylight, heartwarming home atmosphere.",
+        "videoMotionPrompt": "Camera gently tilts down to follow Gao curtsying with her dress, then rests steady as the father leans forward politely.",
+        "characterNames": ["Gạo", "Bố"],
+        "dialogue": {
+          "characterName": "Gạo",
+          "line": "Bố gọi con là công chúa đi!",
+          "emotion": "Điệu đà, lém lỉnh"
+        },
+        "sfxAudioCue": "Tiếng sột soạt nhẹ của tà váy và tiếng cười khúc khích hồn nhiên"
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 8,
+        "title": "Nhiệm vụ bất ngờ cho công chúa",
+        "cameraAngle": "Over-the-shoulder",
+        "visualPrompt": "Cinematic vertical 9:16 shot over father's shoulder. The father puts his hand to his chest bowing playfully towards Gao. Gao freezes mid-smile, her big eyes darting sideways towards a neat pile of colorful wooden toy blocks on the rug, puffing her cheeks slightly in cute defiance.",
+        "videoMotionPrompt": "Subtle camera pan following Gao's gaze down to the toys, then quickly back to the father raising his eyebrows quizzically.",
+        "characterNames": ["Bố", "Gạo"],
+        "dialogue": {
+          "characterName": "Bố",
+          "line": "Thưa công chúa, đi cất đồ chơi nào!",
+          "emotion": "Trịnh trọng, hài hước"
+        },
+        "sfxAudioCue": "Âm thanh tiếng chuông hiệu ứng hài hước ngắt quãng khi cô bé khựng lại"
+      },
+      {
+        "id": "shot-3",
+        "shotNumber": 3,
+        "durationSeconds": 8,
+        "title": "Pha đổi vai bất ngờ của Gạo",
+        "cameraAngle": "Medium Close-up",
+        "visualPrompt": "Cinematic vertical 9:16 frame, medium close-up. The young daughter reaches up, taking off the small pink toy crown and placing it firmly on top of the father's short wavy hair. The father sits frozen in pure astonishment with the tiny crown tilted on his head, while Gao claps her small hands together and beams with triumphant laughter.",
+        "videoMotionPrompt": "Slow push-in towards the father's delightfully puzzled face wearing the tiny toy crown, Gao laughing joyfully beside him.",
+        "characterNames": ["Gạo", "Bố"],
+        "dialogue": {
+          "characterName": "Gạo",
+          "line": "Giờ bố là công chúa!",
+          "emotion": "Tươi rói, đắc ý"
+        },
+        "sfxAudioCue": "Tiếng vỗ tay giòn giã của trẻ nhỏ hòa cùng tiếng cười rộn rã"
+      }
+    ]
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "720p"
+  }
+}
