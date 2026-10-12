@@ -68,3 +68,50 @@ Hành động: Lan bước nhanh ra hành lang, mắt ngấn lệ, quay đầu n
 Bố Văn đứng trước làm mặt hài , Khoai nhìn nghiêm túc. Gạo đẩy nhẹ vai bố: “Để con!” rồi cũng làm mặt hài. Khoai vẫn im.	Mẹ đi ngang, gọi: “Khoai ơi!” Khoai bật cười, đưa tay về phía mẹ. Bố và Gạo nhìn nhau. Gạo thì thầm: “Mẹ có bí quyết.”
 4. Gạo chọn phe	Bố và mẹ ngồi hai đầu sofa, cùng dang tay: “Gạo, sang đây!” Gạo đứng giữa, nhìn bên này rồi bên kia.	Gạo kéo tay bố, kéo tay mẹ cho ngồi sát nhau rồi chen vào giữa: “Thế này khỏi chọn!” Bố mẹ nhìn nhau cười; Gạo vòng tay ôm cả hai.
 5. Tiệm làm đẹp của Gạo	Gạo cài một chiếc nơ hồng lên tóc bố: “Khách ngồi im nhé!” Bố liếc gương, cố nhịn cười.	Mẹ bước vào, nhìn bố rồi bật cười. Gạo chỉ chiếc ghế cạnh bố: “Khách tiếp theo!” Mẹ vừa định lùi thì bố kéo ghế ra, cười đắc ý.
+
+
+
+
+
+
+Kịch bản 06 – Bố làm ảo thuật, con phá bí mật
+Phong cách: Hài lật tẩy, Bố tự tin nhưng bị con gái phát hiện.
+Địa điểm gợi ý: Phòng khách.
+Hook 0–3s: Bố giấu một quả bóng mềm nhỏ dưới chiếc cốc nhựa úp ngược ngay trước mắt chị lớn, sau đó làm động tác ảo thuật thật kịch tính.
+Thời gian	Hành động và biểu cảm
+0–3s	Bố úp cốc lên quả bóng, xoa hai tay và nói: “Biến mất nhé!”. Chị lớn nhìn chằm chằm chiếc cốc, vẻ tò mò.
+3–6s	Bố nâng cốc lên, quả bóng vẫn nằm nguyên trên bàn. Bố há miệng giả vờ kinh ngạc. Chị lớn nhìn quả bóng rồi nhìn Bố.
+6–10s	Bố úp cốc xuống lần nữa và làm động tác phù phép. Chị lớn nghiêng đầu, nhìn Bố với vẻ nghi ngờ.
+10–13s	Bố vừa định nâng cốc, chị lớn đưa tay giữ cốc lại rồi tự nhấc lên. Quả bóng vẫn ở đó.
+13–17s	Chị lớn cầm quả bóng lên, giơ trước mặt Bố và cười đắc thắng. Bố ngồi sững, hai mắt mở to.
+17–20s	Mẹ bật cười. Bố cúi đầu như một ảo thuật gia thất bại, còn chị lớn tự hào giơ quả bóng lên cao.
+Punchline: Người làm ảo thuật lại bị một bé gái 3 tuổi lật tẩy.
+Frame logic: 0s cốc và bóng còn đặt riêng trên bàn; 10s cốc đã úp trên bóng; 20s chị lớn cầm bóng, Bố ngỡ ngàng.
+
+Kịch bản 07 – Bố giả ngủ để trốn việc
+Phong cách: Hài giả vờ, con gái thông minh hơn Bố.
+Địa điểm gợi ý: Sofa phòng khách.
+Hook 0–3s: Mẹ đưa chiếc khăn nhỏ cho Bố nhờ gấp, Bố lập tức nhắm mắt ngả đầu giả ngủ.
+Thời gian	Hành động và biểu cảm
+0–3s	Mẹ đưa chiếc khăn sạch về phía Bố. Bố nhìn thấy khăn, lập tức nhắm mắt, ngả đầu vào lưng ghế, giả vờ ngủ. Mẹ ngạc nhiên nhìn Bố.
+3–6s	Bố vẫn nhắm mắt nhưng khóe miệng hơi nhếch lên. Chị lớn đang ngồi cạnh Mẹ nhìn Bố đầy nghi ngờ.
+6–10s	Mẹ đặt khăn lên đùi Bố. Chị lớn nhìn chiếc khăn, rồi nhìn khuôn mặt Bố, nở nụ cười tinh nghịch.
+10–13s	Chị lớn nhẹ nhàng đặt một chiếc gấu bông vào hai tay Bố, rồi lùi lại quan sát.
+13–16s	Bố tưởng không ai để ý, hé một mắt ra nhìn. Chị lớn lập tức chỉ thẳng vào mắt Bố, cười lớn.
+16–20s	Bố mở cả hai mắt, giật mình vì bị bắt quả tang. Mẹ khoanh tay nhìn Bố và mỉm cười. Bố đành cầm chiếc khăn lên, mặt tiu nghỉu.
+Punchline: Bố giả ngủ để trốn việc nhưng bị con gái bắt quả tang chỉ bằng một ánh mắt.
+Frame logic: 0s Mẹ đang đưa khăn; 10s Bố nhắm mắt với khăn trên đùi; 20s Bố tỉnh dậy cầm khăn, hai mẹ con cười.
+
+Kịch bản 08 – Bố làm em cười, chị lại ghen
+Phong cách: Hài ghen tị đáng yêu, đảo chiều cảm xúc.
+Địa điểm gợi ý: Thảm chơi phòng khách.
+Hook 0–3s: Bố làm mặt hề khiến em trai 9 tháng cười khúc khích. Chị lớn ngồi gần đó lập tức cau mày vì Bố chỉ chú ý tới em.
+Thời gian	Hành động và biểu cảm
+0–3s	Em bé ngồi an toàn cạnh Mẹ, được Mẹ đỡ. Bố làm mặt hề, em bật cười. Chị lớn nhìn Bố rồi nhìn em, môi bắt đầu phụng phịu.
+3–6s	Bố tiếp tục làm mặt ngộ nghĩnh với em. Chị lớn khoanh tay, quay mặt đi, giả vờ dỗi.
+6–10s	Bố phát hiện chị lớn đang dỗi. Bố ngừng trêu em, quay sang nhìn chị và nở nụ cười dỗ dành. Chị lớn vẫn cố giữ mặt nghiêm.
+10–13s	Bố bắt chước y hệt nét mặt phụng phịu của chị lớn. Chị liếc nhìn Bố, cố không cười.
+13–17s	Bố tiếp tục phồng má và nhướng mày. Chị lớn không nhịn được, bật cười.
+17–20s	Bố và chị lớn cùng cười. Em trai nhìn hai người rồi cười theo. Mẹ ngạc nhiên vì cuối cùng cả nhà đều cười, riêng Bố vẫn giữ khuôn mặt hề.
+Punchline: Chị lớn đang giận vì Bố trêu em, cuối cùng lại bị chính trò hề của Bố chọc cười.
+Frame logic: 0s cả nhà ngồi cạnh nhau với trạng thái tự nhiên; 10s chị lớn khoanh tay dỗi, Bố nhìn chị; 20s cả nhà cười vui.
