@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbot Lên Ý Tưởng Kịch Bản AI Affiliate - DNA Linh Mít Daily</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f6ff;
+      color: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Header -->
+  <header class="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white shadow-md sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center font-extrabold text-lg shadow-inner">
+          AI
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-extrabold text-base sm:text-lg tracking-tight">Linh Mít Daily DNA Bot v2.0</h1>
+            <span class="text-xs bg-emerald-500/30 border border-emerald-300/40 px-2 py-0.5 rounded-full font-medium">Đã tích hợp Kiểm tra Logic Sản phẩm</span>
+          </div>
+          <p class="text-xs text-blue-200">Phân tích đúng công dụng vật lý, người dùng & ngữ cảnh trước khi lên 5 kịch bản 15s</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex items-center gap-1.5 bg-blue-950/60 p-1 rounded-xl border border-blue-700/50">
+        <button id="tabBtnChat" type="button" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition bg-white text-blue-900 shadow-sm">
+          💬 Chatbot Tạo 5 Ý Tưởng
+        </button>
+        <button id="tabBtnSaved" type="button" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition text-blue-100 hover:bg-blue-800/50 flex items-center gap-1.5">
+          <span>⭐ Kho Đã Lưu</span>
+          <span id="savedCountBadge" class="bg-amber-400 text-slate-950 text-xs font-bold px-1.5 py-0.2 rounded-full">0</span>
+        </button>
+        <button id="tabBtnPrompt" type="button" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition text-blue-100 hover:bg-blue-800/50">
+          ⚙️ System Prompt (Gem/GPT)
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-4 py-4 flex flex-col">
+
+    <!-- VIEW 1: CHATBOT GENERATOR -->
+    <section id="viewChat" class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+      <!-- Left Sidebar: Channel DNA Config & Quick Presets -->
+      <aside class="lg:col-span-4 space-y-4">
+        <!-- NEW: Family & Product Photo Upload + Auto Character Recognition -->
+        <div class="bg-white rounded-2xl border-2 border-indigo-200 shadow-sm p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="font-extrabold text-sm text-indigo-950 flex items-center gap-1.5">
+              <span>📸</span> Tải Ảnh Gia Đình & Sản Phẩm
+            </h2>
+            <span id="visionStatusBadge" class="text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full">Tự động nhận diện</span>
+          </div>
+          <p class="text-xs text-slate-600">Tải ảnh gia đình để AI tự tách <strong>Bố, Mẹ, Chị Đại, Em Mít</strong> và tải ảnh sản phẩm để ghép trực tiếp vào <strong>Storyboard 4 khung hình</strong>:</p>
+
+          <!-- Upload Buttons Row -->
+          <div class="grid grid-cols-2 gap-2">
+            <label for="inputFamilyPhoto" class="cursor-pointer bg-indigo-50 hover:bg-indigo-100 border border-dashed border-indigo-300 rounded-xl p-2.5 text-center transition flex flex-col items-center justify-center gap-1">
+              <span class="text-lg">👨‍👩‍👧‍👦</span>
+              <span class="text-xs font-bold text-indigo-900">1. Tải ảnh Gia đình</span>
+              <span id="familyPhotoStatus" class="text-[10px] text-slate-500">Chưa có ảnh (Dùng mẫu)</span>
+              <input id="inputFamilyPhoto" type="file" accept="image/*" class="hidden" />
+            </label>
+
+            <label for="inputProductPhoto" class="cursor-pointer bg-emerald-50 hover:bg-emerald-100 border border-dashed border-emerald-300 rounded-xl p-2.5 text-center transition flex flex-col items-center justify-center gap-1">
+              <span class="text-lg">🛍️</span>
+              <span class="text-xs font-bold text-emerald-900">2. Tải ảnh Sản phẩm</span>
+              <span id="productPhotoStatus" class="text-[10px] text-slate-500">Chưa có ảnh (Dùng mẫu)</span>
+              <input id="inputProductPhoto" type="file" accept="image/*" class="hidden" />
+            </label>
+          </div>
+
+          <!-- Recognized 4 Family Members Grid -->
+          <div id="recognizedFamilyBox" class="bg-slate-50 rounded-xl p-2.5 border border-slate-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-slate-700">🎯 4 Nhân vật đã nhận diện:</span>
+              <button id="btnReAnalyzeFamily" type="button" class="text-[11px] text-blue-700 hover:underline font-semibold">🔄 Quét lại bằng AI</button>
+            </div>
+            <div class="grid grid-cols-4 gap-1.5 text-center" id="familyAvatarsGrid">
+              <div class="bg-white p-1.5 rounded-lg border border-slate-200 flex flex-col items-center">
+                <canvas id="avatarCanvasBo" width="80" height="80" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500 bg-blue-50"></canvas>
+                <span class="text-[11px] font-bold text-slate-800 mt-1">👨 Bố</span>
+                <span id="descBo" class="text-[9px] text-slate-500 leading-tight">Thư sinh, kính</span>
+              </div>
+              <div class="bg-white p-1.5 rounded-lg border border-slate-200 flex flex-col items-center">
+                <canvas id="avatarCanvasMe" width="80" height="80" class="w-12 h-12 rounded-full object-cover border-2 border-pink-500 bg-pink-50"></canvas>
+                <span class="text-[11px] font-bold text-slate-800 mt-1">👩 Mẹ</span>
+                <span id="descMe" class="text-[9px] text-slate-500 leading-tight">Trẻ đẹp, tóc dài</span>
+              </div>
+              <div class="bg-white p-1.5 rounded-lg border border-slate-200 flex flex-col items-center">
+                <canvas id="avatarCanvasChiDai" width="80" height="80" class="w-12 h-12 rounded-full object-cover border-2 border-amber-500 bg-amber-50"></canvas>
+                <span class="text-[11px] font-bold text-slate-800 mt-1">👧 Chị Đại</span>
+                <span id="descChiDai" class="text-[9px] text-slate-500 leading-tight">3.5t, lém lỉnh</span>
+              </div>
+              <div class="bg-white p-1.5 rounded-lg border border-slate-200 flex flex-col items-center">
+                <canvas id="avatarCanvasEmMit" width="80" height="80" class="w-12 h-12 rounded-full object-cover border-2 border-emerald-500 bg-emerald-50"></canvas>
+                <span class="text-[11px] font-bold text-slate-800 mt-1">👶 Em Mít</span>
+                <span id="descEmMit" class="text-[9px] text-slate-500 leading-tight">8 tháng, bụ bẫm</span>
+              </div>
+            </div>
+
+            <!-- Product Preview Strip -->
+            <div class="flex items-center gap-2.5 bg-white p-2 rounded-lg border border-slate-200">
+              <canvas id="productPreviewCanvas" width="80" height="80" class="w-12 h-12 rounded-lg border border-emerald-300 bg-emerald-50 shrink-0"></canvas>
+              <div class="text-left flex-1 min-w-0">
+                <div class="text-[11px] font-bold text-emerald-950 truncate" id="productDetectedTitle">Sản phẩm tham chiếu: Đang dùng mẫu mặc định</div>
+                <div class="text-[10px] text-slate-500" id="productDetectedDesc">Tự động gắn lên trang phục/tay nhân vật trong Storyboard</div>
+              </div>
+            </div>
+
+            <!-- NEW: Storyboard Aspect Ratio Selector (9:16 vs 16:9) -->
+            <div class="bg-white p-2 rounded-lg border border-indigo-200 flex items-center justify-between gap-2">
+              <label for="selectStoryboardRatio" class="text-[11px] font-bold text-indigo-950">📐 Kích thước ảnh Storyboard:</label>
+              <select id="selectStoryboardRatio" class="rounded-lg border border-indigo-300 bg-indigo-50 px-2.5 py-1 text-xs font-bold text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                <option value="9:16">📱 9:16 Dọc (Reels / TikTok)</option>
+                <option value="16:9">🖥️ 16:9 Ngang (YouTube / Flow)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- DNA Card -->
+        <div class="bg-white rounded-2xl border border-blue-100 shadow-sm p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="font-bold text-sm text-blue-950 flex items-center gap-1.5">
+              <span>🧬</span> Bộ lọc Logic & DNA Kênh
+            </h2>
+            <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Smart Context v2</span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div>
+              <label for="selectCategoryOverride" class="block font-semibold text-slate-700 mb-1">Phân loại bản chất Sản phẩm / Chủ đề:</label>
+              <select id="selectCategoryOverride" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                <option value="auto">🤖 Tự động nhận diện công dụng & ngữ cảnh</option>
+                <option value="diaper_hygiene">🧷 Bỉm / Tã / Khăn ướt / Kem chống hăm / Tắm gội bé</option>
+                <option value="food_nutrition">🍼 Đồ ăn dặm / Bánh kẹo / Sữa / Bình sữa / Vitamin</option>
+                <option value="baby_sleepwear">👶 Bộ Body sơ sinh / Túi ngủ / Chăn gối chống đạp chăn</option>
+                <option value="kid_fashion">👗 Váy công chúa / Quần áo đi học / Giày dép / Kẹp tóc bé</option>
+                <option value="mom_fashion">👚 Đầm ngủ Pijama lụa / Quần ống loe che bụng / Áo của Mẹ</option>
+                <option value="dad_fashion">👕 Áo thun boxy / Quần ống suông / Phụ kiện của Bố</option>
+                <option value="toys_household">🧸 Đồ chơi / Xe đẩy / Ghế ngồi / Đồ gia dụng trong nhà</option>
+                <option value="topic_only">🎬 Chủ đề tình huống thuần túy (Tự gợi ý đồ mặc kèm)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="selectCharacter" class="block font-semibold text-slate-700 mb-1">Nhân vật trọng tâm:</label>
+              <select id="selectCharacter" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                <option value="all">Tất cả (Phối hợp đúng vai trò 4 thành viên)</option>
+                <option value="chidai">Chị Đại (3.5 tuổi - Lý sự bà cụ non, mê bố)</option>
+                <option value="emmit">Em Nhỏ / Bé Mít (8 tháng - Bụ bẫm, xin vía)</option>
+                <option value="me">Người Mẹ (27 tuổi - Sành điệu, đóng vai nghiêm)</option>
+                <option value="bo">Người Bố (30 tuổi - Sợ vợ, chiều con gái rượu)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="selectGoal" class="block font-semibold text-slate-700 mb-1">Mục tiêu ưu tiên của 5 kịch bản:</label>
+              <select id="selectGoal" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                <option value="balanced">Chuẩn 4 trụ cột DNA (Vừa kéo view vừa chốt đơn)</option>
+                <option value="affiliate">Tối đa hóa chuyển đổi Shopee Affiliate</option>
+                <option value="global">Kéo View Quốc Tế (Ít thoại, hài hình thể)</option>
+                <option value="debate">Kích nổ tranh luận & Tua lại (Re-watch x5)</option>
+              </select>
+            </div>
+
+            <!-- Optional Gemini API Key for live LLM generation -->
+            <div class="pt-2 border-t border-slate-100">
+              <label for="geminiApiKey" class="block font-semibold text-slate-700 mb-1">Gemini API Key (Tuỳ chọn nếu muốn gọi AI trực tiếp):</label>
+              <input
+                id="geminiApiKey"
+                type="password"
+                placeholder="Để trống để dùng Bộ máy Logic Nội bộ v2.0..."
+                class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              />
+              <p class="text-[11px] text-slate-400 mt-1">Nếu không nhập Key, hệ thống dùng Engine Phân tích Ngữ cảnh 8 nhóm ngành hàng có sẵn.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Product / Topic Presets -->
+        <div class="bg-white rounded-2xl border border-blue-100 shadow-sm p-4">
+          <h3 class="font-bold text-sm text-blue-950 mb-2 flex items-center gap-1.5">
+            <span>⚡</span> Test thử các nhóm Sản phẩm khác nhau
+          </h3>
+          <p class="text-xs text-slate-500 mb-3">Bấm thử từng sản phẩm để kiểm chứng cách Bot đổi hoàn toàn kịch bản theo đúng công dụng thực tế:</p>
+
+          <div class="space-y-2">
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">🧷 Chăm sóc bé & Ăn dặm</div>
+            <div class="flex flex-wrap gap-1.5" id="presetProducts">
+              <button type="button" data-query="Bỉm Fast chống hăm siêu mỏng khô thoáng" class="preset-chip text-left text-xs bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-900 border border-emerald-200 px-2.5 py-1.5 rounded-xl transition font-semibold">
+                🧷 Bỉm Fast chống hăm (Đã fix logic!)
+              </button>
+              <button type="button" data-query="Bánh gạo ăn dặm hữu cơ tan nhanh cho bé" class="preset-chip text-left text-xs bg-amber-50 hover:bg-amber-600 hover:text-white text-amber-900 border border-amber-200 px-2.5 py-1.5 rounded-xl transition font-medium">
+                🍪 Bánh gạo ăn dặm cho bé
+              </button>
+              <button type="button" data-query="Bộ body liền thân hình thú giữ ấm chống đạp chăn" class="preset-chip text-left text-xs bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 px-2.5 py-1.5 rounded-xl transition font-medium">
+                👶 Bộ body liền thân chống đạp chăn
+              </button>
+              <button type="button" data-query="Váy công chúa dáng bí cho bé gái (10-30kg)" class="preset-chip text-left text-xs bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 px-2.5 py-1.5 rounded-xl transition font-medium">
+                👗 Váy công chúa dáng bí cho bé
+              </button>
+              <button type="button" data-query="Quần ống loe cạp cao che bụng mỡ cho mẹ sau sinh" class="preset-chip text-left text-xs bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 px-2.5 py-1.5 rounded-xl transition font-medium">
+                👖 Quần ống loe cạp cao che bụng mẹ
+              </button>
+              <button type="button" data-query="Bộ Pijama lụa latin mặc nhà cao cấp cho mẹ" class="preset-chip text-left text-xs bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 px-2.5 py-1.5 rounded-xl transition font-medium">
+                👚 Bộ Pijama lụa mặc nhà của mẹ
+              </button>
+              <button type="button" data-query="Gấu bông ru ngủ kiêm gối ôm cho bé" class="preset-chip text-left text-xs bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 px-2.5 py-1.5 rounded-xl transition font-medium">
+                🧸 Gấu bông ru ngủ cho bé
+              </button>
+              <button type="button" data-query="Áo khoác Cardigan len mỏng phối chân váy ngắn mùa thu đông" class="preset-chip text-left text-xs bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 px-2.5 py-1.5 rounded-xl transition font-medium">
+                🧥 Áo Cardigan thu đông & chân váy mẹ
+              </button>
+              <button type="button" data-query="Áo thun boxy cotton và quần jean ống suông cho bố" class="preset-chip text-left text-xs bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 px-2.5 py-1.5 rounded-xl transition font-medium">
+                👕 Combo áo thun boxy & quần ống suông bố
+              </button>
+            </div>
+
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider pt-2">🎬 Chủ đề tình huống thuần túy</div>
+            <div class="flex flex-wrap gap-1.5" id="presetTopics">
+              <button type="button" data-query="Chủ đề: Con gái mách bố khi bị mẹ mắng" class="preset-chip text-left text-xs bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-800 px-2.5 py-1.5 rounded-xl transition font-medium">
+                😭 Con gái mách bố khi bị mẹ mắng
+              </button>
+              <button type="button" data-query="Chủ đề: Bố quên đóng tiền học làm con gái đi học về khóc dỗi" class="preset-chip text-left text-xs bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-800 px-2.5 py-1.5 rounded-xl transition font-medium">
+                🎒 Bố quên đóng tiền học cho con
+              </button>
+              <button type="button" data-query="Chủ đề: Chị lớn tự ru mình ngủ khi mẹ bận chăm em nhỏ" class="preset-chip text-left text-xs bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-800 px-2.5 py-1.5 rounded-xl transition font-medium">
+                🥺 Chị lớn tự vỗ mông ru ngủ
+              </button>
+              <button type="button" data-query="Chủ đề: Bố bày trò lười biếng nhưng thông minh khi chăm con" class="preset-chip text-left text-xs bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-800 px-2.5 py-1.5 rounded-xl transition font-medium">
+                🤣 Bố bày trò độc lạ khi trông con
+              </button>
+              <button type="button" data-query="Chủ đề: Con gái ghen khi bố mẹ tình cảm hoặc mẹ hôn em" class="preset-chip text-left text-xs bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-800 px-2.5 py-1.5 rounded-xl transition font-medium">
+                😤 Tiểu tam nhí ghen khi bố mẹ ôm nhau
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Chat History & Input Box -->
+      <div class="lg:col-span-8 flex flex-col bg-white rounded-2xl border border-blue-100 shadow-sm overflow-hidden min-h-[640px] max-h-[84vh]">
+        <!-- Chat Header Bar -->
+        <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span class="font-bold text-xs sm:text-sm text-slate-800">Bộ máy Phân tích Ngữ cảnh Sản phẩm & Kịch bản DNA</span>
+          </div>
+          <button id="btnClearChat" type="button" class="text-xs text-slate-500 hover:text-red-600 font-medium px-2.5 py-1 rounded-lg hover:bg-slate-200/60 transition">
+            🗑️ Xóa lịch sử chat
+          </button>
+        </div>
+
+        <!-- Chat Messages Scroll Area -->
+        <div id="chatMessages" class="flex-1 p-4 overflow-y-auto custom-scrollbar space-y-4 bg-gradient-to-b from-slate-50/50 to-white">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Chat Input Form -->
+        <form id="chatForm" class="p-3 bg-slate-50 border-t border-slate-200">
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input
+              id="chatInput"
+              type="text"
+              placeholder="Nhập sản phẩm bất kỳ (VD: Bỉm Fast chống hăm, Bình sữa chống sặc, Quần ống loe mẹ...)..."
+              class="flex-1 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              required
+            />
+            <button
+              id="btnSubmitQuery"
+              type="submit"
+              class="bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-2 shrink-0"
+            >
+              <span>🚀 Tạo 5 Ý Tưởng</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </section>
+
+    <!-- VIEW 2: SAVED IDEAS BANK -->
+    <section id="viewSaved" class="hidden flex-1 bg-white rounded-2xl border border-blue-100 shadow-sm p-4 sm:p-6">
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200 mb-4">
+        <div>
+          <h2 class="text-lg font-extrabold text-blue-950">⭐ Kho Kịch Bản & Ý Tưởng Đã Lưu</h2>
+          <p class="text-xs text-slate-500">Danh sách các kịch bản bạn đã đánh dấu lưu để đưa vào sản xuất hàng loạt</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btnExportSavedTxt" type="button" class="text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-xl transition">
+            📥 Tải file Kịch bản (.txt)
+          </button>
+          <button id="btnClearSaved" type="button" class="text-xs font-semibold bg-red-50 hover:bg-red-100 text-red-700 px-3 py-2 rounded-xl transition">
+            Xóa tất cả
+          </button>
+        </div>
+      </div>
+
+      <div id="savedListContainer" class="space-y-4"></div>
+    </section>
+
+    <!-- VIEW 3: SYSTEM PROMPT FOR GEMINI GEMS / CUSTOM GPT -->
+    <section id="viewPrompt" class="hidden flex-1 bg-white rounded-2xl border border-blue-100 shadow-sm p-4 sm:p-6">
+      <div class="max-w-4xl mx-auto space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-200">
+          <div>
+            <h2 class="text-lg font-extrabold text-blue-950">⚙️ System Prompt Chuẩn (Có bước Kiểm duyệt Logic Sản phẩm)</h2>
+            <p class="text-xs text-slate-600">Sao chép câu lệnh hệ thống dưới đây dán vào mục "Instructions" của Gemini Gems hoặc ChatGPT Custom GPT.</p>
+          </div>
+          <button id="btnCopySystemPrompt" type="button" class="bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm transition">
+            📋 Sao chép System Prompt
+          </button>
+        </div>
+
+        <pre id="systemPromptText" class="bg-slate-900 text-slate-100 p-4 rounded-2xl text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap font-mono border border-slate-700">Bạn là "Chuyên gia Biên kịch & Chiến lược AI Affiliate" theo đúng bộ DNA của kênh Facebook triệu follow "Linh Mít Daily".
+
+QUY TẮC BẮT BUỘC SỐ 1 - KIỂM TRA TÍNH HỢP LÝ VẬT LÝ CỦA SẢN PHẨM (SANITY CHECK TRƯỚC KHI VIẾT):
+Trước khi viết bất kỳ kịch bản nào, bạn PHẢI phân tích rõ 4 yếu tố của sản phẩm/chủ đề người dùng nhập vào:
+1. Bản chất vật lý của sản phẩm là gì? (Đồ mặc trên người / Bỉm tã vệ sinh / Đồ ăn thức uống / Đồ chơi - Gia dụng / Chủ đề tình huống).
+2. Ai là người sử dụng trực tiếp hợp lý trong gia đình 4 người?
+   - Sản phẩm sơ sinh (Bỉm, tã, kem chống hăm, bình sữa, body sơ sinh): Người dùng trực tiếp là Em Mít (8 tháng tuổi); Bố, Mẹ và Chị Đại (3.5 tuổi) là người thay bỉm, kiểm tra mông em, pha sữa hoặc sai vặt nhau. TUYỆT ĐỐI KHÔNG cho nhân vật ăn/nhai các sản phẩm không phải đồ ăn, và không cho người lớn mặc đồ của trẻ con.
+   - Sản phẩm ăn dặm (Bánh gạo, váng sữa, kẹo vitamin): Dùng cho kịch bản bố ăn vụng/đút "hối lộ" bịt đầu mối, hoặc chị đút cho em ăn.
+   - Trang phục trẻ em (Váy công chúa, đồ bộ, giày dép): Chị Đại mặc đi học, xoay vòng buộc tóc, dỗi bố quên đóng tiền học.
+   - Trang phục của Mẹ (Pijama lụa, quần ống loe cạp cao, áo sơ mi, cardigan): Mẹ mặc tôn dáng, che khuyết điểm vòng 2 (sau khi bị con gái trêu "bụng mẹ to"), hoặc rón rén trốn con sang phòng bố.
+3. Nỗi đau (Pain Point) và Điểm bán hàng độc nhất (USP) của sản phẩm là gì? (VD: Bỉm chống hăm -> giải quyết việc em bé ngủ không ngon giấc, hăm đỏ mông, tràn bỉm ban đêm, bố ngại thay bỉm).
+4. Làm sao đưa hình ảnh bao bì hoặc sản phẩm thực tế vào bước Reference AI (Bước 2 & 3) một cách tự nhiên nhất?
+
+CẤU TRÚC ĐẦU RA (TRÌNH BÀY TRƯỚC KHI VÀO 5 Ý TƯỞNG):
+- Bước A: Bảng "Kiểm tra Logic Sản phẩm & Ngữ cảnh" (Nhóm ngành hàng | Nhân vật sử dụng trực tiếp | USP cần làm nổi bật | Hành động cấm kỵ cần tránh).
+- Bước B: Xuất 5 Ý tưởng kịch bản 15 giây hoàn toàn khác nhau, mỗi ý tưởng khai thác 1 góc độ tình huống hợp lý 100% với công dụng thực tế của sản phẩm đó, gồm:
+  1. Tiêu đề (Caption chuẩn) + #virals #baby #cute
+  2. Tham chiếu Sản phẩm AI (Bước 2 & 3) + Sản phẩm bán kèm (Cross-sell)
+  3. Kịch bản 3 nhịp (0-3s Hook | 4-10s Twist | 11-15s Punchline + tiếng cười của mẹ)
+  4. Vết gợn AI cài cắm hợp ngữ cảnh (Re-watch Bait)
+  5. Bộ Comment Seeding 30 phút đầu (Admin ghim link + Nick phụ hỏi đúng nỗi đau sản phẩm).</pre>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2">
+    <span>✅</span>
+    <span id="toastText">Đã sao chép vào bộ nhớ tạm!</span>
+  </div>
+
+  <script>
+    function loadSavedIdeas() {
+      try {
+        const raw = localStorage.getItem('linhmit_dna_saved_ideas_v2');
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function storeSavedIdeas(list) {
+      try {
+        localStorage.setItem('linhmit_dna_saved_ideas_v2', JSON.stringify(list));
+      } catch (e) {}
+    }
+
+    let savedIdeas = loadSavedIdeas();
+    let generatedBatches = {};
+
+    function copyTextToClipboard(text, message) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          showToast(message || 'Đã sao chép vào bộ nhớ tạm!');
+        }).catch(function() {
+          fallbackCopy(text, message);
+        });
+      } else {
+        fallbackCopy(text, message);
+      }
+    }
+
+    function fallbackCopy(text, message) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast(message || 'Đã sao chép vào bộ nhớ tạm!');
+      } catch (e) {
+        showToast('Không thể sao chép tự động.');
+      }
+      document.body.removeChild(ta);
+    }
+
+    let toastTimer = null;
+    function showToast(msg) {
+      const box = document.getElementById('toastBox');
+      const txt = document.getElementById('toastText');
+      txt.textContent = msg;
+      box.classList.remove('hidden');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() {
+        box.classList.add('hidden');
+      }, 2400);
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // =========================================================================
+    // DEEP SEMANTIC CLASSIFIER & SANITY CHECK ENGINE
+    // =========================================================================
+    function classifyProductOrTopic(rawInput, overrideCat) {
+      const cleanName = rawInput.replace(/^(chủ đề|sản phẩm|sp):\s*/i, '').trim();
+      const lower = cleanName.toLowerCase();
+
+      let category = overrideCat !== 'auto' ? overrideCat : 'kid_fashion';
+
+      if (overrideCat === 'auto') {
+        if (/(bỉm|tã|chống hăm|kem hăm|khăn ướt|khăn khô|sữa tắm|dầu gội|chậu tắm|vệ sinh|rơ lưỡi|xịt mũi)/.test(lower)) {
+          category = 'diaper_hygiene';
+        } else if (/(bánh|kẹo|ăn dặm|sữa|bình sữa|núm ti|cháo|váng sữa|phô mai|trái cây|ngũ cốc|vitamin|siro|men vi sinh|ghế ăn dặm|yếm ăn)/.test(lower)) {
+          category = 'food_nutrition';
+        } else if (/(body|túi ngủ|đạp chăn|nhộng chũn|chăn|gối|nôi|cũi|màn chụp)/.test(lower)) {
+          category = 'baby_sleepwear';
+        } else if (/(ống loe|che bụng|pijama|đồ ngủ mẹ|váy ngủ|sơ mi|cardigan|đầm mẹ|áo mẹ|chân váy|nước hoa|son|mỹ phẩm|túi xách nữ)/.test(lower)) {
+          category = 'mom_fashion';
+        } else if (/(áo bố|boxy|quần jean|ống suông nam|đồ nam|áo polo|sơ mi nam|giày nam|thắt lưng)/.test(lower)) {
+          category = 'dad_fashion';
+        } else if (/(gấu bông|đồ chơi|xe đẩy|xe chòi chân|cầu trượt|sách|truyện|bút|ba lô|cặp sách|máy hút|quạt|robot|ghế ô tô)/.test(lower)) {
+          category = 'toys_household';
+        } else if (/^(chủ đề|tình huống|kịch bản)/i.test(rawInput) || /(mách bố|mẹ mắng|tiền học|buộc tóc|ru ngủ|ghen|sợ gián|trốn con|oẳn tù tì)/.test(lower)) {
+          category = 'topic_only';
+        } else {
+          category = 'kid_fashion';
+        }
+      }
+
+      const metadataMap = {
+        diaper_hygiene: {
+          label: '🧷 Chăm sóc vệ sinh & Chống hăm cho bé (Bỉm / Tã / Kem hăm)',
+          directUser: 'Em Mít (8 tháng tuổi) mặc trực tiếp; Bố, Mẹ và Chị Đại là người thay bỉm & kiểm tra độ khô thoáng.',
+          uspFocus: 'Siêu mỏng nhẹ, thấm hút nhanh không tràn ban đêm, chun êm không hằn đỏ, mông bé khô thoáng hết hăm nên không quấy khóc.',
+          sanityRule: 'Đã khóa kiểm duyệt: Bỉm/tã chỉ dùng cho tình huống thay bỉm, kiểm tra bỉm đầy, ngủ xuyên đêm hoặc bé bò/nhún nhảy (Tuyệt đối KHÔNG gắn vào kịch bản ăn uống hay cho người lớn mặc).'
+        },
+        food_nutrition: {
+          label: '🍼 Thực phẩm ăn dặm / Dinh dưỡng / Bình sữa cho bé',
+          directUser: 'Chị Đại (3.5 tuổi) và Em Mít (8 tháng tuổi) ăn/uống trực tiếp; Bố hay ăn vụng hoặc dùng để "hối lộ" con gái.',
+          uspFocus: 'Thơm ngon, dễ tan, giàu dinh dưỡng, bé thích mê, cứu tinh mỗi khi bé khóc dỗi hoặc biếng ăn.',
+          sanityRule: 'Đã khóa kiểm duyệt: Sản phẩm ăn uống được đặt đúng vào bàn ăn/phòng khách với hành động đút ăn, ăn vụng bịt đầu mối, hoặc chia phần giữa hai chị em.'
+        },
+        baby_sleepwear: {
+          label: '👶 Đồ ngủ cho bé / Bộ Body liền thân / Chống đạp chăn',
+          directUser: 'Em Mít (8 tháng) và Chị Đại (3.5 tuổi) mặc khi nằm trên giường ngủ.',
+          uspFocus: 'Giữ ấm bụng suốt đêm dù bé xoay 360 độ đạp chăn, chất vải mềm mịn, phom dáng đáng yêu "xin vía".',
+          sanityRule: 'Đã khóa kiểm duyệt: Đặt đúng trong bối cảnh phòng ngủ ban đêm/ngủ trưa, xoay quanh thói quen đạp chăn và tự vỗ mông ru ngủ.'
+        },
+        kid_fashion: {
+          label: '👗 Thời trang trẻ em (Váy công chúa / Set đi học / Phụ kiện bé)',
+          directUser: 'Chị Đại (3.5 tuổi) diện đi học mẫu giáo, đi dạo phố hoặc đứng trước gương cùng bố mẹ.',
+          uspFocus: 'Phom dáng phồng xinh như tiểu thư, màu sắc tôn da, bé mặc vào tự tin lý sự và tạo dáng.',
+          sanityRule: 'Đã khóa kiểm duyệt: Đặt vào bối cảnh chuẩn bị đi học, đi chơi cuối tuần hoặc làm điệu trước gương (Không nhầm sang đồ sơ sinh hay đồ ăn).'
+        },
+        mom_fashion: {
+          label: '👚 Thời trang của Mẹ (Pijama lụa / Quần ống loe che bụng / Cardigan)',
+          directUser: 'Người Mẹ (27 tuổi) mặc trực tiếp để tôn dáng hoặc che khuyết điểm vòng 2 sau sinh.',
+          uspFocus: 'Tôn dáng, che bụng mỡ khéo léo, chất liệu sang trọng khiến bố mê mẩn và các chị em hỏi xin link.',
+          sanityRule: 'Đã khóa kiểm duyệt: Chỉ Người Mẹ mặc; kết hợp tình huống con gái trêu bụng mẹ hoặc bố khen vợ trẻ đẹp.'
+        },
+        dad_fashion: {
+          label: '👕 Thời trang của Bố (Áo thun boxy / Quần ống suông nam)',
+          directUser: 'Người Bố (30 tuổi) mặc ở nhà hoặc đi dạo phố cùng vợ con.',
+          uspFocus: 'Phom rộng trẻ trung, lịch sự, dễ phối đồ, giải quyết câu chuyện "ông bố quanh năm chỉ có 1 bộ đồ".',
+          sanityRule: 'Đã khóa kiểm duyệt: Chỉ Người Bố mặc; khai thác câu chuyện vợ sắm đồ mới cho chồng hoặc hai bố con đồng minh.'
+        },
+        toys_household: {
+          label: '🧸 Đồ chơi / Gấu bông / Phụ kiện & Gia dụng gia đình',
+          directUser: 'Hai bé chơi đùa hoặc Bố Mẹ sử dụng làm trợ thủ trông con trong căn hộ.',
+          uspFocus: 'Thu hút sự chú ý của bé ngay lập tức, giúp bố mẹ trông con nhàn tênh và tạo tiếng cười gia đình.',
+          sanityRule: 'Đã khóa kiểm duyệt: Sử dụng làm đạo cụ tương tác vật lý trong tay nhân vật (cầm, ôm, chơi đùa), không gắn sai thành quần áo.'
+        },
+        topic_only: {
+          label: '🎬 Chủ đề tình huống Gia đình (Tự động chọn trang phục Shopee khớp cảnh)',
+          directUser: 'Cả gia đình 4 người diễn xuất theo tình huống; hệ thống tự động ghép trang phục phù hợp với bối cảnh phòng.',
+          uspFocus: 'Kịch bản cảm xúc/hài hước đẩy view cao, kết hợp bán chéo (Cross-sell) trang phục nhân vật đang mặc trên người.',
+          sanityRule: 'Đã khóa kiểm duyệt: Tách biệt rõ "Tình huống câu chuyện" và "Trang phục nhân vật mặc" để không ghép chữ vô nghĩa.'
+        }
+      };
+
+      return {
+        category: category,
+        item: cleanName,
+        meta: metadataMap[category]
+      };
+    }
+
+    // =========================================================================
+    // CATEGORY-SPECIFIC 5-IDEA GENERATOR (100% CONTEXTUALLY LOGICAL)
+    // =========================================================================
+    function buildContextualIdeas(ctx) {
+      const item = ctx.item;
+      const cat = ctx.category;
+      const batchId = 'batch_' + Date.now();
+      let ideas = [];
+
+      if (cat === 'diaper_hygiene') {
+        ideas = [
+          {
+            id: batchId + '_1',
+            pillar: 'Trụ cột 1 (40% DNA): Đồng minh Bố & Con gái / Đùn đẩy ca khó',
+            caption: 'Khi em Mít tới công chuyện... và pha xử lý của 2 bố con 🤣 #virals #baby #cute',
+            refGuide: 'Đưa ảnh bao bì & chiếc "' + item + '" vào làm đạo cụ trên tay Bố và cho Em Mít mặc trực tiếp. Ghim kèm: Bộ body liền thân của Em Mít + Đồ bộ mặc nhà của Chị Đại.',
+            hook: '0–3s (Hook): Em Mít đang nằm chơi trên giường bỗng nhiên rặn đỏ mặt. Bố và Chị Đại ngồi cạnh nhìn nhau "đứng hình", bịt mũi rồi lập tức đưa tay ra chơi oẳn tù tì xem ai phải thay bỉm cho em.',
+            twist: '4–10s (Twist): Bố thua oẳn tù tì mặt méo xệch. Chị Đại nhanh nhảu chạy đi lấy chiếc "' + item + '" đưa tận tay bố rồi vỗ vai động viên kiểu bà cụ non: "Ba cứ mạnh dạn lên! Mẹ đổi sang loại chống hăm thấm hút nhanh này rồi, không bị tràn ra tay ba đâu mà sợ!".',
+            punchline: '11–15s (Punchline): Bố vừa thay xong trong 3 giây nhẹ tênh thì thở phào, còn người mẹ đứng quay phim bật cười khúc khích trước màn "chỉ đạo" của cô con gái lớn.',
+            aiQuirk: 'Cài cắm vết gợn AI: Lúc Chị Đại rút chiếc "' + item + '" từ trong bịch ra đưa cho bố, miếng bỉm bung mở phom nhanh như ảo thuật để khán giả bình luận soi kỹ thuật AI.',
+            adminSeed: 'Cứu tinh cho các ông bố sợ thay bỉm đây ạ :)) "' + item + '" siêu mỏng thấm hút nhanh giữ mông em khô thoáng không lo hăm đỏ, các mom tham khảo ở đây nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Bà chị cả chỉ đạo ông bố chuyên nghiệp thật sự 😂 Mà công nhận dòng "' + item + '" này mỏng mát thật, bé nhà mình trộm vía hết hẳn hăm đỏ! | [Clone 2]: Xin link "' + item + '" với shop ơi!'
+          },
+          {
+            id: batchId + '_2',
+            pillar: 'Trụ cột 2 (30% DNA): Tình chị em & Giấc ngủ xuyên đêm không quấy khóc',
+            caption: 'Bí quyết để cả nhà ngủ ngon tới sáng là đây ạ 🥺 #virals #baby #cute',
+            refGuide: 'Em Mít mặc "' + item + '" kết hợp áo sơ sinh mỏng để lộ phần cạp chun co giãn êm ái trên giường ngủ. Ghim kèm: Pijama lụa của Mẹ + Váy ngủ của Chị Đại.',
+            hook: '0–3s (Hook): Cảnh phòng ngủ ban đêm ấm áp. Chị Đại thức giấc rón rén bò sang cạnh chỗ Em Mít đang nằm ngủ say sưa.',
+            twist: '4–10s (Twist): Chị Đại lấy bàn tay nhỏ xíu sờ nhẹ kiểm tra chiếc "' + item + '" của em rồi quay ra thì thầm với mẹ: "Mẹ ơi, em Mít mặc bỉm này êm mông không bị ướt nên ngủ ngoan chưa kìa, không khóc nhè làm con thức giấc nữa rồi!".',
+            punchline: '11–15s (Punchline): Nói xong cô bé thơm nhẹ lên má em một cái rồi nằm xuống tự vỗ đùi ru mình ngủ tiếp cực kỳ đáng yêu.',
+            aiQuirk: 'Cài cắm vết gợn AI: Em Mít đang ngủ say bỗng nhoẻn miệng cười mỉm đúng lúc chị lớn sờ kiểm tra bỉm, tạo khoảnh khắc "tan chảy" khiến người xem tua lại.',
+            adminSeed: 'Trộm vía từ ngày đổi sang "' + item + '" là em Mít ngủ một mạch tới sáng không bị hăm hay tràn bỉm nữa ạ, các mẹ bỉm tham khảo tại đây nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Thương chị hai quá, ngủ dậy vẫn nhớ kiểm tra bỉm cho em ❤️ Loại "' + item + '" này đóng ban đêm được mấy tiếng vậy mom? | [Clone 2]: Biết là AI nhưng biểu cảm 2 chị em cưng muốn xỉu!'
+          },
+          {
+            id: batchId + '_3',
+            pillar: 'Trụ cột 3 (15% DNA): Hài hình thể Global Viral (Test độ mỏng nhẹ & chống tràn)',
+            caption: 'Mặc như không mặc... đua tốc độ luôn ạ 🤣 #virals #baby #cute',
+            refGuide: 'Em Mít mặc độc chiếc "' + item + '" trắng tinh vừa vặn phối cùng áo thun sáng màu, khoe trọn đôi chân bụ bẫm khi vận động.',
+            hook: '0–3s (Hook): Không cần lời thoại dài. Bố đặt chiếc điều khiển tivi (hoặc món đồ chơi) ở đầu thảm, Em Mít mặc "' + item + '" lập tức bật chế độ "bò tên lửa" lao về phía trước.',
+            twist: '4–10s (Twist): Chị Đại thấy em bò nhanh quá liền nằm xuống bò đua theo. Cả hai chị em vừa bò vừa nhún nhảy lắc mông theo nhạc cực sung mà chiếc "' + item + '" của em vẫn ôm khít gọn gàng, không hề bị xệ hay phồng cộm.',
+            punchline: '11–15s (Punchline): Em Mít về đích trước rồi ngồi phịch xuống vỗ tay cười khanh khách, còn Chị Đại nằm thở dốc giả vờ ăn vạ.',
+            aiQuirk: 'Cài cắm vết gợn AI: Tốc độ bò của Em Mít lúc tăng tốc nhanh vọt lên đầy hài hước như phim hoạt hình, kéo hàng nghìn bình luận quốc tế (Anh, Thái, Indo) vào thả haha.',
+            adminSeed: 'Bỉm mỏng nhẹ ôm vừa vặn nên em Mít bò đua cỡ nào cũng không lo xệ hay cộm háng ạ, link "' + item + '" chính hãng mẹ để ở đây nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Nhìn cái mông đóng bỉm bò nhanh như sóc cưng xỉu 😂 | [Clone 2]: Bỉm hãng gì mà nhìn mỏng gọn thế shop ơi, không thấy bị xệ chút nào luôn!'
+          },
+          {
+            id: batchId + '_4',
+            pillar: 'Trụ cột 4 (15% DNA): Vợ chồng trẻ & Thử thách ông bố bỉm sữa',
+            caption: 'Chồng bảo ở nhà thay bỉm cho con nhàn lắm... và cái kết 🤣 #virals #baby #cute',
+            refGuide: 'Người Mẹ diện set đồ mặc nhà tôn dáng cầm bịch "' + item + '" giao cho Bố đang mặc áo thun boxy.',
+            hook: '0–3s (Hook): Bố đang ngồi bấm điện thoại phán câu xanh rờn: "Có mỗi việc thay bỉm chăm con mà vợ cứ kêu mệt". Mẹ lập tức bế Em Mít và đặt bịch "' + item + '" vào lòng bố.',
+            twist: '4–10s (Twist): Tưởng bố sẽ luống cuống, ai ngờ nhờ thiết kế đai chun thông minh của "' + item + '", bố chỉ mất đúng 5 giây kéo nhẹ là mặc xong ngay ngắn cho con, rồi quay sang nháy mắt với vợ: "Đấy, bỉm xịn thế này nhắm mắt anh cũng thay được!".',
+            punchline: '11–15s (Punchline): Chị Đại đứng cạnh liền bồi thêm câu chốt: "Vậy từ mai ba nhận trọn gói rửa mông thay bỉm cho em Mít cả tháng luôn nha!", làm ông bố tắt điện.',
+            aiQuirk: 'Cài cắm vết gợn AI: Động tác kéo đai chun bỉm của bố mượt và nhanh đến mức nhìn như tua nhanh, kích thích các mẹ bỉm tag chồng vào học hỏi.',
+            adminSeed: 'Có "' + item + '" đai chun co giãn mềm mại này thì các bố vụng về mấy cũng thay bỉm trong 5 giây ạ, các mom sắm ngay cho nhàn thân nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: @Tên_Chồng vào học tập bố nhà người ta thay bỉm kìa anh ơi 😂 | [Clone 2]: Con gái chốt câu cuối làm ông bố hết đường lui luôn kkk!'
+          },
+          {
+            id: batchId + '_5',
+            pillar: 'Trụ cột 5 (Kịch bản Cú Twist): "Thanh tra nhí" kiểm định chất lượng mông em',
+            caption: 'Chuyên gia kiểm định khó tính nhất nhà là đây 🤣 #virals #baby #cute',
+            refGuide: 'Chị Đại cầm miếng "' + item + '" trên tay kiểm tra bề mặt bông, bên cạnh là Em Mít đang nằm ngoan.',
+            hook: '0–3s (Hook): Bố vừa đi siêu thị về xách theo túi đồ. Chị Đại chạy ra lục túi lấy ngay bịch "' + item + '" ra mở kiểm tra với gương mặt cực kỳ nghiêm túc.',
+            twist: '4–10s (Twist): Cô bé áp thử miếng bỉm lên má mình để test độ mềm rồi gật gù phán với bố: "Ừm, đúng loại "' + item + '" mềm mịn chống hăm mẹ dặn rồi đó! Chứ ba mà mua nhầm loại cứng làm đỏ mông em Mít là tối nay ba xác định ra sofa ngủ nha!".',
+            punchline: '11–15s (Punchline): Ông bố chắp tay vái "nóc nhà nhí" còn người mẹ phía sau bật cười thành tiếng vì độ "bà cụ non" của con gái.',
+            aiQuirk: 'Cài cắm vết gợn AI: Biểu cảm nhíu mày gật gù thẩm định chất lượng bỉm của cô bé 3 tuổi giống hệt người lớn, tạo hiệu ứng viral mạnh.',
+            adminSeed: 'Qua được vòng kiểm duyệt của chị đại là các cô chú yên tâm tuyệt đối nha :)) Link "' + item + '" mềm mịn chuẩn xịn cho bé ở đây ạ: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Trời ơi cái mặt bả áp miếng bỉm lên má kiểm tra độ mềm nhìn như bà cụ non 😂 | [Clone 2]: Dùng "' + item + '" này công nhận mặt bông mềm thật, chun bụng không bị lằn đỏ!'
+          }
+        ];
+      } else if (cat === 'food_nutrition') {
+        ideas = [
+          {
+            id: batchId + '_1',
+            pillar: 'Trụ cột 1 (40% DNA): Đồng lõa Bố & Con gái / Đút ăn "Bịt đầu mối"',
+            caption: 'Cũng thích lại còn ngạiiii... đúng là nghiện còn ngại 🤣 #virals #baby #cute',
+            refGuide: 'Bố và Chị Đại cầm trực tiếp "' + item + '" trên tay. Ghim kèm: Váy công chúa của bé + Áo thun boxy của bố.',
+            hook: '0–3s (Hook): Chị Đại bắt quả tang bố đang lén bóc "' + item + '" của hai chị em ra ăn vụng trong bếp, liền há miệng định hét to: "Mẹ ơiii, ba ăn hết phần của con!".',
+            twist: '4–10s (Twist): Bố nhanh như chớp đút ngay một miếng "' + item + '" thơm ngon vào miệng con gái để "bịt đầu mối". Cô bé vừa chạm vị ngon liền lập tức phanh gấp, ngậm chặt miệng không gọi mẹ nữa.',
+            punchline: '11–15s (Punchline): Cô bé vừa nhai nhồm nhoàm vừa liếc mắt nhìn bố tủm tỉm cười ngại ngùng đầy ăn ý.',
+            aiQuirk: 'Cài cắm vết gợn AI: Miếng "' + item + '" lúc bố đưa tay đút nhanh vào miệng bé nhìn hơi lạ mắt để khán giả tua đi tua lại 7 lần xem bố đút món gì.',
+            adminSeed: 'Cỡ này còn ngại... đúng là nghiện còn ngại :)) "' + item + '" thơm ngon bổ dưỡng làm hai bố con mê tít ở đây nha các cô chú ơi: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Cái khúc được đút ăn xong liếc mắt cười với ba nhìn cưng muốn xỉu 😂 | [Clone 2]: Loại "' + item + '" này bé mấy tháng ăn được vậy shop ơi?'
+          },
+          {
+            id: batchId + '_2',
+            pillar: 'Trụ cột 2 (30% DNA): Tình chị em / Chị đút cho em 1 miếng, chị ăn ké 2 miếng',
+            caption: 'Chị gái chăm em ăn... mà sao em nhìn chị nuốt nước bọt vậy 🤣 #virals #baby #cute',
+            refGuide: 'Chị Đại cầm hộp/gói "' + item + '" ngồi đút cho Em Mít trên ghế sofa sáng màu.',
+            hook: '0–3s (Hook): Mẹ nhờ Chị Đại trông em và cho Em Mít ăn "' + item + '". Chị lớn ngồi ngay ngắn cầm đồ ăn trên tay cực kỳ ra dáng chị cả.',
+            twist: '4–10s (Twist): Cứ đút cho em Mít được 1 miếng nhỏ là Chị Đại lại tự thưởng vào miệng mình 2 miếng to kèm lời giải thích tỉnh bơ: "Để chị ăn thử trước xem có bị nóng không rồi mới cho em ăn nha!".',
+            punchline: '11–15s (Punchline): Em Mít ngồi nhìn chị nhai ngon lành với đôi mắt tròn xoe ngơ ngác làm mẹ đứng quay phim cười ngặt nghẽo.',
+            aiQuirk: 'Cài cắm vết gợn AI: Tốc độ nhai liến thoắng của Chị Đại đối lập với vẻ mặt đứng hình của Em Mít tạo meme hài hước.',
+            adminSeed: 'Tại "' + item + '" ngon quá nên chị đại không kìm lòng được đấy ạ :)) Các mom mua cho bé ăn dặm vừa ngon vừa đủ chất ở link này nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Giao trứng cho ác là có thật, chị ăn hộ em hết nửa hộp luôn 🤣 | [Clone 2]: Bé nhà mình biếng ăn mà đổi sang "' + item + '" này cũng đòi ăn suốt!'
+          },
+          {
+            id: batchId + '_3',
+            pillar: 'Trụ cột 3 (15% DNA): Hài hình thể Global Viral (Đang khóc mếu thấy đồ ăn là nín bặt)',
+            caption: 'Tốc độ lật mặt nhanh hơn lật bánh tráng là đây 🤣 #virals #baby #cute',
+            refGuide: 'Cận cảnh gương mặt phúng phính của bé và bao bì "' + item + '" xuất hiện rõ nét.',
+            hook: '0–3s (Hook): Bé đang ngồi khóc mếu máo, hai hàng nước mắt lăn dài ăn vạ bố mẹ.',
+            twist: '4–10s (Twist): Mẹ không nói một lời, chỉ nhẹ nhàng giơ "' + item + '" ra trước mặt. Ngay lập tức trong 0.5 giây, bé nín bặt, lau vội nước mắt rồi nhoẻn miệng cười tươi rói đưa hai tay ra xin.',
+            punchline: '11–15s (Punchline): Nước mắt vẫn còn đọng trên mi nhưng miệng đã cười tít mắt tận hưởng món ngon — không cần phụ đề khán giả quốc tế xem cũng bật cười.',
+            aiQuirk: 'Cài cắm vết gợn AI: Pha chuyển biểu cảm từ khóc sang cười trong tích tắc của AI tạo hiệu ứng thị giác cực mạnh.',
+            adminSeed: 'Bảo bối dỗ con nín khóc trong 1 nốt nhạc của mẹ đây ạ: "' + item + '" thơm ngon chuẩn vị cho bé yêu: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Đúng kiểu nước mắt cá sấu, thấy đồ ăn ngon là quên luôn nỗi buồn 😂 | [Clone 2]: Cho mình xin link mua "' + item + '" chính hãng với ạ!'
+          },
+          {
+            id: batchId + '_4',
+            pillar: 'Trụ cột 4 (15% DNA): Vợ chồng trẻ & Nghi án ai ăn hết đồ của con',
+            caption: 'Trong nhà có nội gián rồi các bác ơi 🤣 #virals #baby #cute',
+            refGuide: 'Người Mẹ mặc đồ tôn dáng cầm hộp "' + item + '" đã vơi một nửa đứng thẩm vấn hai bố con.',
+            hook: '0–3s (Hook): Mẹ cầm gói "' + item + '" bước ra phòng khách hỏi giọng nghiêm: "Mẹ mới mua cho em Mít hôm qua mà hôm nay ai ăn hết một nửa rồi?".',
+            twist: '4–10s (Twist): Bố và Chị Đại đang ngồi cạnh nhau lập tức đồng thanh chỉ tay sang đối phương. Chị Đại nhanh miệng khai luôn: "Hôm qua lúc mẹ đi tắm, ba bảo ăn thử xem có ngon không rồi ba ăn hết 3 cái liền đó mẹ!".',
+            punchline: '11–15s (Punchline): Ông bố đứng hình vì bị "đồng minh nhí" bán đứng trong 1 nốt nhạc.',
+            aiQuirk: 'Cài cắm vết gợn AI: Trên khóe miệng của cả bố lẫn con gái vẫn còn dính một chút vụn bánh/vệt sữa làm bằng chứng không thể chối cãi.',
+            adminSeed: 'Mua cho con mà bố còn mê hơn cả con là có thật ạ :)) Link "' + item + '" thơm ngon cho cả nhà cùng mê ở đây nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Đồng minh này hơi tốn kém nha ba, bán đứng ba không chớp mắt luôn 🤣 | [Clone 2]: Nhìn hai bố con dính vụn trên mép kìa cưng xỉu!'
+          },
+          {
+            id: batchId + '_5',
+            pillar: 'Trụ cột 5 (Kịch bản Cú Twist): Lý sự "Bà cụ non" đòi quyền lợi ăn vặt',
+            caption: 'Lý lẽ cỡ này thì mẹ cãi làm sao lại ạ 🤣 #virals #baby #cute',
+            refGuide: 'Chị Đại ôm khư khư "' + item + '" trước ngực, đối đáp lém lỉnh với mẹ.',
+            hook: '0–3s (Hook): Mẹ bảo: "Hôm nay con ăn đủ rồi, cất "' + item + '" đi mai ăn tiếp". Cô bé lập tức ôm chặt gói đồ vào lòng mặt đầy quyết tâm.',
+            twist: '4–10s (Twist): Bé ngước lên lý sự: "Mẹ ơi, trong bụng con có 2 ngăn: một ngăn chứa cơm, còn một ngăn riêng chỉ để chứa "' + item + '" thôi! Ngăn đó đang đói meo đây này!".',
+            punchline: '11–15s (Punchline): Cả bố và mẹ đều bật cười chịu thua trước kiến thức "giải phẫu học" của cô công chúa 3 tuổi.',
+            aiQuirk: 'Cài cắm vết gợn AI: Bàn tay nhỏ xíu của bé chỉ vào bụng chia làm 2 ngăn cực kỳ khớp nhịp lời thoại.',
+            adminSeed: 'Dạ món làm chị đại phải dành riêng "ngăn bụng thứ 2" nằm ở đây ạ, các cô chú mua cho bé ở nhà thưởng thức nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Lớn lên đi làm luật sư hoặc chuyên gia dinh dưỡng đi con ơi, lý sự hết nước chấm 😂 | [Clone 2]: Món "' + item + '" này vị có ngọt gắt không shop?'
+          }
+        ];
+      } else if (cat === 'mom_fashion') {
+        ideas = [
+          {
+            id: batchId + '_1',
+            pillar: 'Trụ cột 1 (40% DNA): Con gái "vừa đấm vừa xoa" & Màn biến hình che khuyết điểm của Mẹ',
+            caption: 'Hiểu chuyện đến đau lònggg... may mà mẹ có bảo bối 🤣 #virals #baby #cute',
+            refGuide: 'Người Mẹ diện trực tiếp "' + item + '" tôn dáng che bụng hoàn hảo. Ghim kèm: Váy công chúa của Chị Đại + Áo bố.',
+            hook: '0–3s (Hook): Mẹ đang dỗi vì bố trêu "mẹ sinh xong không có eo". Chị Đại chạy lại ôm mẹ an ủi: "Mẹ đừng giận ba, chắc mắt ba mất thị lực rồi...".',
+            twist: '4–10s (Twist): Mẹ chưa kịp vui thì bé bồi thêm: "...chứ bụng mẹ to thế mà ba không thấy sao!". Ngay lập tức chuyển cảnh: Mẹ diện "' + item + '" bước ra với vòng eo thon gọn và vóc dáng cực phẩm khiến cả hai bố con mắt chữ A mồm chữ O.',
+            punchline: '11–15s (Punchline): Con gái vỗ tay reo lên: "Oa, mặc bộ này vào bụng mẹ biến mất tiêu luôn rồi ba ơi!".',
+            aiQuirk: 'Cài cắm vết gợn AI: Pha chuyển cảnh biến hình trang phục của mẹ mượt mà nhưng gọng kính của ông bố hơi lệch đi vì mải ngắm vợ.',
+            adminSeed: 'Bảo bối giúp mẹ "ăn gian" vòng eo sau màn bóc phốt của con gái rượu đây ạ :)) Các chị đẹp tham khảo "' + item + '" tôn dáng đỉnh chóp tại đây nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Bố sát thương 100, con gái phản dame 1000, nhưng mẹ mặc "' + item + '" lên là thắng tuyệt đối nha 🤣 | [Clone 2]: Cho mình xin link bộ mẹ mặc với, 55kg mặc size gì ạ?'
+          },
+          {
+            id: batchId + '_2',
+            pillar: 'Trụ cột 2 (30% DNA): Mẹ diện đồ đẹp định "trốn con" sang phòng bố và cái kết',
+            caption: 'Rồi ai mướn hả nàng... tính trốn một xíu mà cũng không yên 🤣 #virals #baby #cute',
+            refGuide: 'Người Mẹ diện "' + item + '" quyến rũ, nhẹ nhàng trong phòng ngủ hiện đại.',
+            hook: '0–3s (Hook): Đợi hai con ngủ say, mẹ diện bộ "' + item + '" cực xinh, rón rén từng bước mở cửa phòng định lẻn sang phòng bố.',
+            twist: '4–10s (Twist): Tưởng đã thoát êm xuôi, bất ngờ Chị Đại bật dậy ôm chiếc gối chạy lon ton ra hành lang gọi giật lại: "Mẹ ơi! Mẹ mặc đồ đẹp đi đâu mà quên mang gối theo nè, đợi con sang ngủ chung với!".',
+            punchline: '11–15s (Punchline): Kế hoạch "hẹn hò riêng" của hai vợ chồng phá sản trong tiếng cười bất lực của bố mẹ.',
+            aiQuirk: 'Cài cắm vết gợn AI: Dáng chạy lon ton ôm chiếc gối to đùng của cô bé giữa hànhlang tạo sự đối lập hài hước với vẻ quyến rũ của mẹ.',
+            adminSeed: 'Mặc "' + item + '" xinh thế này bảo sao con gái cứ bám chặt không cho mẹ đi đâu :)) Các chị vào đây chọn màu nha, chất đẹp mê ly ạ: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Con gái tâm lý sợ mẹ sang phòng ba thiếu gối kê đây mà 😂 | [Clone 2]: Bộ "' + item + '" mẹ mặc nhìn sang quá, có những màu nào vậy shop?'
+          },
+          {
+            id: batchId + '_3',
+            pillar: 'Trụ cột 3 (15% DNA): Hai bố con oẳn tù tì giành quyền ngủ với mẹ',
+            caption: 'Cũng đúng ha... ba thua tâm phục khẩu phục chưa 🤣 #virals #baby #cute',
+            refGuide: 'Người Mẹ mặc "' + item + '" ngồi tựa lưng thư giãn trên giường nhìn hai bố con tranh giành.',
+            hook: '0–3s (Hook): Thấy mẹ mặc "' + item + '" vừa xinh vừa thơm tho, cả bố và Chị Đại đều đòi tối nay được nằm cạnh ôm mẹ.',
+            twist: '4–10s (Twist): Hai bố con quyết định oẳn tù tì với giao kèo: "Ai thắng được ngủ với mẹ!". Khi con gái ra Búa thắng Kéo của bố, cô bé phán ngay: "Con thắng rồi nha! Tối nay con ngủ với mẹ của con, còn ba sang phòng ngủ với mẹ của ba (bà nội) đi!".',
+            punchline: '11–15s (Punchline): Người mẹ bật cười sảng khoái còn ông bố ôm đầu cay cú vì dính bẫy ngôn từ của con gái.',
+            aiQuirk: 'Cài cắm vết gợn AI: Nụ cười bình thản cực xinh của người mẹ ở góc giường thu hút mọi ánh nhìn vào bộ trang phục đang mặc.',
+            adminSeed: 'Tại mẹ mặc "' + item + '" êm và mướt mịn quá nên hai bố con cứ tranh nhau ôm đấy ạ :)) Các anh mua tặng vợ dịp lễ là chuẩn bài nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Phong ba bão táp không bằng ngữ pháp của chị đại, ba về ngủ với bà nội là đúng giao kèo rồi 🤣 | [Clone 2]: Xin chỗ mua đồ mẹ mặc với ạ!'
+          },
+          {
+            id: batchId + '_4',
+            pillar: 'Trụ cột 4 (15% DNA): Visual công sở/dạo phố của Mẹ & Màn đá cốp xe cùng con gái',
+            caption: 'Bản gốc đẹp nên bản sao cũng không chịu kém cạnh 🤣 #virals #baby #cute',
+            refGuide: 'Người Mẹ diện "' + item + '" thần thái sang chảnh đi cạnh Chị Đại mặc váy công chúa.',
+            hook: '0–3s (Hook): Góc quay cận và trung cảnh khoe trọn vóc dáng của Người Mẹ trong trang phục "' + item + '" khi bước đi tự tin dưới sảnh hoặc cạnh xe.',
+            twist: '4–10s (Twist): Mẹ vừa xoay người tạo dáng khoe phom dáng của "' + item + '", thì Chị Đại đứng cạnh lập tức chống hông, hất tóc bắt chước y hệt thần thái "người mẫu" của mẹ.',
+            punchline: '11–15s (Punchline): Hai mẹ con cùng mỉm cười rạng rỡ vào ống kính — vừa khoe được visual đỉnh cao của mẹ vừa giữ được nét đáng yêu của bé.',
+            aiQuirk: 'Cài cắm vết gợn AI: Để nhẹ một chi tiết điểm nhấn trên trang phục (như cúc áo cổ hoặc tà áo bay nhẹ trong gió) để thu hút bình luận từ cả tệp nam và nữ.',
+            adminSeed: 'Dạ "' + item + '" em mặc ở đây ạ, phom chuẩn mà chất vải thoáng mát cực kỳ, các chị đẹp tham khảo xem sao nhé: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Nhìn mẹ 2 con mà dáng đỉnh thật sự, bộ "' + item + '" này mặc đi làm hay đi chơi đều sang! | [Clone 2]: Bản sao nhí bắt chước mẹ cưng xỉu ❤️'
+          },
+          {
+            id: batchId + '_5',
+            pillar: 'Trụ cột 5 (Kịch bản Cú Twist): Con gái làm "Quân sư tình yêu" nhắc bố tặng quà mẹ',
+            caption: 'Đẻ được cô con gái mát lòng mát dạ thế này đây 🤣 #virals #baby #cute',
+            refGuide: 'Người Mẹ diện "' + item + '" mới tinh đứng trước gương, Chị Đại đứng cạnh làm "stylist".',
+            hook: '0–3s (Hook): Mẹ đang mặc thử "' + item + '" đứng ngắm trước gương. Chị Đại đi vòng quanh trầm trồ khen mẹ xinh như công chúa.',
+            twist: '4–10s (Twist): Cô bé quay ngoắt sang phía bố đang ngồi trên ghế, chống nạnh nhắc nhở: "Ba thấy mẹ mặc bộ này đẹp xuất sắc chưa? Con đặt giùm ba rồi đó, giờ ba chỉ việc lấy điện thoại ra quẹt thẻ trả tiền cho mẹ vui thôi nha!".',
+            punchline: '11–15s (Punchline): Ông bố vừa cười vừa rút ví trong sự "hợp tác ăn ý" của hai mẹ con.',
+            aiQuirk: 'Cài cắm vết gợn AI: Động tác chỉ tay từ bộ đồ của mẹ sang chiếc ví của bố cực kỳ dứt khoát và lém lỉnh.',
+            adminSeed: 'Con gái đã nhắc nhẹ thế rồi thì các anh các chú biết phải làm gì dịp lễ này rồi nha :)) Link "' + item + '" xinh lung linh của mẹ ở đây ạ: [Link Shopee]',
+            cloneSeed: '[Clone 1]: @Tên_Chồng con gái người ta còn biết nhắc bố mua đồ cho mẹ kìa chồng ơi 😂 | [Clone 2]: Phom "' + item + '" này tôn dáng quá shop!'
+          }
+        ];
+      } else if (cat === 'baby_sleepwear') {
+        ideas = [
+          {
+            id: batchId + '_1',
+            pillar: 'Trụ cột 1 (40% DNA): Thói quen đạp chăn "sản xuất theo lô" & Giải pháp giữ ấm',
+            caption: 'Mấy em bé này sản xuất theo lô hay sao ấy 🤣 #virals #baby #cute',
+            refGuide: 'Em Mít hoặc Chị Đại mặc trực tiếp "' + item + '" giữ ấm bụng khi ngủ trên giường.',
+            hook: '0–3s (Hook): Đêm khuya bố mẹ nhẹ nhàng kéo chăn đắp lên bụng cho con đang ngủ say.',
+            twist: '4–10s (Twist): Chưa đầy 2 giây sau, bé vẫn nhắm nghiền mắt nhưng co chân đá phăng chiếc chăn ra ngoài. Cứ đắp lại là đạp tung! May mà mẹ đã mặc sẵn "' + item + '" ôm kín bụng nên bố mẹ yên tâm kệ cho con tập võ trong mơ.',
+            punchline: '11–15s (Punchline): Bé xoay ngang 180 độ gác chân lên mặt bố ngủ ngon lành trong bộ "' + item + '" mềm mịn.',
+            aiQuirk: 'Cài cắm vết gợn AI: Cú đá chăn dứt khoát như võ sĩ nhí trong lúc mắt vẫn nhắm tịt khiến phụ huynh toàn cầu đồng cảm.',
+            adminSeed: 'Nhà bác nào có con hệ "đạp chăn xuyên đêm" thì cứ mặc ngay "' + item + '" này giống em Mít là khỏi lo lạnh bụng nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Đúng là sản xuất theo lô thật, con nhà mình đêm nào cũng đạp chăn y hệt 😂 | [Clone 2]: Mặc "' + item + '" này giữ ấm bụng chuẩn bài luôn, cho mình xin link nhé!'
+          },
+          {
+            id: batchId + '_2',
+            pillar: 'Trụ cột 2 (30% DNA): Chị lớn tự vỗ mông ru mình ngủ khi mẹ bận chăm em',
+            caption: 'Khi nhà có thêm em... trưa hay tối nhiều hôm cũng vậy 🥺 #virals #baby #cute',
+            refGuide: 'Chị Đại mặc "' + item + '" nằm nghiêng trên giường, màu sắc bộ đồ dịu mắt.',
+            hook: '0–3s (Hook): Giọng lồng tiếng trẻ thơ vang lên: "Mẹ đang bận ru em Mít ở phòng ngoài, lát nữa mẹ sẽ vào với con...".',
+            twist: '4–10s (Twist): Cô bé mặc bộ "' + item + '" nằm một mình trên giường rộng, mắt mở thao láo nhưng tự lấy bàn tay vỗ nhè nhẹ vào mông mình theo nhịp ru y như cách mẹ vẫn làm.',
+            punchline: '11–15s (Punchline): Ánh mắt hiểu chuyện chớp nhẹ rồi dần chìm vào giấc ngủ làm người xem rưng rưng xúc động.',
+            aiQuirk: 'Cài cắm vết gợn AI: Đôi mắt long lanh và nhịp tay tự vỗ mông đều đặn tạo hơn 300 bình luận tâm sự từ các bà mẹ.',
+            adminSeed: 'Thương chị đại hiểu chuyện của mẹ lắm ạ ❤️ Bộ "' + item + '" mềm êm con mặc đi ngủ ở đây, các cô các bác tham khảo nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Nhìn thương thế, bộ đồ ngủ bé mặc xinh quá cô xin chỗ mua với nhé! | [Clone 2]: Dù biết là AI nhưng xem cảnh tự vỗ mông ru ngủ mà rơm rớm nước mắt 😢'
+          },
+          {
+            id: batchId + '_3',
+            pillar: 'Trụ cột 3 (15% DNA): Hai chị em mặc đồ ngủ làm trò con bò cười giòn tan',
+            caption: 'Chị gái làm trò con bò trước giờ đi ngủ ạ 🤣 #virals #baby #cute',
+            refGuide: 'Hai chị em cùng mặc "' + item + '" đồng bộ trên giường ngủ sáng đèn.',
+            hook: '0–3s (Hook): Đến giờ đi ngủ nhưng hai chị em vẫn tỉnh như sáo trong bộ "' + item + '" cực kỳ bụ bẫm.',
+            twist: '4–10s (Twist): Chị lớn cúi sát mặt em nhỏ làm trò ú òa và nhăn mặt ngộ nghĩnh khiến em Mít cười khanh khách lăn lộn trên nệm.',
+            punchline: '11–15s (Punchline): Tiếng cười giòn tan của hai thiên thần nhí vang khắp phòng mang lại năng lượng tích cực cho người xem.',
+            aiQuirk: 'Cài cắm vết gợn AI: Chiếc tai thú/mũ trên bộ "' + item + '" nhịp theo từng tiếng cười của bé cực kỳ sinh động.',
+            adminSeed: 'Combo "' + item + '" cho hai chị em mặc ở nhà vừa ấm vừa cưng xỉu đây ạ, cô chú vào chọn size từ 6–30kg nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Đẻ được 2 cục kim cương mặc bộ này nhìn đáng đồng tiền bát gạo thật sự ❤️ | [Clone 2]: Chất vải "' + item + '" này có co giãn nhiều không shop?'
+          },
+          {
+            id: batchId + '_4',
+            pillar: 'Trụ cột 4 (15% DNA): Dậy sớm tưởng mẹ đi làm quên chưa hôn tạm biệt',
+            caption: 'Dậy cái chỉ sợ mẹ đi rồi... mẹ chưa hôn con 🥺 #virals #baby #cute',
+            refGuide: 'Chị Đại mặc "' + item + '" ngồi dậy trên giường lúc sáng sớm.',
+            hook: '0–3s (Hook): Bé gái mặc "' + item + '" vừa thức giấc, đầu tóc còn hơi rối, ngơ ngác nhìn quanh phòng không thấy mẹ đâu.',
+            twist: '4–10s (Twist): Vừa thấy mẹ mở cửa bước vào, bé lập tức mếu máo khóc òa: "Con tưởng mẹ đi làm rồi mà mẹ chưa thương (hôn) con!". Mẹ vội lại ôm hôn dỗ dành: "Mẹ thương, mẹ ở đây mà!".',
+            punchline: '11–15s (Punchline): Được mẹ hôn má một cái là cô bé nín khóc ngay và cười tươi rói.',
+            aiQuirk: 'Cài cắm vết gợn AI: Giọt nước mắt lăn nhanh trên má phúng phính rồi biến mất ngay khi mẹ hôn.',
+            adminSeed: 'Sáng nào dậy cũng phải làm thủ tục thơm má mới chịu đấy ạ :)) Bộ "' + item + '" xinh xắn của con ở đây nha các cô chú: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Rón rén nhìn mẹ rồi khóc òa cưng quá con ơi! | [Clone 2]: Bộ "' + item + '" bé mặc màu tôn da quá, cho mình xin link nhé!'
+          },
+          {
+            id: batchId + '_5',
+            pillar: 'Trụ cột 5 (Kịch bản Cú Twist): Bố bế con rơi gấu bông nhưng ra hiệu "Suỵt"',
+            caption: 'Bả làm rơi cộp cái... rồi bảo nó vẫn ngủ 😝 #virals #baby #cute',
+            refGuide: 'Em Mít mặc "' + item + '" ngủ trên tay bố, Chị Đại mặc đồ ngủ đi bên cạnh.',
+            hook: '0–3s (Hook): Bố đang bế Em Mít mặc "' + item + '" ngủ say đi nhẹ nhàng qua phòng khách, Chị Đại đi cạnh giơ ngón tay lên môi ra hiệu "Suỵt!".',
+            twist: '4–10s (Twist): Bất ngờ Chị Đại đánh rơi con gấu bông xuống sàn kêu cái "bịch". Bố giật mình nhìn xuống thì cô bé tỉnh bơ chỉ vào con gấu phán: "Suỵt! Con của con cũng ngủ rồi, nó vẫn ngủ mà ba!".',
+            punchline: '11–15s (Punchline): Ông bố bật cười nén tiếng trước pha chữa ngượng thần sầu của con gái.',
+            aiQuirk: 'Cài cắm vết gợn AI: Em Mít nằm trên vai bố trong bộ "' + item + '" ngủ say không hề nhúc nhích dù chị lớn làm rơi đồ.',
+            adminSeed: 'Mặc "' + item + '" êm ái quá nên trời sập em Mít vẫn ngủ ngon lành trên vai ba ạ :)) Link bộ đồ của 2 chị em ở đây nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Cái mặt làm rơi đồ xong chữa ngượng bảo "con của con vẫn ngủ" lanh ghê chưa 🤣 | [Clone 2]: Xin link bộ "' + item + '" của em bé nhỏ ạ!'
+          }
+        ];
+      } else if (cat === 'toys_household') {
+        ideas = [
+          {
+            id: batchId + '_1',
+            pillar: 'Trụ cột 1 (40% DNA): Bố mua cho con nhưng chính bố lại giành dùng/chơi say mê',
+            caption: 'Rồi cuối cùng là mua cho con hay mua cho ba vậy ạ 🤣 #virals #baby #cute',
+            refGuide: 'Đưa ảnh "' + item + '" vào làm đạo cụ trung tâm giữa phòng khách cho Bố và Chị Đại tương tác.',
+            hook: '0–3s (Hook): Mẹ mới sắm "' + item + '" về cho hai chị em. Chưa kịp mở ra dùng thì ông bố đã ngồi chiếm trọn vị trí trung tâm.',
+            twist: '4–10s (Twist): Chị Đại đứng khoanh tay nhìn bố đang mê mẩn với "' + item + '" rồi thở dài quay sang mách mẹ: "Mẹ ơi, mẹ sinh thêm một em bé 30 tuổi nữa hả mẹ? Ba giành hết của con rồi kìa!".',
+            punchline: '11–15s (Punchline): Ông bố cười gãi đầu chữa ngượng còn người mẹ cười nghiêng ngả sau máy quay.',
+            aiQuirk: 'Cài cắm vết gợn AI: Chi tiết "' + item + '" hoạt động mượt mà trong tay hai bố con khiến người xem tò mò hỏi chỗ mua.',
+            adminSeed: 'Mua cho con mà bố còn mê hơn cả con là có thật ạ :)) Link "' + item + '" xịn sò cả nhà cùng thích ở đây nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Câu nói "em bé 30 tuổi" chuẩn không cần chỉnh luôn con gái ơi 😂 | [Clone 2]: Món "' + item + '" này dùng bền không shop, cho mình xin link với!'
+          },
+          {
+            id: batchId + '_2',
+            pillar: 'Trụ cột 2 (30% DNA): Tình chị em nhường nhịn nhau món đồ yêu thích',
+            caption: 'Chị cho em này, chị em mình cùng chơi nhéeeee 🥺 #virals #baby #cute',
+            refGuide: 'Chị Đại cầm "' + item + '" hướng dẫn và nhường cho Em Mít trong phòng khách sáng sủa.',
+            hook: '0–3s (Hook): Em Mít nhìn thấy "' + item + '" của chị lớn liền bò lại gần với đôi mắt long lanh thèm thuồng.',
+            twist: '4–10s (Twist): Tưởng Chị Đại sẽ giữ khư khư, ai ngờ cô bé nhẹ nhàng đặt "' + item + '" sang cho em rồi xoa đầu em dặn dò: "Chị nhường cho Mít trước đó, nhưng Mít phải ngoan không được khóc nhè nghe chưa!".',
+            punchline: '11–15s (Punchline): Em Mít vỗ tay cười khanh khách rồi rướn người thơm má chị lớn.',
+            aiQuirk: 'Cài cắm vết gợn AI: Ánh mắt trìu mến của hai chị em khi tương tác với "' + item + '" tạo làn sóng bình luận xin vía.',
+            adminSeed: 'Có "' + item + '" này là hai chị em tự chơi ngoan với nhau cả buổi để mẹ nấu cơm đấy ạ, các mom tham khảo nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Xin vía chị lớn biết nhường em như chị đại nhà này ❤️ | [Clone 2]: Món "' + item + '" nhìn hay quá, giá bao nhiêu vậy shop?'
+          },
+          {
+            id: batchId + '_3',
+            pillar: 'Trụ cột 3 (15% DNA): Chồng bảo ở nhà trông con nhàn lắm nhờ có trợ thủ',
+            caption: 'Ck nói ở nhà trông con nhàn... có gì đâu 🤣 #virals #baby #cute',
+            refGuide: 'Người Mẹ hoặc Bố sử dụng "' + item + '" hỗ trợ trông con trong căn hộ hiện đại.',
+            hook: '0–3s (Hook): Bố (hoặc mẹ) tự tin tuyên bố: "Từ ngày có "' + item + '", trông con nhàn tênh, vừa trông con vừa nằm lướt điện thoại thoải mái!".',
+            twist: '4–10s (Twist): Khi bé đang mải mê với "' + item + '", bố vừa đặt lưng xuống sofa định chợp mắt được đúng 2 giây thì cả hai đứa trẻ đồng loạt gọi "Ba ơiii!" đòi bế.',
+            punchline: '11–15s (Punchline): Nụ cười tắt ngúm trên môi ông bố tạo cú twist chuẩn nỗi lòng các bậc phụ huynh.',
+            aiQuirk: 'Cài cắm vết gợn AI: Khoảnh khắc mắt bố vừa nhắm lại là con tỉnh dậy ngay lập tức đúng từng khung hình.',
+            adminSeed: 'Dù đôi lúc vẫn bị "báo" nhưng có "' + item + '" này đỡ vất vả hơn 80% thật sự các mom ạ :)) Link chính hãng ở đây nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Trẻ con có radar phát hiện bố mẹ nằm nghỉ hay sao ấy 😂 | [Clone 2]: Công nhận có "' + item + '" tiện thật, mình cũng mới sắm 1 cái!'
+          },
+          {
+            id: batchId + '_4',
+            pillar: 'Trụ cột 4 (15% DNA): Dùng món đồ làm "Lá chắn giải cứu" khi mẹ nổi giận',
+            caption: 'Pha giải cứu đi vào lòng đất của hai bố con 🤣 #virals #baby #cute',
+            refGuide: 'Bố và Chị Đại cầm "' + item + '" ra làm quà lấy lòng Mẹ.',
+            hook: '0–3s (Hook): Hai bố con lỡ bày bừa phòng khách, thấy mẹ bước vào với ánh mắt "hình viên đạn" liền đứng khép nép.',
+            twist: '4–10s (Twist): Chị Đại nhanh trí đẩy "' + item + '" ra trước mặt mẹ rồi ngọt ngào nói: "Mẹ ơi, ba với con vừa chuẩn bị sẵn cái này để tặng mẹ cho mẹ đỡ mệt đó, mẹ cười lên xem nào!".',
+            punchline: '11–15s (Punchline): Người mẹ đang định mắng cũng phải bật cười chịu thua trước màn nịnh đầm quá mượt.',
+            aiQuirk: 'Cài cắm vết gợn AI: Cái nháy mắt ra hiệu giữa ông bố và cô con gái phía sau lưng mẹ.',
+            adminSeed: 'Muốn "nóc nhà" hết giận thì các bố cứ sắm ngay "' + item + '" tiện ích này về cho vợ nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Hai bố con phối hợp nhịp nhàng thế này mẹ nào giận nổi 🤣 | [Clone 2]: Xin link "' + item + '" trên tay bé với ạ!'
+          },
+          {
+            id: batchId + '_5',
+            pillar: 'Trụ cột 5 (Kịch bản Cú Twist): Đi shopping muốn mua đồ phải có tuyệt chiêu',
+            caption: 'Muốn thì sẽ có cách đúng hông ạ 🤣 #virals #baby #cute',
+            refGuide: 'Chị Đại ôm "' + item + '" đi cạnh bố mẹ kèm trang phục dạo phố nổi bật.',
+            hook: '0–3s (Hook): Chị Đại thích mê "' + item + '" nhưng mẹ bảo ở nhà có rồi không mua nữa.',
+            twist: '4–10s (Twist): Cô bé lập tức quay sang nắm tay bố, chớp mắt long lanh: "Ba ơi, cô giáo dạy là người đàn ông đẹp trai nhất thế giới sẽ luôn mua "' + item + '" cho con gái rượu đó ba!".',
+            punchline: '11–15s (Punchline): Nghe câu khen "đẹp trai nhất thế giới", ông bố phổng mũi chốt đơn ngay lập tức bất chấp ánh mắt của vợ.',
+            aiQuirk: 'Cài cắm vết gợn AI: Biểu cảm phổng mũi đắc ý của ông bố khi được con gái tâng bốc.',
+            adminSeed: 'Chiêu nịnh bố bất bại của chị đại đây ạ :)) Link "' + item + '" làm bé mê mẩn mẹ để ở đây cho các cô chú tham khảo nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Nghe câu "đẹp trai nhất thế giới" là ví tiền tự động mở ra liền kkk | [Clone 2]: Món "' + item + '" này nhìn cưng quá shop ơi!'
+          }
+        ];
+      } else {
+        // Default: kid_fashion, dad_fashion, or topic_only (with smart outfit pairing)
+        const outfitLabel = cat === 'topic_only' ? 'Set váy công chúa dáng bí của bé & Áo cardigan của mẹ' : item;
+        ideas = [
+          {
+            id: batchId + '_1',
+            pillar: 'Trụ cột 1 (40% DNA): Đồng minh Bố & Con gái / Lý sự "Bà cụ non"',
+            caption: 'Oan ức lắm lun á... thế mà bảo yêu 🤣 #virals #baby #cute',
+            refGuide: 'Đưa ảnh "' + outfitLabel + '" vào làm Reference trang phục cho nhân vật mặc ngay từ bước tạo Keyframe AI. Ghim kèm: Đồ bộ của Em Mít + Áo thun boxy của Bố.',
+            hook: '0–3s (Hook): Góc cận cảnh Chị Đại (3.5 tuổi) đang diện "' + outfitLabel + '" ngồi khoanh tay trên sofa, môi bĩu dài, hai mắt rưng rưng đối chất với mẹ.',
+            twist: '4–10s (Twist): Bé tuôn một tràng lý lẽ kiểu bà cụ non xoay quanh "' + ctx.item + '": "Mắng người ta từ sáng tới chiều luôn, khổ tâm lắm lun á, thế mà mở miệng ra là bảo yêu!". Bố ngồi cạnh vội ôm con gái gật đầu bênh vực.',
+            punchline: '11–15s (Punchline): Nghe câu chốt "khổ tâm lắm lun á", người mẹ đứng sau máy quay bật cười khúc khích thành tiếng.',
+            aiQuirk: 'Cài cắm vết gợn AI: Lúc bé vung tay lý sự, phần cổ áo/nơ trên "' + outfitLabel + '" hoặc đôi giày dưới chân đổi nhẹ chi tiết khi chuyển góc máy để hội thánh soi tua lại.',
+            adminSeed: 'Dạ mẫu "' + outfitLabel + '" diện trong lúc đang "khổ tâm" nằm ở đây ạ, xinh lắm các cô chú vào chọn size ủng hộ con và mẹ nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Mới bé tí mà đã khổ tâm lắm rồi kaka, bộ "' + outfitLabel + '" nhìn cưng thế shop ơi! | [Clone 2]: Biết là AI mà cái mỏ lý sự yêu không chịu được 😂'
+          },
+          {
+            id: batchId + '_2',
+            pillar: 'Trụ cột 2 (30% DNA): Thủ tục hôn em trước khi đi học & Xin vía',
+            caption: 'Thủ tục trước khi chị đại đi học ạ 🥺 #virals #baby #cute',
+            refGuide: 'Chị Đại diện "' + outfitLabel + '" chỉnh tề chuẩn bị đi học, bên cạnh là Em Mít mặc body hình chuột.',
+            hook: '0–3s (Hook): Buổi sáng trước khi tới trường, Chị Đại xúng xính trong bộ "' + outfitLabel + '" mới tinh tiến lại gần giường của em nhỏ.',
+            twist: '4–10s (Twist): Bé thơm má em Mít liên tục rồi dặn dò: "Chị mặc đồ đẹp đi học nha, Mít ở nhà ngoan không được bắt nạt mẹ nghe chưa!". Em Mít nhìn bộ đồ của chị rồi cười khanh khách.',
+            punchline: '11–15s (Punchline): Hai chị em cùng cười rạng rỡ tạo khung hình "hai thiên thần nhí" đốn tim người xem.',
+            aiQuirk: 'Cài cắm vết gợn AI: Ánh sáng chiếu lên chất vải của "' + outfitLabel + '" cực kỳ sắc nét khiến các mẹ bỉm vào hỏi chỗ mua đồng loạt.',
+            adminSeed: 'Thủ tục mỗi sáng của hai chị em đây ạ ❤️ Link "' + outfitLabel + '" xinh xắn có đủ size từ 10–30kg ở đây nha cô chú ơi: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Cháu gái của bà 16kg có vừa mẫu "' + outfitLabel + '" này không shop? | [Clone 2]: Xin vía 2 chị em đẹp toàn diện!'
+          },
+          {
+            id: batchId + '_3',
+            pillar: 'Trụ cột 3 (15% DNA): Tuyệt chiêu của Bố (Hài hình thể Global Viral)',
+            caption: 'Khi ba ra tay... nhanh gọn lẹ 🤣 #virals #baby #cute',
+            refGuide: 'Bố và Chị Đại cùng diện "' + outfitLabel + '" nổi bật giữa phòng khách sáng đèn.',
+            hook: '0–3s (Hook): Sắp tới giờ đi chơi, mẹ giục hai bố con chuẩn bị nhanh lên. Khung hình lấy trọn phom dáng của "' + outfitLabel + '".',
+            twist: '4–10s (Twist): Để buộc tóc cho con gái nhanh nhất, ông bố giữ cố định dây thun một chỗ rồi cho cô con gái mặc "' + outfitLabel + '" tự xoay vòng tròn như chong chóng.',
+            punchline: '11–15s (Punchline): Tóc buộc xong gọn gàng kèm độ xòe cực đẹp của trang phục khi xoay tròn, bé cười giòn tan thích thú.',
+            aiQuirk: 'Cài cắm vết gợn AI: Khi bé xoay vòng tròn, mái tóc hoặc gấu váy tự nhiên dài thêm một chút — chi tiết từng giúp kênh gốc đạt hơn 26.000 lượt chia sẻ quốc tế.',
+            adminSeed: 'Tuyệt chiêu của ba vừa nhanh vừa khoe trọn độ xinh của "' + outfitLabel + '" đây ạ, cô chú tham khảo link mua ở đây nha: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Học ngay cách buộc tóc này cho con gái đi ba nó ơi @Tên_Chồng 😂 | [Clone 2]: C\'est IA quand elle tourne! Nhưng mẫu "' + outfitLabel + '" đẹp thật!'
+          },
+          {
+            id: batchId + '_4',
+            pillar: 'Trụ cột 4 (15% DNA): Đi học về khóc dỗi bắt bố quỳ gối xin lỗi',
+            caption: 'Tôi chưa bao giờ xin ai trong cuộc đời... nhưng giờ thì có 🤣 #virals #baby #cute',
+            refGuide: 'Chị Đại mặc "' + outfitLabel + '", Bố mặc áo thun boxy và quần ống suông.',
+            hook: '0–3s (Hook): Vừa đi học về, Chị Đại trong bộ "' + outfitLabel + '" đứng khoanh tay khóc nức nở trước mặt bố.',
+            twist: '4–10s (Twist): Bé mếu máo trách: "Ba quên đóng tiền học làm các bạn ở lớp cười con!". Ông bố cao lớn lập tức quỳ gối xuống sàn, chắp tay xin lỗi và ngoắc tay hứa không bao giờ quên nữa.',
+            punchline: '11–15s (Punchline): Bé bắt bố phải bế bổng lên dỗ dành mới chịu nín khóc, trong khi mẹ đứng sau cười khúc khích.',
+            aiQuirk: 'Cài cắm vết gợn AI: Hai hàng nước mắt lăn dài nhưng bộ "' + outfitLabel + '" vẫn phẳng phiu tinh tươm như người mẫu nhí.',
+            adminSeed: 'Dỗi ba nhưng vẫn phải mặc "' + outfitLabel + '" thật xinh mới chịu nha :)) Các cô chú vào đây chọn màu cho bé yêu ạ: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Ông bố cao mét tám phải quỳ gối trước cô công chúa mét mốt 🤣 | [Clone 2]: Bộ "' + outfitLabel + '" bé mặc nhìn cưng quá shop ơi!'
+          },
+          {
+            id: batchId + '_5',
+            pillar: 'Trụ cột 5 (Kịch bản Cú Twist): Bố vừa về là "bơ đẹp" mẹ lao ra nịnh bố',
+            caption: '9 tháng mang nặng đẻ đau... giờ thế đấy 🤣 #virals #baby #cute',
+            refGuide: 'Mẹ và Chị Đại mặc "' + outfitLabel + '" ngồi chơi trên ghế sofa phòng khách.',
+            hook: '0–3s (Hook): Hai mẹ con đang ngồi chơi vui vẻ trên sofa, mẹ định thơm má con gái nhưng cô bé cứ né tránh.',
+            twist: '4–10s (Twist): Cửa vừa mở, bóng dáng bố đi làm về xuất hiện. Cô bé diện "' + outfitLabel + '" lập tức tụt xuống ghế chạy ùa ra ôm chầm lấy chân bố, ngọt ngào hô to: "Cục vàng của ba đây rồi!", để lại mẹ ngồi bơ vơ.',
+            punchline: '11–15s (Punchline): Mẹ thở dài cảm thán "Đúng kiếp đẻ thuê" còn hai bố con ôm nhau cười tít mắt.',
+            aiQuirk: 'Cài cắm vết gợn AI: Lúc bé trên ghế sofa đang đi chân trần, vừa tụt xuống đất chạy ra chỗ bố là tự nhiên có sẵn đôi giày dưới chân (mồi câu bình luận cực mạnh).',
+            adminSeed: 'Tuy mê ba hơn mê mẹ nhưng đồ đẹp con mặc vẫn là tay mẹ chọn nha :)) Link "' + outfitLabel + '" chuẩn xinh ở đây ạ: [Link Shopee]',
+            cloneSeed: '[Clone 1]: Từ salon xuống đất chuyển cảnh một cái là tự nhiên mang giày luôn 🤣 | [Clone 2]: Đúng người tình kiếp trước của ba, mặc bộ "' + outfitLabel + '" cưng xỉu!'
+          }
+        ];
+      }
+
+      generatedBatches[batchId] = {
+        query: ctx.item,
+        meta: ctx.meta,
+        ideas: ideas
+      };
+
+      return generatedBatches[batchId];
+    }
+
+    // Optional live Gemini API call if user provides an API key
+    async function fetchIdeasFromGeminiApi(apiKey, rawQuery, charFilter, goalFilter, ctx) {
+      const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + encodeURIComponent(apiKey);
+      const sysPrompt = document.getElementById('systemPromptText').textContent;
+      const userPrompt = 'Sản phẩm / Chủ đề đầu vào: "' + rawQuery + '"\nNhóm phân loại đã kiểm duyệt: ' + ctx.meta.label + '\nNhân vật trọng tâm: ' + charFilter + '\nMục tiêu ưu tiên: ' + goalFilter + '\nHãy trả về định dạng JSON gồm mảng 5 đối tượng trong khóa "ideas", mỗi đối tượng có đúng các trường: pillar, caption, refGuide, hook, twist, punchline, aiQuirk, adminSeed, cloneSeed. Đảm bảo kịch bản hợp lý 100% với công dụng vật lý của "' + rawQuery + '".';
+
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: sysPrompt }] },
+          contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+          generationConfig: { responseMimeType: 'application/json' }
+        })
+      });
+      if (!resp.ok) throw new Error('API Error');
+      const data = await resp.json();
+      const rawText = data.candidates[0].content.parts[0].text;
+      const parsed = JSON.parse(rawText);
+      const batchId = 'batch_' + Date.now();
+      const ideas = (parsed.ideas || []).slice(0, 5).map(function(it, i) {
+        return Object.assign({ id: batchId + '_' + (i + 1) }, it);
+      });
+      if (ideas.length === 0) throw new Error('Empty ideas');
+      generatedBatches[batchId] = {
+        query: rawQuery,
+        meta: ctx.meta,
+        ideas: ideas
+      };
+      return generatedBatches[batchId];
+    }
+
+
+    // =========================================================================
+    // FAMILY PHOTO RECOGNITION & REAL GEMINI AI STORYBOARD IMAGE GENERATOR
+    // =========================================================================
+    let uploadedFamilyImg = null;
+    let uploadedFamilyBase64 = null;
+    let uploadedProductImg = null;
+    let uploadedProductBase64 = null;
+    let currentStoryboardRatio = '9:16'; // Default to 9:16 for Reels/TikTok, switchable to 16:9
+    let generatedFrameAiImages = {}; // key: batchId_idx_fIdx -> Image object
+
+    let familyCropBoxes = {
+      bo: [0.05, 0.08, 0.32, 0.48],
+      me: [0.65, 0.08, 0.92, 0.48],
+      chidai: [0.15, 0.48, 0.48, 0.92],
+      emmit: [0.52, 0.50, 0.85, 0.92]
+    };
+
+    function getCanvasDimensionsForRatio(ratio) {
+      if (ratio === '9:16') {
+        return { w: 540, h: 960, label: '9:16 Dọc (540×960)' };
+      }
+      return { w: 960, h: 540, label: '16:9 Ngang (960×540)' };
+    }
+
+    function drawRoundedRectPath(ctx, x, y, w, h, r) {
+      const radius = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + w - radius, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+      ctx.lineTo(x + w, y + h - radius);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+      ctx.lineTo(x + radius, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+
+    function drawDefaultAvatarsAndProduct() {
+      const roles = [
+        { id: 'avatarCanvasBo', bg: '#dbeafe', skin: '#fde68a', hair: '#1e293b', glass: true },
+        { id: 'avatarCanvasMe', bg: '#fce7f3', skin: '#fef3c7', hair: '#451a03', glass: false },
+        { id: 'avatarCanvasChiDai', bg: '#fef3c7', skin: '#ffedd5', hair: '#27272a', glass: false },
+        { id: 'avatarCanvasEmMit', bg: '#d1fae5', skin: '#ffe4e6', hair: '#78350f', glass: false }
+      ];
+      roles.forEach(function(r) {
+        const c = document.getElementById(r.id);
+        if (!c) return;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = r.bg;
+        ctx.fillRect(0, 0, 80, 80);
+        ctx.fillStyle = r.skin;
+        ctx.beginPath();
+        ctx.arc(40, 38, 20, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = r.hair;
+        ctx.beginPath();
+        ctx.arc(40, 30, 20, Math.PI, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(33, 38, 2.2, 0, Math.PI * 2);
+        ctx.arc(47, 38, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+        if (r.glass) {
+          ctx.strokeStyle = '#334155';
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(27, 33, 11, 9);
+          ctx.strokeRect(42, 33, 11, 9);
+        }
+        ctx.strokeStyle = '#e11d48';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(40, 43, 6, 0.1 * Math.PI, 0.9 * Math.PI);
+        ctx.stroke();
+      });
+
+      const pc = document.getElementById('productPreviewCanvas');
+      if (pc && !uploadedProductImg) {
+        const pctx = pc.getContext('2d');
+        pctx.fillStyle = '#ecfdf5';
+        pctx.fillRect(0, 0, 80, 80);
+        pctx.fillStyle = '#10b981';
+        pctx.fillRect(18, 20, 44, 42);
+        pctx.fillStyle = '#ffffff';
+        pctx.font = 'bold 10px Inter, sans-serif';
+        pctx.textAlign = 'center';
+        pctx.fillText('SẢN PHẨM', 40, 44);
+      }
+    }
+
+    function renderCroppedFamilyAvatars() {
+      if (!uploadedFamilyImg) {
+        drawDefaultAvatarsAndProduct();
+        return;
+      }
+      const w = uploadedFamilyImg.width;
+      const h = uploadedFamilyImg.height;
+      const map = [
+        { key: 'bo', canvasId: 'avatarCanvasBo' },
+        { key: 'me', canvasId: 'avatarCanvasMe' },
+        { key: 'chidai', canvasId: 'avatarCanvasChiDai' },
+        { key: 'emmit', canvasId: 'avatarCanvasEmMit' }
+      ];
+      map.forEach(function(m) {
+        const c = document.getElementById(m.canvasId);
+        if (!c) return;
+        const ctx = c.getContext('2d');
+        const box = familyCropBoxes[m.key];
+        const sx = Math.max(0, Math.floor(box[0] * w));
+        const sy = Math.max(0, Math.floor(box[1] * h));
+        const sw = Math.max(20, Math.floor((box[2] - box[0]) * w));
+        const sh = Math.max(20, Math.floor((box[3] - box[1]) * h));
+        ctx.clearRect(0, 0, 80, 80);
+        ctx.drawImage(uploadedFamilyImg, sx, sy, sw, sh, 0, 0, 80, 80);
+      });
+    }
+
+    async function detectFamilyMembersFromPhoto() {
+      if (!uploadedFamilyImg) return;
+      const w = uploadedFamilyImg.width;
+      const h = uploadedFamilyImg.height;
+      const badge = document.getElementById('visionStatusBadge');
+
+      if (w >= h * 1.15) {
+        familyCropBoxes = {
+          bo: [0.04, 0.05, 0.34, 0.55],
+          me: [0.64, 0.05, 0.94, 0.55],
+          chidai: [0.22, 0.38, 0.52, 0.88],
+          emmit: [0.48, 0.42, 0.78, 0.92]
+        };
+      } else {
+        familyCropBoxes = {
+          bo: [0.05, 0.06, 0.48, 0.46],
+          me: [0.52, 0.06, 0.95, 0.46],
+          chidai: [0.06, 0.48, 0.50, 0.88],
+          emmit: [0.50, 0.50, 0.94, 0.90]
+        };
+      }
+      renderCroppedFamilyAvatars();
+
+      const apiKey = document.getElementById('geminiApiKey').value.trim();
+      if (apiKey && uploadedFamilyBase64) {
+        badge.textContent = '⏳ AI đang nhận diện 4 khuôn mặt...';
+        try {
+          const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + encodeURIComponent(apiKey);
+          const prompt = 'Trong bức ảnh gia đình này, hãy nhận diện 4 nhân vật: Bố (người đàn ông trưởng thành), Mẹ (người phụ nữ trưởng thành), Chị Đại (bé lớn khoảng 2-5 tuổi), và Em Mít (em bé nhỏ nhất). Trả về JSON với khóa: "bo", "me", "chidai", "emmit". Mỗi khóa chứa {"box": [xmin, ymin, xmax, ymax] (tọa độ chuẩn hóa từ 0.0 đến 1.0 bao quanh khuôn mặt và vai), "desc": "mô tả ngắn 4-6 chữ tiếng Việt về ngoại hình"}.';
+          const mimeMatch = uploadedFamilyBase64.match(/^data:(image\/[a-zA-Z+]+);base64,(.+)$/);
+          if (mimeMatch) {
+            const resp = await fetch(url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{
+                  role: 'user',
+                  parts: [
+                    { text: prompt },
+                    { inlineData: { mimeType: mimeMatch[1], data: mimeMatch[2] } }
+                  ]
+                }],
+                generationConfig: { responseMimeType: 'application/json' }
+              })
+            });
+            if (resp.ok) {
+              const data = await resp.json();
+              const parsed = JSON.parse(data.candidates[0].content.parts[0].text);
+              ['bo', 'me', 'chidai', 'emmit'].forEach(function(k) {
+                if (parsed[k] && Array.isArray(parsed[k].box) && parsed[k].box.length === 4) {
+                  familyCropBoxes[k] = parsed[k].box;
+                }
+              });
+              if (parsed.bo && parsed.bo.desc) document.getElementById('descBo').textContent = parsed.bo.desc;
+              if (parsed.me && parsed.me.desc) document.getElementById('descMe').textContent = parsed.me.desc;
+              if (parsed.chidai && parsed.chidai.desc) document.getElementById('descChiDai').textContent = parsed.chidai.desc;
+              if (parsed.emmit && parsed.emmit.desc) document.getElementById('descEmMit').textContent = parsed.emmit.desc;
+              renderCroppedFamilyAvatars();
+              badge.textContent = '✅ Gemini Vision đã tách 4 nhân vật';
+              showToast('AI đã nhận diện chính xác Bố, Mẹ, Chị Đại & Em Mít!');
+              return;
+            }
+          }
+        } catch (e) {}
+      }
+      badge.textContent = '✅ Đã tách 4 nhân vật từ ảnh';
+      showToast('Đã nhận diện và tách 4 nhân vật: Bố, Mẹ, Chị Đại, Em Mít!');
+    }
+
+    // Draw Image cover-fit onto canvas
+    function drawImageCoverFit(ctx, img, x, y, w, h) {
+      const imgRatio = img.width / img.height;
+      const targetRatio = w / h;
+      let sx = 0, sy = 0, sw = img.width, sh = img.height;
+      if (imgRatio > targetRatio) {
+        sw = img.height * targetRatio;
+        sx = (img.width - sw) / 2;
+      } else {
+        sh = img.width / targetRatio;
+        sy = (img.height - sh) / 2;
+      }
+      ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+    }
+
+    // Render either the Real AI Generated Image (if ready) OR the Visual Composite Mockup in 9:16 or 16:9
+    function drawStoryboardFrameCanvas(canvasEl, frameIdx, frameData, batchQuery, ratio, frameKey) {
+      const dims = getCanvasDimensionsForRatio(ratio);
+      canvasEl.width = dims.w;
+      canvasEl.height = dims.h;
+      const ctx = canvasEl.getContext('2d');
+      const W = dims.w;
+      const H = dims.h;
+      const isPortrait = ratio === '9:16';
+
+      // If a real AI image was generated by Gemini for this frame, draw it full-bleed!
+      if (frameKey && generatedFrameAiImages[frameKey]) {
+        drawImageCoverFit(ctx, generatedFrameAiImages[frameKey], 0, 0, W, H);
+        // Subtle top & bottom info badges
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.72)';
+        ctx.fillRect(0, 0, W, 38);
+        ctx.fillStyle = '#34d399';
+        ctx.font = 'bold 13px Inter, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('✨ ẢNH AI GEMINI - CẢNH ' + (frameIdx + 1) + ' (' + frameData.timeRange + ') [' + ratio + ']', 14, 24);
+
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.78)';
+        ctx.fillRect(0, H - 58, W, 58);
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = 'bold 12px Inter, sans-serif';
+        ctx.fillText('🎙️ ' + frameData.voiceHint, 14, H - 35);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '12px Inter, sans-serif';
+        const maxChars = isPortrait ? 56 : 95;
+        const shortDesc = frameData.desc.length > maxChars ? frameData.desc.slice(0, maxChars) + '...' : frameData.desc;
+        ctx.fillText(shortDesc, 14, H - 14);
+        return;
+      }
+
+      // Otherwise draw the Composite Visual Storyboard (using uploaded Family Photo & Product Photo)
+      const grad = ctx.createLinearGradient(0, 0, 0, H);
+      if (frameIdx === 0) {
+        grad.addColorStop(0, '#eff6ff');
+        grad.addColorStop(0.7, '#dbeafe');
+      } else if (frameIdx === 1) {
+        grad.addColorStop(0, '#fff7ed');
+        grad.addColorStop(0.7, '#ffedd5');
+      } else if (frameIdx === 2) {
+        grad.addColorStop(0, '#fef2f2');
+        grad.addColorStop(0.7, '#fee2e2');
+      } else {
+        grad.addColorStop(0, '#ecfdf5');
+        grad.addColorStop(0.7, '#d1fae5');
+      }
+      grad.addColorStop(0.71, '#e2e8f0');
+      grad.addColorStop(1, '#cbd5e1');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // If user uploaded a family photo, draw a softly blurred/tinted background reference of their family environment
+      if (uploadedFamilyImg) {
+        ctx.save();
+        ctx.globalAlpha = 0.16;
+        drawImageCoverFit(ctx, uploadedFamilyImg, 0, 42, W, H - 118);
+        ctx.restore();
+      }
+
+      // Apartment Sofa/Bed Stage Box
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 2;
+      const sofaX = isPortrait ? 30 : 60;
+      const sofaY = isPortrait ? H * 0.36 : H * 0.40;
+      const sofaW = W - sofaX * 2;
+      const sofaH = isPortrait ? H * 0.42 : H * 0.34;
+      drawRoundedRectPath(ctx, sofaX, sofaY, sofaW, sofaH, 20);
+      ctx.fill();
+      ctx.stroke();
+
+      // Top Header Banner
+      ctx.fillStyle = '#1e3a8a';
+      ctx.fillRect(0, 0, W, 44);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 14px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('CẢNH ' + (frameIdx + 1) + ' (' + frameData.timeRange + ') [' + ratio + ']', 14, 27);
+
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold 12px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('SP: ' + batchQuery.slice(0, isPortrait ? 20 : 36), W - 14, 27);
+
+      // Draw Active Characters wearing/using the Product
+      const activeChars = frameData.activeChars;
+      const spacing = W / (activeChars.length + 1);
+      const scale = isPortrait ? 1.15 : 1.05;
+
+      activeChars.forEach(function(roleKey, i) {
+        const cx = spacing * (i + 1);
+        const cy = isPortrait ? H * 0.46 : H * 0.45;
+        const avatarMap = {
+          bo: { canvasId: 'avatarCanvasBo', name: 'BỐ', color: '#2563eb', bodyW: 96 * scale, bodyH: 112 * scale },
+          me: { canvasId: 'avatarCanvasMe', name: 'MẸ', color: '#db2777', bodyW: 90 * scale, bodyH: 108 * scale },
+          chidai: { canvasId: 'avatarCanvasChiDai', name: 'CHỊ ĐẠI (3.5t)', color: '#d97706', bodyW: 82 * scale, bodyH: 92 * scale },
+          emmit: { canvasId: 'avatarCanvasEmMit', name: 'EM MÍT (8th)', color: '#059669', bodyW: 74 * scale, bodyH: 80 * scale }
+        };
+        const info = avatarMap[roleKey] || avatarMap.chidai;
+        const srcCanvas = document.getElementById(info.canvasId);
+
+        const bx = cx - info.bodyW / 2;
+        const by = cy + 20 * scale;
+        ctx.fillStyle = info.color;
+        drawRoundedRectPath(ctx, bx, by, info.bodyW, info.bodyH, 16);
+        ctx.fill();
+
+        if (roleKey === frameData.productHolder) {
+          const prodCanvas = document.getElementById('productPreviewCanvas');
+          if (uploadedProductImg) {
+            ctx.save();
+            drawRoundedRectPath(ctx, bx + 5, by + 5, info.bodyW - 10, info.bodyH - 10, 12);
+            ctx.clip();
+            drawImageCoverFit(ctx, uploadedProductImg, bx + 5, by + 5, info.bodyW - 10, info.bodyH - 10);
+            ctx.restore();
+          } else if (prodCanvas) {
+            ctx.drawImage(prodCanvas, bx + 8, by + 8, info.bodyW - 16, info.bodyH - 16);
+          }
+          ctx.strokeStyle = '#fbbf24';
+          ctx.lineWidth = 3.5;
+          ctx.strokeRect(bx + 3, by + 3, info.bodyW - 6, info.bodyH - 6);
+
+          ctx.fillStyle = '#fef08a';
+          ctx.fillRect(cx - 64, by + info.bodyH - 16, 128, 22);
+          ctx.strokeStyle = '#ca8a04';
+          ctx.lineWidth = 1.2;
+          ctx.strokeRect(cx - 64, by + info.bodyH - 16, 128, 22);
+          ctx.fillStyle = '#713f12';
+          ctx.font = 'bold 11px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('★ MẶC / DÙNG SP', cx, by + info.bodyH - 1);
+        }
+
+        const headRadius = 38 * scale;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy - 14 * scale, headRadius, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.clip();
+        if (srcCanvas) {
+          ctx.drawImage(srcCanvas, cx - headRadius, cy - 14 * scale - headRadius, headRadius * 2, headRadius * 2);
+        }
+        ctx.restore();
+
+        ctx.strokeStyle = info.color;
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(cx, cy - 14 * scale, headRadius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = info.color;
+        ctx.fillRect(cx - 48, cy - 14 * scale - headRadius - 22, 96, 20);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 11px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(info.name, cx, cy - 14 * scale - headRadius - 8);
+      });
+
+      // Bottom Subtitle & Voiceover Bar
+      const footerH = isPortrait ? 92 : 74;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.90)';
+      ctx.fillRect(0, H - footerH, W, footerH);
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('🎙️ ' + frameData.voiceHint, 14, H - footerH + 25);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '12px Inter, sans-serif';
+      const maxLineChars = isPortrait ? 54 : 102;
+      const line1 = frameData.desc.slice(0, maxLineChars);
+      const line2 = frameData.desc.slice(maxLineChars, maxLineChars * 2);
+      ctx.fillText(line1, 14, H - footerH + 48);
+      if (line2) {
+        ctx.fillText(line2 + (frameData.desc.length > maxLineChars * 2 ? '...' : ''), 14, H - footerH + 68);
+      }
+    }
+
+    // Call Real Gemini Image Generation API (tries multimodal Gemini Flash Image models first with reference photos, then Imagen 3)
+    async function generateRealAiImageWithGemini(frameData, batchQuery, ratio, apiKey) {
+      const orientText = ratio === '9:16'
+        ? 'Vertical 9:16 portrait format (full-frame smartphone Reels/TikTok vertical composition).'
+        : 'Horizontal 16:9 widescreen format (cinematic widescreen composition).';
+
+      const charNames = {
+        bo: 'handsome young Vietnamese father (30 years old, wearing glasses, casual outfit)',
+        me: 'beautiful young Vietnamese mother (27 years old, long wavy brown hair, stylish)',
+        chidai: 'cute 3.5-year-old Vietnamese toddler girl (chubby cheeks, expressive eyes, pigtails)',
+        emmit: 'adorable 8-month-old chubby Vietnamese baby'
+      };
+      const activeDesc = frameData.activeChars.map(function(k) { return charNames[k] || k; }).join(' and ');
+      const holderDesc = charNames[frameData.productHolder] || 'the child';
+
+      const fullPrompt = 'Generate a photorealistic, high-resolution lifestyle family photo in a bright modern luxury Vietnamese apartment. ' +
+        orientText + ' ' +
+        'Characters in scene: ' + activeDesc + '. ' +
+        'IMPORTANT PRODUCT PLACEMENT: ' + holderDesc + ' is directly wearing or holding/using "' + batchQuery + '" prominently matching the product reference image. ' +
+        'Scene action & emotion: ' + frameData.desc + '. ' +
+        'Natural warm lighting, ultra-detailed, expressive facial emotions, clean composition, no text or watermarks.';
+
+      // Build multimodal parts including uploaded Family Photo and Product Photo if available
+      const parts = [{ text: fullPrompt }];
+      if (uploadedFamilyBase64) {
+        const m1 = uploadedFamilyBase64.match(/^data:(image\/[a-zA-Z+]+);base64,(.+)$/);
+        if (m1) {
+          parts.push({ text: 'Reference image 1 (Family members face and appearance reference):' });
+          parts.push({ inlineData: { mimeType: m1[1], data: m1[2] } });
+        }
+      }
+      if (uploadedProductBase64) {
+        const m2 = uploadedProductBase64.match(/^data:(image\/[a-zA-Z+]+);base64,(.+)$/);
+        if (m2) {
+          parts.push({ text: 'Reference image 2 (Exact product/clothing to wear or use in the scene):' });
+          parts.push({ inlineData: { mimeType: m2[1], data: m2[2] } });
+        }
+      }
+
+      // 1. Try Multimodal Gemini Flash Image Generation endpoints
+      const geminiImageModels = [
+        'gemini-2.0-flash-exp-image-generation',
+        'gemini-2.0-flash-preview-image-generation',
+        'gemini-2.5-flash-image-preview'
+      ];
+
+      for (let i = 0; i < geminiImageModels.length; i++) {
+        const modelName = geminiImageModels[i];
+        try {
+          const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent?key=' + encodeURIComponent(apiKey);
+          const resp = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ role: 'user', parts: parts }],
+              generationConfig: { responseModalities: ['TEXT', 'IMAGE'] }
+            })
+          });
+          if (resp.ok) {
+            const data = await resp.json();
+            const candParts = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) || [];
+            for (let p = 0; p < candParts.length; p++) {
+              if (candParts[p].inlineData && candParts[p].inlineData.data) {
+                const mime = candParts[p].inlineData.mimeType || 'image/png';
+                return 'data:' + mime + ';base64,' + candParts[p].inlineData.data;
+              }
+            }
+          }
+        } catch (e) {}
+      }
+
+      // 2. Fallback to Imagen 3 endpoint with explicit aspectRatio ("9:16" or "16:9")
+      const imagenModels = ['imagen-3.0-generate-002', 'imagen-3.0-fast-generate-001'];
+      for (let j = 0; j < imagenModels.length; j++) {
+        try {
+          const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + imagenModels[j] + ':predict?key=' + encodeURIComponent(apiKey);
+          const resp = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              instances: [{ prompt: fullPrompt }],
+              parameters: { sampleCount: 1, aspectRatio: ratio }
+            })
+          });
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data.predictions && data.predictions[0] && data.predictions[0].bytesBase64Encoded) {
+              const mime = data.predictions[0].mimeType || 'image/png';
+              return 'data:' + mime + ';base64,' + data.predictions[0].bytesBase64Encoded;
+            }
+          }
+        } catch (e) {}
+      }
+
+      throw new Error('Không gọi được model tạo ảnh trên API Key này.');
+    }
+
+    function buildStoryboardFramesData(idea, query) {
+      const lower = query.toLowerCase();
+      let holder = 'chidai';
+      if (/(bỉm|tã|chống hăm|sơ sinh|body|bình sữa)/.test(lower)) holder = 'emmit';
+      else if (/(ống loe|che bụng|pijama|váy ngủ|sơ mi|cardigan|mẹ)/.test(lower)) holder = 'me';
+      else if (/(áo bố|boxy|quần jean|nam)/.test(lower)) holder = 'bo';
+
+      return [
+        {
+          timeRange: '0–3s (Hook)',
+          cameraAngle: 'Góc cận cảnh / Trung cảnh mở màn',
+          activeChars: holder === 'emmit' ? ['emmit', 'chidai'] : [holder, 'me'],
+          productHolder: holder,
+          voiceHint: 'Giọng bé gái 3 tuổi trong trẻo / Biểu cảm mạnh ngay giây đầu',
+          desc: idea.hook.replace(/^0–3s \(Hook\):\s*/i, ''),
+          promptText: 'Khung hình 1 (0-3s): ' + idea.hook + ' Nhân vật chính giữ nguyên khuôn mặt tham chiếu từ ảnh gia đình, đang mặc/sử dụng trực tiếp sản phẩm "' + query + '" giống 100% ảnh sản phẩm mẫu, bối cảnh căn hộ chung cư hiện đại ánh sáng ấm.'
+        },
+        {
+          timeRange: '4–8s (Diễn biến)',
+          cameraAngle: 'Góc trung cảnh tương tác gia đình',
+          activeChars: ['bo', 'chidai', 'emmit'],
+          productHolder: holder,
+          voiceHint: 'Giọng lý sự "bà cụ non" lém lỉnh của Chị Đại',
+          desc: idea.twist.replace(/^4–10s \(Twist\):\s*/i, ''),
+          promptText: 'Khung hình 2 (4-8s): ' + idea.twist + ' Giữ đồng nhất khuôn mặt Bố, Chị Đại, Em Mít và trang phục/sản phẩm "' + query + '".'
+        },
+        {
+          timeRange: '9–12s (Cú Twist)',
+          cameraAngle: 'Cận cảnh biểu cảm + Vết gợn AI mồi tua lại',
+          activeChars: [holder, 'bo'],
+          productHolder: holder,
+          voiceHint: 'Nhấn mạnh công dụng sản phẩm + Chi tiết mồi Re-watch',
+          desc: idea.aiQuirk,
+          promptText: 'Khung hình 3 (9-12s): Cận cảnh nhân vật tương tác với "' + query + '". ' + idea.aiQuirk
+        },
+        {
+          timeRange: '13–15s (Punchline)',
+          cameraAngle: 'Toàn cảnh kết thúc + Tiếng cười của Mẹ',
+          activeChars: ['bo', 'me', 'chidai', 'emmit'],
+          productHolder: holder,
+          voiceHint: 'Tiếng cười giòn tan của bé + Tiếng cười khúc khích của mẹ',
+          desc: idea.punchline.replace(/^11–15s \(Punchline\):\s*/i, ''),
+          promptText: 'Khung hình 4 (13-15s): ' + idea.punchline + ' Cả gia đình 4 người cười rạng rỡ, sản phẩm "' + query + '" hiển thị rõ nét để điều hướng khách xuống phần bình luận mua hàng.'
+        }
+      ];
+    }
+
+    async function triggerAiImageRenderForSingleFrame(batchId, idx, fIdx) {
+      const batch = generatedBatches[batchId];
+      if (!batch || !batch.ideas[idx]) return;
+      const apiKey = document.getElementById('geminiApiKey').value.trim();
+      const statusEl = document.getElementById('sbStatus_' + batchId + '_' + idx + '_' + fIdx);
+      const canvasEl = document.getElementById('sbCanvas_' + batchId + '_' + idx + '_' + fIdx);
+      const frames = buildStoryboardFramesData(batch.ideas[idx], batch.query);
+      const frameData = frames[fIdx];
+      const frameKey = batchId + '_' + idx + '_' + fIdx;
+
+      if (!apiKey) {
+        if (statusEl) {
+          statusEl.textContent = '⚠️ Hãy dán Gemini API Key (ở ô phía trên hoặc cột trái) để tạo ảnh AI thực tế!';
+          statusEl.className = 'text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded border border-amber-200';
+        }
+        showToast('Hãy nhập Gemini API Key để vẽ ảnh AI thực tế nhé!');
+        return;
+      }
+
+      if (statusEl) {
+        statusEl.textContent = '⏳ Gemini AI đang vẽ ảnh Cảnh ' + (fIdx + 1) + ' (' + currentStoryboardRatio + ')...';
+        statusEl.className = 'text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-1 rounded border border-blue-200 animate-pulse';
+      }
+
+      try {
+        const dataUri = await generateRealAiImageWithGemini(frameData, batch.query, currentStoryboardRatio, apiKey);
+        const img = new Image();
+        img.onload = function() {
+          generatedFrameAiImages[frameKey] = img;
+          if (canvasEl) {
+            drawStoryboardFrameCanvas(canvasEl, fIdx, frameData, batch.query, currentStoryboardRatio, frameKey);
+          }
+          if (statusEl) {
+            statusEl.textContent = '✅ Đã vẽ xong Ảnh AI thực tế Cảnh ' + (fIdx + 1) + ' (' + currentStoryboardRatio + ')!';
+            statusEl.className = 'text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded border border-emerald-200';
+          }
+        };
+        img.src = dataUri;
+      } catch (err) {
+        if (statusEl) {
+          statusEl.textContent = '⚠️ Không tạo được ảnh AI (Kiểm tra lại API Key hoặc quyền tạo ảnh). Đang hiển thị bản ghép trực quan.';
+          statusEl.className = 'text-[11px] font-semibold text-amber-800 bg-amber-50 px-2 py-1 rounded border border-amber-200';
+        }
+      }
+    }
+
+    async function triggerAiImageRenderAllFrames(batchId, idx) {
+      for (let fIdx = 0; fIdx < 4; fIdx++) {
+        await triggerAiImageRenderForSingleFrame(batchId, idx, fIdx);
+      }
+    }
+
+    function openAndRenderStoryboardForIdea(batchId, idx, shouldScroll) {
+      const batch = generatedBatches[batchId];
+      if (!batch || !batch.ideas[idx]) return;
+      const idea = batch.ideas[idx];
+      const box = document.getElementById('storyboardBox_' + batchId + '_' + idx);
+      if (!box) return;
+
+      const ratioSelect = document.getElementById('selectStoryboardRatio');
+      if (ratioSelect) {
+        currentStoryboardRatio = ratioSelect.value;
+      }
+      const dims = getCanvasDimensionsForRatio(currentStoryboardRatio);
+      const isPortrait = currentStoryboardRatio === '9:16';
+
+      box.classList.remove('hidden');
+      const frames = buildStoryboardFramesData(idea, batch.query);
+      const currentKey = document.getElementById('geminiApiKey').value.trim();
+
+      box.innerHTML = `
+        <div class="bg-indigo-950 text-white p-3.5 rounded-xl space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="font-extrabold text-xs sm:text-sm text-amber-300">🎬 STORYBOARD 4 KHUNG HÌNH (${escapeHtml(dims.label)})</span>
+              <p class="text-[11px] text-indigo-200">Chọn tỷ lệ 9:16 (Reels/TikTok) hoặc 16:9 (YouTube/Flow) và bấm Vẽ Ảnh AI bằng Gemini</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5">
+              <button type="button" data-sb-ratio="9:16" data-sb-batch="${batchId}" data-sb-idx="${idx}" class="text-xs px-2.5 py-1.5 rounded-lg font-bold transition ${isPortrait ? 'bg-amber-400 text-slate-950 shadow-sm' : 'bg-indigo-800 text-indigo-100 hover:bg-indigo-700'}">
+                📱 9:16 Dọc
+              </button>
+              <button type="button" data-sb-ratio="16:9" data-sb-batch="${batchId}" data-sb-idx="${idx}" class="text-xs px-2.5 py-1.5 rounded-lg font-bold transition ${!isPortrait ? 'bg-amber-400 text-slate-950 shadow-sm' : 'bg-indigo-800 text-indigo-100 hover:bg-indigo-700'}">
+                🖥️ 16:9 Ngang
+              </button>
+              <button type="button" data-sb-render-ai-all="${batchId}" data-sb-idx="${idx}" class="text-xs bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-extrabold px-3 py-1.5 rounded-lg shadow-sm transition">
+                ✨ Vẽ 4 Ảnh AI Thực Tế (Gemini)
+              </button>
+              <button type="button" data-sb-copy-all="${batchId}" data-sb-idx="${idx}" class="text-xs bg-white/15 hover:bg-white/25 text-white font-semibold px-2.5 py-1.5 rounded-lg transition">
+                📋 Copy 4 Prompt
+              </button>
+            </div>
+          </div>
+
+          <!-- Inline API Key Quick Bar inside Storyboard -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-indigo-900/70 p-2 rounded-lg border border-indigo-700/70 text-xs">
+            <span class="font-semibold text-indigo-200 shrink-0">🔑 Gemini API Key tạo ảnh:</span>
+            <input
+              type="password"
+              data-sb-inline-key="${batchId}_${idx}"
+              value="${escapeHtml(currentKey)}"
+              placeholder="Dán mã AIzaSy... vào đây rồi bấm '✨ Vẽ 4 Ảnh AI Thực Tế (Gemini)'"
+              class="flex-1 rounded-lg bg-indigo-950/90 border border-indigo-600 px-2.5 py-1 text-xs text-white placeholder-indigo-400 focus:outline-none focus:ring-1 focus:ring-amber-400"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 ${isPortrait ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-2'} gap-3">
+          ${frames.map(function(f, fIdx) {
+            const canvasId = 'sbCanvas_' + batchId + '_' + idx + '_' + fIdx;
+            const statusId = 'sbStatus_' + batchId + '_' + idx + '_' + fIdx;
+            return `
+              <div class="bg-slate-50 rounded-xl border border-slate-200 p-2.5 flex flex-col justify-between space-y-2">
+                <div class="space-y-1.5">
+                  <div id="${statusId}" class="text-[11px] font-semibold text-slate-600 bg-white px-2 py-1 rounded border border-slate-200">
+                    📐 Khung ${escapeHtml(currentStoryboardRatio)} - Cảnh ${fIdx + 1} (${escapeHtml(f.timeRange)})
+                  </div>
+                  <canvas id="${canvasId}" width="${dims.w}" height="${dims.h}" class="w-full h-auto rounded-lg border border-slate-300 shadow-sm bg-white"></canvas>
+                  <div class="text-[11px] text-slate-700 bg-white p-2 rounded-lg border border-slate-200">
+                    <div class="font-bold text-indigo-950 mb-0.5">Prompt Cảnh ${fIdx + 1}:</div>
+                    <p class="text-slate-600 leading-snug line-clamp-3">${escapeHtml(f.promptText)}</p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-1 pt-1">
+                  <button type="button" data-sb-render-single="${batchId}" data-sb-idx="${idx}" data-sb-fidx="${fIdx}" class="flex-1 text-[11px] bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-2 rounded-lg transition">
+                    ✨ Vẽ Ảnh AI
+                  </button>
+                  <button type="button" data-sb-download="${canvasId}" data-sb-name="Storyboard_${currentStoryboardRatio.replace(':', 'x')}_Canh_${fIdx + 1}.png" class="flex-1 text-[11px] bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-2 rounded-lg transition">
+                    📥 Tải Ảnh
+                  </button>
+                  <button type="button" data-sb-copy-prompt="${escapeHtml(f.promptText)}" class="text-[11px] bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold py-1.5 px-2 rounded-lg transition">
+                    📋
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+
+      frames.forEach(function(f, fIdx) {
+        const cEl = document.getElementById('sbCanvas_' + batchId + '_' + idx + '_' + fIdx);
+        const frameKey = batchId + '_' + idx + '_' + fIdx;
+        if (cEl) {
+          drawStoryboardFrameCanvas(cEl, fIdx, f, batch.query, currentStoryboardRatio, frameKey);
+        }
+      });
+
+      if (shouldScroll) {
+        box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // If Gemini API Key is already filled in, automatically trigger real AI image rendering!
+      if (currentKey && shouldScroll) {
+        triggerAiImageRenderAllFrames(batchId, idx);
+      }
+    }
+
+    function formatIdeaAsPlainText(idea, idx) {
+      return [
+        '=== Ý TƯỞNG ' + (idx + 1) + ' (' + idea.pillar + ') ===',
+        '• Tiêu đề (Caption): ' + idea.caption,
+        '• Tham chiếu sản phẩm AI (Bước 2 & 3): ' + idea.refGuide,
+        '• Kịch bản 3 nhịp (15 giây):',
+        '  - ' + idea.hook,
+        '  - ' + idea.twist,
+        '  - ' + idea.punchline,
+        '• Vết gợn AI cài cắm (Mồi tua lại): ' + idea.aiQuirk,
+        '• Comment Admin ghim link (Phút 1-3): ' + idea.adminSeed,
+        '• Comment Nick phụ mồi (Phút 5-15): ' + idea.cloneSeed
+      ].join('\n');
+    }
+
+    function renderWelcomeMessage() {
+      const container = document.getElementById('chatMessages');
+      container.innerHTML = `
+        <div class="flex items-start gap-3 animate-fade-in">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-700 to-indigo-800 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+            BOT
+          </div>
+          <div class="bg-blue-50/90 border border-blue-200 rounded-2xl rounded-tl-sm p-4 text-xs sm:text-sm text-slate-800 space-y-2 max-w-3xl">
+            <p class="font-bold text-blue-950">Xin chào! Chatbot DNA <span class="underline">Linh Mít Daily v2.0</span> đã nâng cấp Bộ Kiểm Duyệt Logic Sản Phẩm 👋</p>
+            <p>Trước khi viết 5 ý tưởng, Bot sẽ <strong>kiểm tra bản chất vật lý, công dụng, nỗi đau (USP) và đối tượng sử dụng trực tiếp</strong> của sản phẩm (VD: <em>Bỉm chống hăm</em> chỉ gắn vào tình huống thay bỉm, ngủ xuyên đêm, bò đua chống tràn — tuyệt đối không gắn nhầm vào kịch bản ăn uống hay mặc sai đối tượng).</p>
+            <p class="text-slate-600">Mình đã chạy sẵn ví dụ <strong>"Bỉm Fast chống hăm siêu mỏng khô thoáng"</strong> ngay bên dưới để bạn kiểm tra sự khác biệt!</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function appendUserMessage(text) {
+      const container = document.getElementById('chatMessages');
+      const div = document.createElement('div');
+      div.className = 'flex items-start justify-end gap-2.5 animate-fade-in';
+      div.innerHTML = `
+        <div class="bg-blue-700 text-white rounded-2xl rounded-tr-sm px-4 py-2.5 text-xs sm:text-sm font-medium max-w-xl shadow-sm">
+          ${escapeHtml(text)}
+        </div>
+        <div class="w-8 h-8 rounded-xl bg-slate-800 text-white flex items-center justify-center font-bold text-xs shrink-0">
+          BẠN
+        </div>
+      `;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function appendBotIdeasBatch(batchData) {
+      const container = document.getElementById('chatMessages');
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flex items-start gap-3 animate-fade-in';
+
+      const meta = batchData.meta;
+      const sanityHtml = meta ? `
+        <div class="bg-emerald-950 text-emerald-50 rounded-xl p-3.5 border border-emerald-700 text-xs space-y-1.5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="font-extrabold text-emerald-300 uppercase tracking-wider">✅ Đã Kiểm Duyệt Logic Sản Phẩm & Ngữ Cảnh Sử Dụng</span>
+            <span class="bg-emerald-800 text-emerald-200 px-2 py-0.5 rounded-full text-[11px] font-semibold">Khớp 100% công dụng</span>
+          </div>
+          <div><strong>• Nhóm ngành hàng nhận diện:</strong> ${escapeHtml(meta.label)}</div>
+          <div><strong>• Nhân vật sử dụng trực tiếp:</strong> ${escapeHtml(meta.directUser)}</div>
+          <div><strong>• Điểm bán hàng (USP) cài vào clip:</strong> ${escapeHtml(meta.uspFocus)}</div>
+          <div class="text-emerald-300/90 italic"><strong>• Quy tắc an toàn nội dung:</strong> ${escapeHtml(meta.sanityRule)}</div>
+        </div>
+      ` : '';
+
+      const cardsHtml = batchData.ideas.map(function(idea, idx) {
+        const isSaved = savedIdeas.some(function(item) { return item.id === idea.id; });
+        return `
+          <div class="bg-white rounded-xl border border-slate-200 p-3.5 shadow-sm space-y-2.5 hover:border-blue-300 transition">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <span class="bg-blue-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-lg">Ý TƯỞNG 0${idx + 1}</span>
+                <span class="text-xs font-bold text-blue-900">${escapeHtml(idea.pillar)}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button type="button" data-action="generate-storyboard" data-batch="${batchData.batchId}" data-idx="${idx}" class="text-xs bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold px-2.5 py-1 rounded-lg shadow-sm transition">
+                  🎬 Tạo Storyboard Ảnh (Mặc/Dùng SP)
+                </button>
+                <button type="button" data-action="copy-single" data-batch="${batchData.batchId}" data-idx="${idx}" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded-lg transition">
+                  📋 Copy
+                </button>
+                <button type="button" data-action="save-single" data-batch="${batchData.batchId}" data-idx="${idx}" class="text-xs ${isSaved ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-blue-50 hover:bg-blue-100 text-blue-800'} font-semibold px-2.5 py-1 rounded-lg transition">
+                  ${isSaved ? '⭐ Đã lưu' : '☆ Lưu ý tưởng'}
+                </button>
+              </div>
+            </div>
+
+            <div class="text-xs space-y-2">
+              <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200/80">
+                <span class="font-bold text-slate-700">📌 Tiêu đề (Caption chuẩn): </span>
+                <span class="font-semibold text-blue-700">${escapeHtml(idea.caption)}</span>
+              </div>
+
+              <div class="bg-indigo-50/60 p-2.5 rounded-lg border border-indigo-100">
+                <span class="font-bold text-indigo-950">👗 Tham chiếu Sản phẩm AI (Bước 2 & 3): </span>
+                <span class="text-slate-700">${escapeHtml(idea.refGuide)}</span>
+              </div>
+
+              <div class="space-y-1 pl-1">
+                <div class="font-bold text-slate-800">🎬 Kịch bản 3 nhịp (15 giây):</div>
+                <p class="text-slate-700"><strong class="text-red-600">• Nhịp 1:</strong> ${escapeHtml(idea.hook)}</p>
+                <p class="text-slate-700"><strong class="text-amber-600">• Nhịp 2:</strong> ${escapeHtml(idea.twist)}</p>
+                <p class="text-slate-700"><strong class="text-emerald-600">• Nhịp 3:</strong> ${escapeHtml(idea.punchline)}</p>
+              </div>
+
+              <div class="bg-amber-50/70 p-2.5 rounded-lg border border-amber-200/70">
+                <span class="font-bold text-amber-900">🔍 Vết gợn AI cài cắm (Mồi tua lại x5): </span>
+                <span class="text-slate-700">${escapeHtml(idea.aiQuirk)}</span>
+              </div>
+
+              <div class="bg-emerald-50/70 p-2.5 rounded-lg border border-emerald-200/70 space-y-1">
+                <div><span class="font-bold text-emerald-950">🛒 Admin ghim link (Phút 1–3): </span><span class="text-slate-700 italic">"${escapeHtml(idea.adminSeed)}"</span></div>
+                <div><span class="font-bold text-emerald-950">💬 Nick phụ mồi (Phút 5–15): </span><span class="text-slate-700">${escapeHtml(idea.cloneSeed)}</span></div>
+              </div>
+
+              <!-- Visual Storyboard 4-Frame Container -->
+              <div id="storyboardBox_${batchData.batchId}_${idx}" class="hidden pt-3 mt-2 border-t-2 border-dashed border-indigo-200 space-y-3">
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      wrapper.innerHTML = `
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-700 to-indigo-800 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+          BOT
+        </div>
+        <div class="flex-1 space-y-3 max-w-4xl">
+          <div class="bg-blue-900 text-white px-4 py-2.5 rounded-2xl rounded-tl-sm flex flex-wrap items-center justify-between gap-2 shadow-sm">
+            <div class="text-xs sm:text-sm font-bold">
+              ✨ 5 Ý tưởng kịch bản khớp công dụng thực tế cho: <span class="text-amber-300">"${escapeHtml(batchData.query)}"</span>
+            </div>
+            <button type="button" data-action="copy-batch" data-batch="${batchData.batchId}" class="text-xs bg-white/15 hover:bg-white/25 text-white font-semibold px-3 py-1 rounded-lg border border-white/20 transition">
+              📑 Copy cả 5 ý tưởng
+            </button>
+          </div>
+          ${sanityHtml}
+          <div class="space-y-3">
+            ${cardsHtml}
+          </div>
+        </div>
+      `;
+
+      container.appendChild(wrapper);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function updateSavedUI() {
+      const badge = document.getElementById('savedCountBadge');
+      badge.textContent = String(savedIdeas.length);
+
+      const listEl = document.getElementById('savedListContainer');
+      if (savedIdeas.length === 0) {
+        listEl.innerHTML = `
+          <div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+            <div class="text-3xl mb-2">📂</div>
+            <p class="text-sm font-bold text-slate-700">Chưa có kịch bản nào được lưu</p>
+            <p class="text-xs text-slate-500 mt-1">Hãy bấm nút "☆ Lưu ý tưởng" ở từng thẻ kịch bản bên tab Chatbot để lưu vào đây nhé!</p>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = savedIdeas.map(function(idea, idx) {
+        return `
+          <div class="bg-slate-50 rounded-2xl border border-slate-200 p-4 space-y-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-200">
+              <div>
+                <span class="text-xs font-extrabold bg-blue-700 text-white px-2.5 py-1 rounded-lg mr-2">#${idx + 1}</span>
+                <span class="text-xs font-bold text-slate-500">Chủ đề/SP: ${escapeHtml(idea.query || '')}</span>
+                <span class="text-xs font-semibold text-blue-900 ml-2">• ${escapeHtml(idea.pillar)}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" data-saved-copy="${idx}" class="text-xs bg-white border border-slate-300 hover:bg-slate-100 font-semibold px-3 py-1 rounded-lg">
+                  📋 Copy
+                </button>
+                <button type="button" data-saved-delete="${idx}" class="text-xs bg-red-50 hover:bg-red-100 text-red-700 font-semibold px-3 py-1 rounded-lg">
+                  Xóa
+                </button>
+              </div>
+            </div>
+            <div class="text-xs space-y-1.5">
+              <p><strong>Caption:</strong> <span class="text-blue-700 font-semibold">${escapeHtml(idea.caption)}</span></p>
+              <p><strong>Tham chiếu AI:</strong> ${escapeHtml(idea.refGuide)}</p>
+              <p><strong>Nhịp 1:</strong> ${escapeHtml(idea.hook)}</p>
+              <p><strong>Nhịp 2:</strong> ${escapeHtml(idea.twist)}</p>
+              <p><strong>Nhịp 3:</strong> ${escapeHtml(idea.punchline)}</p>
+              <p><strong>Vết gợn AI:</strong> ${escapeHtml(idea.aiQuirk)}</p>
+              <p><strong>Seeding Admin:</strong> "${escapeHtml(idea.adminSeed)}"</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function switchTab(tabName) {
+      const views = {
+        chat: document.getElementById('viewChat'),
+        saved: document.getElementById('viewSaved'),
+        prompt: document.getElementById('viewPrompt')
+      };
+      const btns = {
+        chat: document.getElementById('tabBtnChat'),
+        saved: document.getElementById('tabBtnSaved'),
+        prompt: document.getElementById('tabBtnPrompt')
+      };
+
+      Object.keys(views).forEach(function(k) {
+        if (k === tabName) {
+          views[k].classList.remove('hidden');
+          btns[k].className = 'px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition bg-white text-blue-900 shadow-sm flex items-center gap-1.5';
+        } else {
+          views[k].classList.add('hidden');
+          btns[k].className = 'px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition text-blue-100 hover:bg-blue-800/50 flex items-center gap-1.5';
+        }
+      });
+
+      if (tabName === 'saved') {
+        updateSavedUI();
+      }
+    }
+
+    async function handleQuerySubmit(queryText) {
+      if (!queryText || !queryText.trim()) return;
+      const cleanQ = queryText.trim();
+      const overrideCat = document.getElementById('selectCategoryOverride').value;
+      const charFilter = document.getElementById('selectCharacter').value;
+      const goalFilter = document.getElementById('selectGoal').value;
+      const apiKey = document.getElementById('geminiApiKey').value.trim();
+
+      appendUserMessage(cleanQ);
+      const ctx = classifyProductOrTopic(cleanQ, overrideCat);
+
+      if (apiKey) {
+        const submitBtn = document.getElementById('btnSubmitQuery');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>⏳ Đang phân tích & tạo 5 kịch bản...</span>';
+        try {
+          const batch = await fetchIdeasFromGeminiApi(apiKey, cleanQ, charFilter, goalFilter, ctx);
+          appendBotIdeasBatch(batch);
+        } catch (err) {
+          const fallbackBatch = buildContextualIdeas(ctx);
+          appendBotIdeasBatch(fallbackBatch);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>🚀 Tạo 5 Ý Tưởng</span>';
+        }
+      } else {
+        const batch = buildContextualIdeas(ctx);
+        appendBotIdeasBatch(batch);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+      drawDefaultAvatarsAndProduct();
+
+      document.getElementById('inputFamilyPhoto').addEventListener('change', function(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          uploadedFamilyBase64 = ev.target.result;
+          const img = new Image();
+          img.onload = function() {
+            uploadedFamilyImg = img;
+            document.getElementById('familyPhotoStatus').textContent = '✅ ' + file.name.slice(0, 16);
+            document.getElementById('familyPhotoStatus').className = 'text-[10px] text-emerald-700 font-bold';
+            detectFamilyMembersFromPhoto();
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      document.getElementById('inputProductPhoto').addEventListener('change', function(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          uploadedProductBase64 = ev.target.result;
+          const img = new Image();
+          img.onload = function() {
+            uploadedProductImg = img;
+            const pc = document.getElementById('productPreviewCanvas');
+            if (pc) {
+              const pctx = pc.getContext('2d');
+              pctx.clearRect(0, 0, 80, 80);
+              pctx.drawImage(img, 0, 0, 80, 80);
+            }
+            document.getElementById('productPhotoStatus').textContent = '✅ ' + file.name.slice(0, 16);
+            document.getElementById('productPhotoStatus').className = 'text-[10px] text-emerald-700 font-bold';
+            document.getElementById('productDetectedTitle').textContent = 'Đã nạp ảnh SP: ' + file.name;
+            document.getElementById('productDetectedDesc').textContent = 'Đã gắn trực tiếp lên nhân vật trong Storyboard!';
+            showToast('Đã tải ảnh sản phẩm! Bấm "🎬 Tạo Storyboard Ảnh" ở bất kỳ ý tưởng nào để xem.');
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      document.getElementById('selectStoryboardRatio').addEventListener('change', function(e) {
+        currentStoryboardRatio = e.target.value;
+        showToast('Đã chọn tỷ lệ ảnh Storyboard: ' + currentStoryboardRatio);
+      });
+
+      document.getElementById('btnReAnalyzeFamily').addEventListener('click', function() {
+        if (!uploadedFamilyImg) {
+          showToast('Hãy chọn tải 1 bức ảnh gia đình lên trước nhé!');
+          return;
+        }
+        detectFamilyMembersFromPhoto();
+      });
+
+      renderWelcomeMessage();
+      updateSavedUI();
+
+      // Auto-run with "bỉm fast chống hăm" so the user immediately sees the fixed, 100% logical 5 diaper scenarios!
+      handleQuerySubmit('Bỉm Fast chống hăm').then(function() {
+        const keys = Object.keys(generatedBatches);
+        if (keys.length > 0) {
+          openAndRenderStoryboardForIdea(keys[keys.length - 1], 0);
+        }
+      });
+
+      // Tab buttons
+      document.getElementById('tabBtnChat').addEventListener('click', function() { switchTab('chat'); });
+      document.getElementById('tabBtnSaved').addEventListener('click', function() { switchTab('saved'); });
+      document.getElementById('tabBtnPrompt').addEventListener('click', function() { switchTab('prompt'); });
+
+      // Chat form submit
+      document.getElementById('chatForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const inputEl = document.getElementById('chatInput');
+        const val = inputEl.value;
+        inputEl.value = '';
+        handleQuerySubmit(val);
+      });
+
+      // Preset chips delegation
+      document.querySelectorAll('.preset-chip').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const q = btn.getAttribute('data-query');
+          switchTab('chat');
+          handleQuerySubmit(q);
+        });
+      });
+
+      // Clear chat
+      document.getElementById('btnClearChat').addEventListener('click', function() {
+        renderWelcomeMessage();
+        showToast('Đã làm mới khung chat!');
+      });
+
+      // Delegation for copy & save buttons inside chatMessages
+      document.getElementById('chatMessages').addEventListener('click', function(e) {
+        const ratioBtn = e.target.closest('button[data-sb-ratio]');
+        if (ratioBtn) {
+          const newRatio = ratioBtn.getAttribute('data-sb-ratio');
+          const bId = ratioBtn.getAttribute('data-sb-batch');
+          const idx = parseInt(ratioBtn.getAttribute('data-sb-idx'), 10);
+          currentStoryboardRatio = newRatio;
+          const sidebarSelect = document.getElementById('selectStoryboardRatio');
+          if (sidebarSelect) sidebarSelect.value = newRatio;
+          openAndRenderStoryboardForIdea(bId, idx, false);
+          showToast('Đã chuyển kích thước Storyboard sang ' + newRatio + '!');
+          return;
+        }
+        const renderAllBtn = e.target.closest('button[data-sb-render-ai-all]');
+        if (renderAllBtn) {
+          const bId = renderAllBtn.getAttribute('data-sb-render-ai-all');
+          const idx = parseInt(renderAllBtn.getAttribute('data-sb-idx'), 10);
+          const inlineInput = document.querySelector('input[data-sb-inline-key="' + bId + '_' + idx + '"]');
+          if (inlineInput && inlineInput.value.trim()) {
+            document.getElementById('geminiApiKey').value = inlineInput.value.trim();
+          }
+          triggerAiImageRenderAllFrames(bId, idx);
+          return;
+        }
+        const renderSingleBtn = e.target.closest('button[data-sb-render-single]');
+        if (renderSingleBtn) {
+          const bId = renderSingleBtn.getAttribute('data-sb-render-single');
+          const idx = parseInt(renderSingleBtn.getAttribute('data-sb-idx'), 10);
+          const fIdx = parseInt(renderSingleBtn.getAttribute('data-sb-fidx'), 10);
+          const inlineInput = document.querySelector('input[data-sb-inline-key="' + bId + '_' + idx + '"]');
+          if (inlineInput && inlineInput.value.trim()) {
+            document.getElementById('geminiApiKey').value = inlineInput.value.trim();
+          }
+          triggerAiImageRenderForSingleFrame(bId, idx, fIdx);
+          return;
+        }
+        const sbDownloadBtn = e.target.closest('button[data-sb-download]');
+        if (sbDownloadBtn) {
+          const cid = sbDownloadBtn.getAttribute('data-sb-download');
+          const fname = sbDownloadBtn.getAttribute('data-sb-name') || 'Storyboard_Frame.png';
+          const cEl = document.getElementById(cid);
+          if (cEl) {
+            const link = document.createElement('a');
+            link.download = fname;
+            link.href = cEl.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Đã tải ảnh ' + fname + '!');
+          }
+          return;
+        }
+        const sbPromptBtn = e.target.closest('button[data-sb-copy-prompt]');
+        if (sbPromptBtn) {
+          copyTextToClipboard(sbPromptBtn.getAttribute('data-sb-copy-prompt'), 'Đã sao chép Prompt khung hình!');
+          return;
+        }
+        const sbCopyAllBtn = e.target.closest('button[data-sb-copy-all]');
+        if (sbCopyAllBtn) {
+          const bId = sbCopyAllBtn.getAttribute('data-sb-copy-all');
+          const idx = parseInt(sbCopyAllBtn.getAttribute('data-sb-idx'), 10);
+          const bObj = generatedBatches[bId];
+          if (bObj && bObj.ideas[idx]) {
+            const frames = buildStoryboardFramesData(bObj.ideas[idx], bObj.query);
+            const allPrompts = frames.map(function(f, i) {
+              return '--- CẢNH ' + (i + 1) + ' (' + f.timeRange + ') ---\nPrompt Ảnh/Video: ' + f.promptText + '\nVoice/Hành động: ' + f.voiceHint;
+            }).join('\n\n');
+            copyTextToClipboard(allPrompts, 'Đã sao chép trọn bộ 4 Prompt Storyboard + Voice!');
+          }
+          return;
+        }
+
+        const btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        const action = btn.getAttribute('data-action');
+        const batchId = btn.getAttribute('data-batch');
+        const batch = generatedBatches[batchId];
+        if (!batch) return;
+
+        if (action === 'generate-storyboard') {
+          const idx = parseInt(btn.getAttribute('data-idx'), 10);
+          openAndRenderStoryboardForIdea(batchId, idx, true);
+          showToast('Đã mở Storyboard 4 khung hình (' + currentStoryboardRatio + ')!');
+          return;
+        }
+        if (action === 'copy-batch') {
+          const allText = batch.ideas.map(function(idObj, i) {
+            return formatIdeaAsPlainText(idObj, i);
+          }).join('\n\n');
+          copyTextToClipboard(allText, 'Đã sao chép trọn bộ 5 ý tưởng kịch bản!');
+        } else if (action === 'copy-single') {
+          const idx = parseInt(btn.getAttribute('data-idx'), 10);
+          const idea = batch.ideas[idx];
+          if (idea) {
+            copyTextToClipboard(formatIdeaAsPlainText(idea, idx), 'Đã sao chép Ý tưởng 0' + (idx + 1) + '!');
+          }
+        } else if (action === 'save-single') {
+          const idx = parseInt(btn.getAttribute('data-idx'), 10);
+          const idea = batch.ideas[idx];
+          if (!idea) return;
+          const existingIdx = savedIdeas.findIndex(function(x) { return x.id === idea.id; });
+          if (existingIdx === -1) {
+            savedIdeas.push(Object.assign({ query: batch.query }, idea));
+            storeSavedIdeas(savedIdeas);
+            btn.textContent = '⭐ Đã lưu';
+            btn.className = 'text-xs bg-amber-100 text-amber-900 border border-amber-300 font-semibold px-2.5 py-1 rounded-lg transition';
+            updateSavedUI();
+            showToast('Đã lưu vào Kho Kịch Bản!');
+          } else {
+            savedIdeas.splice(existingIdx, 1);
+            storeSavedIdeas(savedIdeas);
+            btn.textContent = '☆ Lưu ý tưởng';
+            btn.className = 'text-xs bg-blue-50 hover:bg-blue-100 text-blue-800 font-semibold px-2.5 py-1 rounded-lg transition';
+            updateSavedUI();
+            showToast('Đã bỏ lưu ý tưởng.');
+          }
+        }
+      });
+
+      // Saved ideas delegation
+      document.getElementById('savedListContainer').addEventListener('click', function(e) {
+        const copyBtn = e.target.closest('button[data-saved-copy]');
+        if (copyBtn) {
+          const idx = parseInt(copyBtn.getAttribute('data-saved-copy'), 10);
+          const idea = savedIdeas[idx];
+          if (idea) {
+            copyTextToClipboard(formatIdeaAsPlainText(idea, idx), 'Đã sao chép kịch bản!');
+          }
+          return;
+        }
+        const delBtn = e.target.closest('button[data-saved-delete]');
+        if (delBtn) {
+          const idx = parseInt(delBtn.getAttribute('data-saved-delete'), 10);
+          savedIdeas.splice(idx, 1);
+          storeSavedIdeas(savedIdeas);
+          updateSavedUI();
+          showToast('Đã xóa kịch bản khỏi kho lưu trữ.');
+        }
+      });
+
+      // Export saved ideas to .txt
+      document.getElementById('btnExportSavedTxt').addEventListener('click', function() {
+        if (savedIdeas.length === 0) {
+          showToast('Chưa có kịch bản nào trong kho lưu trữ!');
+          return;
+        }
+        const content = savedIdeas.map(function(idea, i) {
+          return 'CHỦ ĐỀ / SẢN PHẨM: ' + (idea.query || '') + '\n' + formatIdeaAsPlainText(idea, i);
+        }).join('\n\n========================================\n\n');
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Kho_Kich_Ban_DNA_Linh_Mit_Daily.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('Đã tải file kịch bản (.txt)!');
+      });
+
+      // Clear all saved
+      document.getElementById('btnClearSaved').addEventListener('click', function() {
+        savedIdeas = [];
+        storeSavedIdeas(savedIdeas);
+        updateSavedUI();
+        showToast('Đã xóa toàn bộ kho lưu trữ!');
+      });
+
+      // Copy System Prompt
+      document.getElementById('btnCopySystemPrompt').addEventListener('click', function() {
+        const promptTxt = document.getElementById('systemPromptText').textContent;
+        copyTextToClipboard(promptTxt, 'Đã sao chép System Prompt để dán vào Gemini Gem / GPT!');
+      });
+    });
+  </script>
+</body>
+</html>
