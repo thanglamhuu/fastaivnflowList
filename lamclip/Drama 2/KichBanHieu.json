@@ -1,0 +1,249 @@
+{
+  "project": {
+    "title": "Ranh Giới Hôn Nhân",
+    "style": "Cinematic Photorealistic",
+    "aspectRatio": "9:16",
+    "duration": "110s",
+    "premise": "Một người chồng tức giận tát và đuổi vợ ra khỏi nhà khi phát hiện cô ăn diện lộng lẫy để đi gặp người yêu cũ vào đúng đêm trước ngày cưới của hắn.",
+    "scriptMarkdown": "Shot 1: Chồng hỏi vợ đi đâu mà ăn diện. Vợ đáp đi gặp Tuấn.\nShot 2: Chồng chất vấn có phải người yêu cũ không. Vợ thản nhiên thừa nhận mai hắn cưới nên nay gặp mặt.\nShot 3: Vợ xin đi 2 tiếng. Chồng phản đối gay gắt việc gặp tình cũ đêm trước ngày cưới.\nShot 4: Chồng chặn cửa cấm đi. Vợ cãi lý bảo chỉ là bạn bè.\nShot 5: Vợ xô đẩy chồng, chồng tát vợ để cảnh tỉnh.\nShot 6: Chồng chất vấn giới hạn của tình bạn và nhắc nhở vợ đã có gia đình.\nShot 7: Chồng lên án sự mập mờ của vợ là xúc phạm anh và cô dâu.\nShot 8: Chồng khẳng định sự mập mờ là lăng loàn. Vợ khóc ăn vạ mắng chồng gia trưởng.\nShot 9: Chồng mở cửa, đuổi vợ đi và cấm quay về.\nShot 10: Chồng tuyên bố sẽ ký đơn ly hôn, đóng sập cửa và ngồi xuống giường thở dài mệt mỏi.\nShot 11: Chồng độc thoại với khán giả về ranh giới không thể chấp nhận trong hôn nhân.",
+    "characters": [
+      {
+        "id": "char-1",
+        "name": "Chồng",
+        "physicalDescription": "Nam, 30 tuổi, người châu Á, tóc cắt ngắn gọn gàng, khuôn mặt nam tính chữ điền, ánh mắt nghiêm nghị và sắc lạnh.",
+        "defaultOutfit": "Đồ thể thao màu xám, áo thun ba lỗ/sát nách màu xám.",
+        "voiceTone": "Nam Trầm Bản Lĩnh (miền Bắc)"
+      },
+      {
+        "id": "char-2",
+        "name": "Vợ",
+        "physicalDescription": "Nữ, 25 tuổi, người châu Á, dáng thon thả, tóc xoăn nhẹ xõa ngang vai, trang điểm đậm, khuôn mặt lả lơi đỏng đảnh.",
+        "defaultOutfit": "Đầm dạ hội lệch vai hở trần một bên, đính một bông hoa trên vai áo, vô cùng gợi cảm.",
+        "voiceTone": "Nữ Đỏng Đảnh (miền Nam)"
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-1",
+        "name": "Phòng ngủ",
+        "description": "Phòng ngủ gia đình hiện đại, rèm cửa màu be sáng, giường gỗ êm ái có đặt một chú gấu bông trên giường, hai chiếc đèn ngủ hai bên đầu giường tỏa ánh sáng vàng ấm áp."
+      }
+    ],
+    "props": [],
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 10,
+        "title": "Hỏi han đầu cảnh",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "Medium shot of a 30-year-old Asian man wearing grey sleeveless sportswear sitting on the edge of a bed, looking up and smiling. A 25-year-old Asian woman in a sexy one-shoulder evening gown stands near the foot of the bed. Warm yellow bedroom lighting, cinematic.",
+        "videoMotionPrompt": "Subtle pan from the man to the woman. The woman turns her body, flirts and blinks, the man's smile drops into a serious frown at the end.",
+        "characterNames": [
+          "Chồng",
+          "Vợ"
+        ],
+        "dialogue": {
+          "characterName": "Vợ",
+          "line": "Hông anh ơi, tối nay em đi cà phê với anh Tuấn á.",
+          "emotion": "lả lơi, vui vẻ"
+        },
+        "sfxAudioCue": "Âm thanh môi trường phòng ngủ yên tĩnh"
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 10,
+        "title": "Tiết lộ người yêu cũ",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "Medium shot of the man standing up from the bed, looking serious. The woman is standing in front of beige curtains, touching a flower on her dress shoulder, looking indifferent. Photorealistic.",
+        "videoMotionPrompt": "The man stands up with a heavy presence. The woman lightly touches her shoulder and shrugs with a smirk.",
+        "characterNames": [
+          "Chồng",
+          "Vợ"
+        ],
+        "dialogue": {
+          "characterName": "Vợ",
+          "line": "Thì đúng là ảnh đó! Mai ảnh cưới vợ rồi... nên tối nay hẹn em ra gặp mặt chút xíu.",
+          "emotion": "tỉnh bơ, đỏng đảnh"
+        },
+        "sfxAudioCue": "Nhạc nền bắt đầu có nhịp điệu căng thẳng nhẹ"
+      },
+      {
+        "id": "shot-3",
+        "shotNumber": 3,
+        "durationSeconds": 10,
+        "title": "Chồng phản đối",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "Close-up of the Asian man's face illuminated by warm yellow bedside lamps, his expression is dark and furious. He steps forward slightly. Photorealistic.",
+        "videoMotionPrompt": "Camera pushes in slowly on the man's face. He steps forward menacingly, jaw clenched.",
+        "characterNames": [
+          "Chồng",
+          "Vợ"
+        ],
+        "dialogue": {
+          "characterName": "Chồng",
+          "line": "Khuya khoắt thế này, em diện đầm hở vai, xức nước hoa thơm lừng... đi gặp người yêu cũ đúng đêm trước ngày nó cưới.",
+          "emotion": "trầm đanh, tức giận"
+        },
+        "sfxAudioCue": "Tiếng bước chân chậm, mạnh"
+      },
+      {
+        "id": "shot-4",
+        "shotNumber": 4,
+        "durationSeconds": 10,
+        "title": "Chặn lối & Cãi lý",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "Medium shot near the bedroom door. The man stands firmly blocking the door, shaking his head. The woman stands opposite him, hands on hips, pouting and rolling her eyes. Cinematic lighting.",
+        "videoMotionPrompt": "Man blocks the door with a firm stance. Woman puts hands on hips, leans forward arguing, and tilts her head arrogantly.",
+        "characterNames": [
+          "Chồng",
+          "Vợ"
+        ],
+        "dialogue": {
+          "characterName": "Vợ",
+          "line": "Ủa anh kỳ quá hà! Gặp mặt uống ly nước chúc phúc thôi có gì đâu mà làm quá lên vậy? Chia tay lâu rồi giờ là bạn bè thôi!",
+          "emotion": "the thé, chống chế"
+        },
+        "sfxAudioCue": "Không có"
+      },
+      {
+        "id": "shot-5",
+        "shotNumber": 5,
+        "durationSeconds": 10,
+        "title": "Xô đẩy & Cái tát",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "Close-up shot. The woman angrily pushes the man's grey sleeveless chest. Suddenly, she is holding her left cheek with wide shocked eyes. The man looks at her with cold, piercing eyes. Intense drama.",
+        "videoMotionPrompt": "Fast motion. Woman pushes man's chest. Quick cut to woman holding her cheek in shock. Man glares coldly.",
+        "characterNames": [
+          "Chồng",
+          "Vợ"
+        ],
+        "dialogue": {
+          "characterName": "Vợ",
+          "line": "Đừng có ghen tuông nhỏ nhen nữa, tránh ra! Á! Anh bị điên hả? Dám đánh tui vì đi với bạn?",
+          "emotion": "cáu gắt, sốc, the thé"
+        },
+        "sfxAudioCue": "Tiếng tát chát chúa (Slap SFX)"
+      },
+      {
+        "id": "shot-6",
+        "shotNumber": 6,
+        "durationSeconds": 10,
+        "title": "Chất vấn giới hạn",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "Close-up of the man under warm yellow lighting, frowning fiercely. He points his finger forward authoritatively, looking directly into the lens. Highly detailed face.",
+        "videoMotionPrompt": "Camera stays locked on the man. He raises his hand to point firmly, head movements emphasize his harsh words.",
+        "characterNames": [
+          "Chồng"
+        ],
+        "dialogue": {
+          "characterName": "Chồng",
+          "line": "Bạn? Thằng đàn ông nào sắp lấy vợ, đêm tân hôn cận kề lại rủ người yêu cũ ra tâm sự? Tình cũ không rủ cũng tới. Em đã có chồng rồi...",
+          "emotion": "đanh thép, uy lực"
+        },
+        "sfxAudioCue": "Nhạc nền dồn dập, căng thẳng"
+      },
+      {
+        "id": "shot-7",
+        "shotNumber": 7,
+        "durationSeconds": 10,
+        "title": "Lên án sự mập mờ",
+        "cameraAngle": "Over-the-shoulder",
+        "visualPrompt": "Over-the-shoulder shot from the woman's bare shoulder towards the man. The man puts his hand on his chest, expressing deep disappointment. The woman's eyes are red and teary but her lips are stubbornly pursed.",
+        "videoMotionPrompt": "Subtle camera drift. The man places hand on his chest. Cut to close up of woman's teary but stubborn eyes.",
+        "characterNames": [
+          "Chồng",
+          "Vợ"
+        ],
+        "dialogue": {
+          "characterName": "Chồng",
+          "line": "...lại ăn diện lồng lộn đi ban phát sự thương hại. Làm thế là chà đạp lên lòng tự trọng của anh, và xúc phạm cô dâu ngày mai của nó đấy.",
+          "emotion": "trầm, thất vọng, tức giận"
+        },
+        "sfxAudioCue": "Không có"
+      },
+      {
+        "id": "shot-8",
+        "shotNumber": 8,
+        "durationSeconds": 10,
+        "title": "Ranh giới & Ăn vạ",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "Close-up of the man staring straight, cold expression. Close-up of the woman crying, tears falling down her cheeks, yelling aggressively in her evening gown. Photorealistic.",
+        "videoMotionPrompt": "Man speaks with a rigid face. Cut to woman crying and screaming, body shaking with forced sobs.",
+        "characterNames": [
+          "Chồng",
+          "Vợ"
+        ],
+        "dialogue": {
+          "characterName": "Chồng",
+          "line": "Đã bước vào hôn nhân thì phải biết giữ ranh giới. Sự mập mờ của em không phải cao thượng, mà là lăng loàn.",
+          "emotion": "lạnh lùng, chốt hạ"
+        },
+        "sfxAudioCue": "Tiếng khóc lóc ăn vạ của phụ nữ"
+      },
+      {
+        "id": "shot-9",
+        "shotNumber": 9,
+        "durationSeconds": 10,
+        "title": "Mở cửa đuổi đi",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "Medium shot of the open bedroom door. The man holds the door open and points outside. The woman in her evening gown stands crying uncontrollably, tears streaming down her face. Cinematic.",
+        "videoMotionPrompt": "Man holds door, extends arm pointing out sharply. Woman stands freezing, crying heavily.",
+        "characterNames": [
+          "Chồng",
+          "Vợ"
+        ],
+        "dialogue": {
+          "characterName": "Chồng",
+          "line": "Nếu em đã tiếc nuối buổi hẹn lần cuối đấy đến thế, thì bước ra khỏi nhà này mà đi tìm nó đi. Đã bước ra thì đừng bao giờ quay về nữa.",
+          "emotion": "lạnh lùng, tuyệt tình"
+        },
+        "sfxAudioCue": "Tiếng khóc nấc"
+      },
+      {
+        "id": "shot-10",
+        "shotNumber": 10,
+        "durationSeconds": 10,
+        "title": "Tuyên bố ly hôn",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "Medium shot at the door. The man pushes the woman slightly out and slams the door closed. He walks to the wooden bed with a teddy bear on it, sits on the edge, rubs his face with both hands, looking exhausted.",
+        "videoMotionPrompt": "Man lightly shoves woman out, aggressively shuts the door. Walks to bed, sits heavily, rubs face in deep sigh.",
+        "characterNames": [
+          "Chồng"
+        ],
+        "dialogue": {
+          "characterName": "Chồng",
+          "line": "Đơn ly hôn anh sẽ ký. Đi đi! ... Đàn ông chúng tôi đi làm kiếm tiền, có thể bao dung mọi thứ...",
+          "emotion": "dứt khoát, mệt mỏi, buồn bã"
+        },
+        "sfxAudioCue": "Tiếng cửa đóng sầm mạnh (Door slam SFX), tiếng thở dài"
+      },
+      {
+        "id": "shot-11",
+        "shotNumber": 11,
+        "durationSeconds": 10,
+        "title": "Độc thoại kết thúc",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "Direct front POV close-up of the man in grey sleeveless shirt sitting on the bed between two warm yellow lamps. He looks directly into the lens, calm but sorrowful expression. Photorealistic, dramatic lighting.",
+        "videoMotionPrompt": "Static camera focusing on the man's face. He stares deeply into the lens, blinking slowly, speaking directly to the viewer.",
+        "characterNames": [
+          "Chồng"
+        ],
+        "dialogue": {
+          "characterName": "Chồng",
+          "line": "...nhưng không bao giờ chấp nhận vợ mình xúng xính váy áo đi gặp tình cũ đêm trước ngày nó cưới. Các bạn xem video, liệu tôi hành xử vậy là đúng hay sai?",
+          "emotion": "điềm tĩnh, chân thành"
+        },
+        "sfxAudioCue": "Nhạc nền trầm buồn, kết thúc video"
+      }
+    ]
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "360p"
+  }
+}

@@ -1,0 +1,1 @@
+trưởng phòng Hưng mắng nhân viên Lan làm hồ sơ dự án kém, đến khi nghe Giám đốc báo đối tác khen phê duyệt thưởng 50 triệu lạị  nhận vơ công mình

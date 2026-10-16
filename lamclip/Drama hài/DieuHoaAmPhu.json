@@ -1,0 +1,142 @@
+{
+  "project": {
+    "title": "Điều Hòa Âm Phủ (Chiller from the Other Side)",
+    "style": "Cinematic Photorealistic",
+    "aspectRatio": "9:16",
+    "duration": "30s",
+    "premise": "Một đêm hè oi bức mất điện, chàng trai cắm nhang muỗi rồi nằm quạt nan trong căn phòng trọ u ám. Cảm giác lạnh gáy ập đến khi một nữ quỷ tóc dài áo trắng xuất hiện nằm cạnh, nhưng câu hỏi của cô ta lại mang đến một cái kết dở khóc dở cười.",
+    "scriptMarkdown": "# ĐIỀU HÒA ÂM PHỦ\n\n**CẢNH PHÒNG TRỌ CŨ - ĐÊM**\n\nPhòng trọ tối đen, mất điện giữa mùa hè nóng đỉnh điểm. Nam cởi trần mồ hôi nhễ nhại, châm một nén nhang muỗi đặt cạnh chiếu rồi nằm vật ra quạt phành phạch.\n\nKhói nhang uốn lượn kỳ dị. Bỗng gió lạnh rít qua khe cửa, nhiệt độ phòng tụt dốc không phanh. Tiếng kéo lê xào xạc trên sàn gạch.\n\nMột bóng nữ quỷ tóc dài rũ rượi, da tái nhợt từ từ trườn tới nằm sóng soài ngay cạnh Nam. Nam đông cứng người, mắt trợn tròn run lẩy bẩy.\n\nMa nữ ghé sát tai Nam, phả làn hơi lạnh buốt.\n\nMA NỮ\n(thì thào giọng lạnh tanh)\nAnh đã mát chưa...?\n\nNam nuốt nước bọt ực một cái, vừa run vừa gật đầu lia lịa.",
+    "characters": [
+      {
+        "id": "char-1",
+        "name": "Nam",
+        "physicalDescription": "A 22-year-old Vietnamese college student, lean physique, messy damp dark hair sticking to forehead, expressive comedic eyes, pale skin glistening with sweat beads.",
+        "defaultOutfit": "Wearing an oversized faded grey tank top and worn navy lounge shorts, barefoot.",
+        "voiceTone": "Nam Tri Kỷ (miền Nam)"
+      },
+      {
+        "id": "char-2",
+        "name": "Ma Nữ",
+        "physicalDescription": "A classic Asian horror female ghost, eerie porcelain-white skin with bluish veins, long tangled pitch-black hair spilling over her face, sunken dark eye sockets, chilling frosty breath visible in the air.",
+        "defaultOutfit": "Loose, flowing antique white shroud gown with frayed hems.",
+        "voiceTone": "Thì thào quái dị ma mị"
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-1",
+        "name": "Phòng Trọ Ố Vàng",
+        "description": "Small, humid Vietnamese rented room during a blackout, peeling lime-green walls, a woven bamboo mat on tiled floor, moonlight cutting sharply through rusted window bars casting gothic grill shadows, oppressive suffocating atmosphere."
+      }
+    ],
+    "props": [
+      {
+        "name": "Nhang muỗi xoắn",
+        "description": "Green mosquito repellent coil with a tiny glowing red ember tip releasing curling thin smoke."
+      },
+      {
+        "name": "Quạt nan",
+        "description": "Traditional handheld woven bamboo fan, frayed edges."
+      }
+    ],
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 6,
+        "title": "Nóng bức giữa đêm mất điện",
+        "cameraAngle": "Medium Close-up",
+        "visualPrompt": "Vertical 9:16 cinematic frame, sweaty young Vietnamese man lying flat on a woven bamboo mat in a dark humid room during power outage, glowing red ember of a mosquito coil burning in foreground, dim moonlight casting blue highlights on his drenched tank top, fanatically waving a woven bamboo fan, gritty photorealistic East Asian horror atmosphere.",
+        "videoMotionPrompt": "Slow tilting down from flickering window moonlight to the character lying down, fan moving erratically in his tired hand.",
+        "characterNames": [
+          "Nam"
+        ],
+        "dialogue": {
+          "characterName": "Nam",
+          "line": "",
+          "emotion": ""
+        },
+        "sfxAudioCue": "Distant cicadas, continuous frantic flapping sound of woven fan, heavy labored breathing in sweltering heat."
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 4,
+        "title": "Khói nhang uốn lượn và luồng khí lạnh",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "Extreme macro close-up of the burning green mosquito coil, spiraling ribbon of smoke suddenly freezing and drifting unnaturally sideways, frost crystals rapidly creeping along the floor tiles, eerie teal and moonlit blue horror color grading, photorealistic cinematic suspense.",
+        "videoMotionPrompt": "Subtle camera push-in on the glowing red ember as smoke curls twist into bizarre ethereal patterns, floor texture freezing with frost.",
+        "characterNames": [],
+        "dialogue": {
+          "characterName": "",
+          "line": "",
+          "emotion": ""
+        },
+        "sfxAudioCue": "Sudden eerie low-pitch drone, sound of cracking ice and faint ominous rustling dragging along floor."
+      },
+      {
+        "id": "shot-3",
+        "shotNumber": 3,
+        "durationSeconds": 6,
+        "title": "Ma nữ nằm xuống bên cạnh",
+        "cameraAngle": "High Angle, Medium Shot",
+        "visualPrompt": "High angle 9:16 looking straight down at the bamboo mat, Nam lying stiffly on the right, while on the left a pale terrifying Asian female apparition in a ragged white gown glides slowly into place beside him, long ink-black tangled hair pooling across the floor tiles, freezing mist swirling off her body, photorealistic horror framing.",
+        "videoMotionPrompt": "Camera smoothly drifts down from above as the ghostly figure silently slithers down beside him, matching his lying posture.",
+        "characterNames": [
+          "Nam",
+          "Ma Nữ"
+        ],
+        "dialogue": {
+          "characterName": "",
+          "line": "",
+          "emotion": ""
+        },
+        "sfxAudioCue": "Slow cold ethereal wind howl, hair rustling against bamboo mat, sudden cessation of all outdoor crickets."
+      },
+      {
+        "id": "shot-4",
+        "shotNumber": 4,
+        "durationSeconds": 6,
+        "title": "Gương mặt kinh hãi đông cứng",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "Tight close-up of Nam's face pressed against the mat, eyeballs completely frozen and trembling with extreme dread, visible white frost breath coming from his mouth, sweat drops turning into icy glimmers, ghostly pale fingers with dark nails gently visible right next to his cheek, cinematic horror lighting with cold blue rim light.",
+        "videoMotionPrompt": "Slow creeping camera zoom into Nam's bulging terrified eyes as his teeth begin chattering uncontrollably from shear fear and cold.",
+        "characterNames": [
+          "Nam"
+        ],
+        "dialogue": {
+          "characterName": "Nam",
+          "line": "",
+          "emotion": ""
+        },
+        "sfxAudioCue": "Loud rapid pounding heartbeat, teeth chattering violently, icy whisper breeze."
+      },
+      {
+        "id": "shot-5",
+        "shotNumber": 5,
+        "durationSeconds": 8,
+        "title": "Lời thì thầm và cái kết lật kèo",
+        "cameraAngle": "Over-the-shoulder, Dutch Angle",
+        "visualPrompt": "Tense Dutch angle over-the-shoulder shot, the ghostly woman's pale cracked face with hair parted slightly revealing a chilling smirk leans right towards Nam's trembling ear, cold mist billowing from her black lips, Nam clenching his eyes shut in comical terror before vigorously nodding in absurd compliance, hilarious horror contrast, photorealistic cinematic finish.",
+        "videoMotionPrompt": "Ghost turns her head slowly to whisper close to his ear; Nam violently nods his head while shivering uncontrollably under cold phantom aura.",
+        "characterNames": [
+          "Nam",
+          "Ma Nữ"
+        ],
+        "dialogue": {
+          "characterName": "Ma Nữ",
+          "line": "Anh đã mát chưa...?",
+          "emotion": "thì thào ma mị, lạnh buốt"
+        },
+        "sfxAudioCue": "Spooky icy whisper right into the ear, followed by an abrupt comical silent pause and a soft comical rimshot percussion hit."
+      }
+    ]
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "360p"
+  }
+}

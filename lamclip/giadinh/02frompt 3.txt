@@ -1,0 +1,209 @@
+Create PART 3 (00:16–00:24), the FINAL segment of the SAME uninterrupted 24-second wholesome Vietnamese everyday family home-video style scene.
+
+START FROM THE EXACT LAST FRAME AND AUDIO MOMENT OF PART 2.
+
+NO TIME JUMP.
+
+At the first frame:
+
+Older Sister is ALREADY silently listening.
+
+The SAME smartphone is still touching the SAME ear and held by the SAME hand.
+
+Mother is ALREADY looking at her with the same amused half-smile.
+
+Baby is ALREADY safely supported in exactly the same position.
+
+Father is just about to respond.
+
+────────────────────────
+99% VISUAL IDENTITY LOCK
+────────────────────────
+
+Maintain exactly the same:
+
+Mother,
+Older Sister,
+Baby,
+faces,
+apparent ages,
+hairstyles,
+clothing,
+body proportions,
+phone,
+phone-holding hand,
+phone ear,
+Mother's supporting hands,
+Baby position,
+room,
+furniture,
+lighting,
+camera position,
+camera distance,
+lens perspective,
+framing.
+
+No regeneration-style visual reset.
+
+────────────────────────
+99% VOICE IDENTITY LOCK
+────────────────────────
+
+VOICE A = EXACT same Older Sister
+VOICE B = EXACT same Mother
+VOICE C = EXACT same Baby
+VOICE D = EXACT same Father
+
+Preserve 99%:
+pitch,
+timbre,
+vocal age,
+Northern Vietnamese accent,
+pronunciation,
+speaking rhythm,
+volume,
+breath characteristics,
+emotional character.
+
+Father retains the exact same smartphone-speaker sound.
+
+Never swap voices.
+
+ACTION:
+
+0.0–1.4s
+
+Continue immediately.
+
+Father responds through the smartphone:
+
+FATHER — PHONE:
+“Thế con có ngoan không?”
+
+Same warm Father voice.
+
+Father remains completely off-screen.
+
+1.4–2.5s
+
+Older Sister suddenly freezes.
+
+Her confident expression disappears.
+
+She keeps her head almost still but slowly shifts her eyes toward Mother.
+
+Mother is already watching her.
+
+Mother slightly raises her eyebrows.
+
+Baby looks curiously toward Older Sister.
+
+Allow a short natural comedic silence.
+
+2.5–3.7s
+
+Older Sister gives Mother a tiny embarrassed smile.
+
+She quietly answers Dad:
+
+OLDER SISTER:
+“Dạ… cũng ngoan.”
+
+IMPORTANT:
+Natural hesitation after “Dạ…”
+
+She sounds less confident now.
+
+3.7–4.8s
+
+Mother immediately smiles wider.
+
+MOTHER:
+“Cũng ngoan cơ à?”
+
+Mother starts naturally laughing at the end.
+
+Older Sister gives Mother a guilty, mischievous look.
+
+4.8–5.9s
+
+Older Sister quickly speaks into the phone:
+
+OLDER SISTER:
+“Ba về rồi con kể tiếp!”
+
+She ends the call.
+
+ONLY AFTER completing this sentence does she finally lower the phone away from her ear.
+
+5.9–6.7s
+
+Older Sister turns toward Mother.
+
+Her embarrassed expression becomes a big mischievous smile.
+
+Mother laughs.
+
+Older Sister leans naturally toward Mother and Baby.
+
+6.7–8.0s
+
+Mother keeps Baby securely supported and affectionately brings Older Sister closer.
+
+Older Sister cuddles against Mother and Baby.
+
+Baby reacts with a tiny happy arm movement and soft baby giggle.
+
+Mother laughs warmly.
+
+Older Sister giggles naturally.
+
+The three visible family members finish cuddled closely together.
+
+FINAL FRAME AT 24.0s:
+
+Mother securely holding Baby.
+Older Sister cuddled against Mother's side.
+Baby relaxed between them.
+
+Mother smiling and laughing.
+Older Sister smiling mischievously.
+Baby making a tiny happy expression.
+
+────────────────────────
+MASTER 24-SECOND CONTINUITY
+────────────────────────
+
+PART 1: 00:00–00:08
+PART 2: 00:08–00:16
+PART 3: 00:16–00:24
+
+These are NOT three independent scenes.
+
+They are three technical segments of ONE uninterrupted 24-second smartphone family recording.
+
+The boundaries at 08.0 and 16.0 seconds must be invisible.
+
+Maintain 99% visual character identity and 99% voice identity across all 24 seconds.
+
+NO:
+face changes,
+hairstyle changes,
+clothing changes,
+body proportion changes,
+phone changes,
+phone-hand switching,
+phone-ear switching,
+Baby position reset,
+Mother hand reset,
+background changes,
+lighting changes,
+camera resets,
+voice replacements.
+
+No narrator.
+No subtitles.
+No music.
+No additional dialogue.
+
+Natural overlapping family laughter is allowed only after the final spoken line.
