@@ -11,14 +11,14 @@
         "id": "char-tan",
         "name": "Tân",
         "physicalDescription": "Nam nhân viên văn phòng 23 tuổi, khuôn mặt gầy, đeo kính cận dày, tóc vuốt keo bóng mượt. Vẻ mặt lúc nào cũng nghiêm túc, kỹ tính.",
-        "defaultOutfit": "Áo sơ mi xanh nhạt cài kín cổ, quần âu xám, thẻ nhân viên đeo trước ngực.",
+        "defaultOutfit": "",
         "voiceTone": "Nam Trầm (miền Bắc), giọng bắt bẻ, hay mỉa mai."
       },
       {
         "id": "char-hieu",
         "name": "Hiếu",
         "physicalDescription": "Nam thanh niên 26 tuổi, khuôn mặt tròn trịa, tóc xoăn rối nhẹ, mắt lờ đờ nhưng miệng hay cười nhếch mép ranh mãnh.",
-        "defaultOutfit": "Áo hoodie màu cam rộng thùng thình, quần jeans xắn gấu.",
+        "defaultOutfit": "",
         "voiceTone": "Nam Thanh (miền Nam), giọng tưng tửng, tự tin thái quá."
       }
     ],
