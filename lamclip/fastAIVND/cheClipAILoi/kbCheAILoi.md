@@ -1,0 +1,1 @@
+làm kịch bản hài cho cốt truyện Nhân viên Tân chê Nhân viên Hiếu làm video AI bị lỗi nhiều, dễ bị phát hiện là clip do AI , nhưng khi đăng lên mạng thì chỉ sao 1 ngày đạt hai trăm nghìn lượt view và bốn nghìn lượt comment, trong đó rất nhiều comment chỉ ra lỗi của AI, nhưng Hiếu bảo đấy là các tạo tương tác tự nhiên cho video viral. kịch bản 10 shot

@@ -1,0 +1,207 @@
+{
+  "project": {
+    "title": "Thiên Tài Marketing AI",
+    "style": "3D Pixar",
+    "aspectRatio": "9:16",
+    "duration": "64s",
+    "premise": "Tân chê video AI của Hiếu làm đầy lỗi ngớ ngẩn (nhân vật đang đi thì bị mất giày). Nhưng sau một đêm, video lại viral rực rỡ với hàng ngàn bình luận soi lỗi. Hiếu tuyên bố đó là chiến thuật 'bait' tương tác đỉnh cao khiến Tân cạn lời.",
+    "scriptMarkdown": "Tân soi mói video của Hiếu. Hiếu tự tin đăng bài. Hôm sau video viral, Tân sốc vì khán giả bu vào chửi lỗi AI, Hiếu tự hào đó là bẫy tương tác.",
+    "characters": [
+      {
+        "id": "char-tan",
+        "name": "Tân",
+        "physicalDescription": "Nam nhân viên văn phòng 23 tuổi, khuôn mặt gầy, đeo kính cận dày, tóc vuốt keo bóng mượt. Vẻ mặt lúc nào cũng nghiêm túc, kỹ tính.",
+        "defaultOutfit": "Áo sơ mi xanh nhạt cài kín cổ, quần âu xám, thẻ nhân viên đeo trước ngực.",
+        "voiceTone": "Nam Trầm (miền Bắc), giọng bắt bẻ, hay mỉa mai."
+      },
+      {
+        "id": "char-hieu",
+        "name": "Hiếu",
+        "physicalDescription": "Nam thanh niên 26 tuổi, khuôn mặt tròn trịa, tóc xoăn rối nhẹ, mắt lờ đờ nhưng miệng hay cười nhếch mép ranh mãnh.",
+        "defaultOutfit": "Áo hoodie màu cam rộng thùng thình, quần jeans xắn gấu.",
+        "voiceTone": "Nam Thanh (miền Nam), giọng tưng tửng, tự tin thái quá."
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-office",
+        "name": "Văn phòng công ty",
+        "description": "Bàn làm việc hiện đại, có hai màn hình máy tính lớn, trên bàn la liệt vỏ snack và cốc cà phê giấy, ánh sáng đèn neon sáng sủa."
+      }
+    ],
+    "props": [
+      "Laptop hiển thị video AI bị lỗi",
+      "Điện thoại hiển thị mốc 200k view",
+      "Cốc cà phê giấy"
+    ],
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 6,
+        "title": "Tân phát hiện lỗi AI",
+        "cameraAngle": "Over-the-shoulder",
+        "visualPrompt": "Tân đứng chống tay sau ghế của Hiếu, ngó vào màn hình laptop. Trên màn hình là cô gái AI đang bước đi nhưng đôi giày đột nhiên biến mất, chỉ còn đôi bàn chân không. Tân chỉ tay vào màn hình, cười nhếch mép.",
+        "videoMotionPrompt": "Camera zooms in slightly on the laptop screen. Tan points his finger at the screen and laughs.",
+        "characterNames": ["Tân", "Hiếu"],
+        "dialogue": {
+          "characterName": "Tân",
+          "line": "Trời đất ơi anh Hiếu! Anh làm video AI kiểu gì mà nhân vật đang đi lại mất tiêu đôi giày thế kia? Khán giả tế sống bây giờ!",
+          "emotion": "mỉa mai"
+        },
+        "sfxAudioCue": "Tiếng cười chế nhạo"
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 6,
+        "title": "Tân tiếp tục bóc phốt",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "Tân khoanh tay trước ngực, lắc đầu ngán ngẩm nhìn Hiếu. Hiếu vẫn thản nhiên ngồi tựa lưng vào ghế xoay, cầm cốc cà phê giấy nhấp một ngụm.",
+        "videoMotionPrompt": "Tan shakes his head in disappointment. Hieu casually sips from a paper coffee cup.",
+        "characterNames": ["Tân", "Hiếu"],
+        "dialogue": {
+          "characterName": "Tân",
+          "line": "Lại còn cái bàn chân trần lơ lửng lướt trên mặt đường nữa. Clip lỗi rành rành thế này đăng lên chỉ có flop dập mặt thôi anh ạ.",
+          "emotion": "trịch thượng"
+        },
+        "sfxAudioCue": "Tiếng thở dài"
+      },
+      {
+        "id": "shot-3",
+        "shotNumber": 3,
+        "durationSeconds": 4,
+        "title": "Hiếu chốt hạ",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "Cận cảnh khuôn mặt tự tin của Hiếu. Hiếu nhếch mép cười bí hiểm, ngón tay trỏ giơ lên phím Enter trên bàn phím.",
+        "videoMotionPrompt": "Hieu smirks confidently, then dramatically presses the Enter key with one finger.",
+        "characterNames": ["Hiếu"],
+        "dialogue": {
+          "characterName": "Hiếu",
+          "line": "Chưa biết mèo nào cắn mỉu nào đâu chú em ơi. Đăng luôn!",
+          "emotion": "tự tin"
+        },
+        "sfxAudioCue": "Tiếng gõ phím 'Cạch' rõ to"
+      },
+      {
+        "id": "shot-4",
+        "shotNumber": 4,
+        "durationSeconds": 4,
+        "title": "Sáng hôm sau",
+        "cameraAngle": "Wide Shot",
+        "visualPrompt": "Sáng hôm sau tại văn phòng. Hiếu đang gác hai chân lên bàn, tay cầm điện thoại lướt lướt, mặt rạng rỡ.",
+        "videoMotionPrompt": "Camera pans slowly across the office, revealing Hieu chilling with his feet on the desk, looking happily at his phone.",
+        "characterNames": ["Hiếu"],
+        "dialogue": {
+          "characterName": "Hiếu",
+          "line": "Hehe, biết ngay mà!",
+          "emotion": "đắc ý"
+        },
+        "sfxAudioCue": "Tiếng chim hót buổi sáng, tiếng chuông báo thông báo liên tục 'ting ting'"
+      },
+      {
+        "id": "shot-5",
+        "shotNumber": 5,
+        "durationSeconds": 8,
+        "title": "Tân đi tới mỉa mai",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "Tân xách cặp bước vào công ty, đi thẳng tới chỗ Hiếu, mặt vẫn giữ vẻ trịch thượng, chuẩn bị buông lời châm chọc.",
+        "videoMotionPrompt": "Tan walks briskly to Hieu's desk, sets his bag down, and leans in with a smug expression.",
+        "characterNames": ["Tân", "Hiếu"],
+        "dialogue": {
+          "characterName": "Tân",
+          "line": "Sao rồi anh trai thiên tài AI? Video nhân vật mất giày hôm qua được 10 view chưa? Có cần em vào bình luận dạo ủng hộ không?",
+          "emotion": "châm chọc"
+        },
+        "sfxAudioCue": "Không có"
+      },
+      {
+        "id": "shot-6",
+        "shotNumber": 6,
+        "durationSeconds": 8,
+        "title": "Màn đập mặt",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "Hiếu bất ngờ giơ vọt chiếc điện thoại dí sát vào mặt Tân. Màn hình điện thoại hiện to con số '200K Lượt xem' và '4K Bình luận'. Mắt Tân trợn ngược, kính xệ xuống mũi.",
+        "videoMotionPrompt": "Hieu thrusts his phone screen right into Tan's face. Tan's eyes widen in extreme shock, his glasses slide down his nose.",
+        "characterNames": ["Tân", "Hiếu"],
+        "dialogue": {
+          "characterName": "Tân",
+          "line": "Cái gì? Hai trăm nghìn view? Bốn nghìn bình luận trong một đêm á? Lỗi hệ thống à?",
+          "emotion": "sốc nặng"
+        },
+        "sfxAudioCue": "Hiệu ứng âm thanh giật mình 'Đùng'"
+      },
+      {
+        "id": "shot-7",
+        "shotNumber": 7,
+        "durationSeconds": 6,
+        "title": "Sự thật trong bình luận",
+        "cameraAngle": "Over-the-shoulder",
+        "visualPrompt": "Góc nhìn từ sau vai Tân, nhìn chằm chằm vào màn hình điện thoại. Các bình luận cuộn lên liên tục: 'Ê tự nhiên mất đôi giày!', 'Làm AI lộ quá haha', 'Chân đi đất lướt ván à'.",
+        "videoMotionPrompt": "Camera focus on the phone screen scrolling through aggressive comments pointing out AI flaws.",
+        "characterNames": ["Tân"],
+        "dialogue": {
+          "characterName": "Tân",
+          "line": "Khoan đã... Toàn là bình luận chửi lỗi AI kìa. 'Tự nhiên mất giày', 'Làm video không có tâm'... Người ta đang chửi anh kìa!",
+          "emotion": "bối rối"
+        },
+        "sfxAudioCue": "Tiếng thông báo nhảy liên tục"
+      },
+      {
+        "id": "shot-8",
+        "shotNumber": 8,
+        "durationSeconds": 8,
+        "title": "Hiếu lật bài",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "Hiếu đứng dậy, dùng ngón tay trỏ gõ gõ vào thái dương của mình (biểu tượng não to). Vẻ mặt cực kỳ tự mãn và đắc ý.",
+        "videoMotionPrompt": "Hieu stands up, dramatically taps his temple with his index finger, looking like a mastermind.",
+        "characterNames": ["Hiếu"],
+        "dialogue": {
+          "characterName": "Hiếu",
+          "line": "Đấy là chú em không hiểu rồi! Càng lỗi, cộng đồng mạng càng ngứa mắt. Ngứa mắt thì họ phải nhảy vào bắt lỗi. Mà bắt lỗi thì thành tương tác khủng!",
+          "emotion": "tự hào"
+        },
+        "sfxAudioCue": "Nhạc nền chuyển sang lanh lợi, hài hước"
+      },
+      {
+        "id": "shot-9",
+        "shotNumber": 9,
+        "durationSeconds": 8,
+        "title": "Chân lý marketing",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "Cận cảnh khuôn mặt Hiếu rạng rỡ, chỉ tay về phía Tân đang đứng hình.",
+        "videoMotionPrompt": "Hieu points at Tan, nodding sagely while winking at the camera.",
+        "characterNames": ["Hiếu"],
+        "dialogue": {
+          "characterName": "Hiếu",
+          "line": "Hoàn hảo quá người ta lướt qua. Lỗi một chút thì người ta ở lại chửi. Thuật toán nó đâu phân biệt chửi hay khen, nó chỉ cần tương tác thôi chú em ạ!",
+          "emotion": "giảng đạo"
+        },
+        "sfxAudioCue": "Không có"
+      },
+      {
+        "id": "shot-10",
+        "shotNumber": 10,
+        "durationSeconds": 6,
+        "title": "Tân sang chấn tâm lý",
+        "cameraAngle": "Wide Shot",
+        "visualPrompt": "Tân đứng đờ người ra, mặt ngơ ngác, tay ôm đầu như thế giới quan vừa sụp đổ. Trong khi đó, Hiếu vui vẻ ngồi xuống ghế, tiếp tục rung đùi đếm view.",
+        "videoMotionPrompt": "Tan slumps his shoulders, facepalming in existential dread. Hieu sits back down, happily bobbing his leg.",
+        "characterNames": ["Tân", "Hiếu"],
+        "dialogue": {
+          "characterName": "Tân",
+          "line": "Hóa ra... những gì mình học ở đại học... đều là dối trá sao...",
+          "emotion": "hoang mang"
+        },
+        "sfxAudioCue": "Tiếng gió thổi qua lạch cạch hài hước, màn hình mờ dần"
+      }
+    ]
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "720p"
+  }
+}
