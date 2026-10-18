@@ -1,0 +1,220 @@
+{
+  "project": {
+    "title": "Nỗi Đau Ngày Mẹ Đi Lấy Chồng",
+    "style": "Cinematic Photorealistic",
+    "aspectRatio": "9:16",
+    "duration": "60s",
+    "premise": "Người mẹ đi bước nữa bỏ lại con gái nhỏ cho bà ngoại già yếu chăm sóc.",
+    "scriptMarkdown": "**Cảnh 1: Phòng ngủ** - Bé Hạnh hỏi mẹ về việc ở với ai khi mẹ lấy chồng. Mẹ bảo ở với ngoại vì dượng chưa sẵn sàng đón nhận bé. **Cảnh 2: Phòng khách** - Bà ngoại khuyên con gái dẫn cháu theo nhưng người mẹ từ chối vì sợ vướng bận nhà chồng. **Cảnh 3: Sân nhà & Đêm** - Mẹ rời đi cùng chồng mới, tối đó hai bà cháu ôm nhau tâm sự đợi mẹ về.",
+    "characters": [
+      {
+        "id": "char-1",
+        "name": "Má (Mai)",
+        "physicalDescription": "Young Vietnamese woman, 28, oval face, large expressive brown eyes, black hair in a neat bun, slim, 3D Pixar and Disney animation style.",
+        "defaultOutfit": "Red traditional Vietnamese bridal Ao Dai with gold floral embroidery and matching headdress (khan dong).",
+        "voiceTone": "Nữ Trầm Bản Lĩnh (miền Nam)"
+      },
+      {
+        "id": "char-2",
+        "name": "Bé Hạnh",
+        "physicalDescription": "Little Vietnamese girl, 6, round face, big innocent brown eyes, shoulder-length black hair with yellow flower clip, 3D Pixar and Disney animation style.",
+        "defaultOutfit": "Sleeveless yellow lace dress and black Mary Jane shoes.",
+        "voiceTone": "Giọng trẻ em trong trẻo, xúc động (miền Nam)"
+      },
+      {
+        "id": "char-3",
+        "name": "Bà Ngoại",
+        "physicalDescription": "Elderly Vietnamese woman, 68, wrinkled face, kind sad eyes, grey hair in a bun, slightly hunched, 3D Pixar and Disney animation style.",
+        "defaultOutfit": "Dark brown traditional rural blouse (Ao Ba Ba), black trousers, and brown slippers.",
+        "voiceTone": "Nữ Cao Tuổi Trầm Ấm, Xúc Động (miền Nam)"
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-1",
+        "name": "Phòng ngủ quê",
+        "description": "Simple rural bedroom with a wooden bed, white sheet, wooden cabinet, calendar on wall, and sunlit window."
+      },
+      {
+        "id": "loc-2",
+        "name": "Phòng khách quê",
+        "description": "Modest rural living room with old CRT TV, wooden table and chairs, and open window."
+      },
+      {
+        "id": "loc-3",
+        "name": "Sân nhà quê",
+        "description": "Rural dirt courtyard in front of an old tile-roofed house with brick steps and green wooden door."
+      }
+    ],
+    "props": [],
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 4,
+        "title": "Câu hỏi của con gái",
+        "cameraAngle": "Medium Wide Shot",
+        "visualPrompt": "Mother in red bridal Ao Dai sitting on wooden bed on the left, little girl in yellow dress standing on the right in sunlit bedroom. 3D Pixar and Disney animation style, photorealistic, cinematic lighting, professional camera settings, micro lighting, micro shadow, micro geometry, micro high lighting contrast, micro edge, micro color details, micro texture, micro human skin texture. Ultra high quality video.",
+        "videoMotionPrompt": "[Context: Wholesome 3D animated family movie, heartwarming father mother and daughter moment] Static camera, the little girl on the right looks up at her mother and speaks with a sad expression while the mother looks down sorrowfully. 3D Pixar and Disney animation style, cinematic camera movement, micro lighting, micro shadow, micro texture, micro human skin texture. Ultra high quality video.",
+        "characterNames": ["Má (Mai)", "Bé Hạnh"],
+        "dialogue": {
+          "characterName": "Bé Hạnh",
+          "line": "Má đi lấy chồng con ở với ai?",
+          "emotion": "Buồn bã, lo lắng"
+        },
+        "sfxAudioCue": "Không gian yên tĩnh"
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 4,
+        "title": "Lời dặn của má",
+        "cameraAngle": "Over-the-shoulder Close-up",
+        "visualPrompt": "Over the little girl's shoulder on left foreground, close-up of mother in red Ao Dai on the right looking sympathetic. 3D Pixar and Disney animation style, photorealistic, cinematic lighting, professional camera settings, micro lighting, micro shadow, micro geometry, micro high lighting contrast, micro edge, micro color details, micro texture, micro human skin texture. Ultra high quality video.",
+        "videoMotionPrompt": "[Context: Wholesome 3D animated family movie, heartwarming father mother and daughter moment] Subtle camera push in, mother speaks gently with furrowed brows and sad eyes. 3D Pixar and Disney animation style, cinematic camera movement, micro lighting, micro shadow, micro texture, micro human skin texture. Ultra high quality video.",
+        "characterNames": ["Má (Mai)", "Bé Hạnh"],
+        "dialogue": {
+          "characterName": "Má (Mai)",
+          "line": "Con ở lại đây với bà ngoại nhé, ngoại sẽ thay má chăm sóc con.",
+          "emotion": "Áy náy, dịu dàng"
+        },
+        "sfxAudioCue": "Tiếng thở nhẹ"
+      },
+      {
+        "id": "shot-3",
+        "shotNumber": 3,
+        "durationSeconds": 4,
+        "title": "Lời van xin đi cùng",
+        "cameraAngle": "Over-the-shoulder Close-up",
+        "visualPrompt": "Over the mother's red-clad shoulder on right foreground, close-up of little girl in yellow dress on left looking pleadingly. 3D Pixar and Disney animation style, photorealistic, cinematic lighting, professional camera settings, micro lighting, micro shadow, micro geometry, micro high lighting contrast, micro edge, micro color details, micro texture, micro human skin texture. Ultra high quality video.",
+        "videoMotionPrompt": "[Context: Wholesome 3D animated family movie, heartwarming father mother and daughter moment] Gentle camera focus on the girl holding her hands to her chest, speaking with hopeful, watery eyes. 3D Pixar and Disney animation style, cinematic camera movement, micro lighting, micro shadow, micro texture, micro human skin texture. Ultra high quality video.",
+        "characterNames": ["Bé Hạnh", "Má (Mai)"],
+        "dialogue": {
+          "characterName": "Bé Hạnh",
+          "line": "Má dẫn con đi cùng có được không?",
+          "emotion": "Khẩn khoản, hy vọng"
+        },
+        "sfxAudioCue": "Không có"
+      },
+      {
+        "id": "shot-4",
+        "shotNumber": 4,
+        "durationSeconds": 6,
+        "title": "Lý do từ chối",
+        "cameraAngle": "Medium Wide Shot",
+        "visualPrompt": "Mother sitting on bed on left explaining to little girl standing on right with head bowed in bedroom. 3D Pixar and Disney animation style, photorealistic, cinematic lighting, professional camera settings, micro lighting, micro shadow, micro geometry, micro high lighting contrast, micro edge, micro color details, micro texture, micro human skin texture. Ultra high quality video.",
+        "videoMotionPrompt": "[Context: Wholesome 3D animated family movie, heartwarming father mother and daughter moment] Static shot, mother gestures slightly with her left hand while explaining, girl looks down sadly. 3D Pixar and Disney animation style, cinematic camera movement, micro lighting, micro shadow, micro texture, micro human skin texture. Ultra high quality video.",
+        "characterNames": ["Má (Mai)", "Bé Hạnh"],
+        "dialogue": {
+          "characterName": "Má (Mai)",
+          "line": "Dượng chưa sẵn sàng đón nhận con, nên má chưa thể đưa con đi cùng được, mong con hiểu và thông cảm cho má nha.",
+          "emotion": "Khó xử, thuyết phục"
+        },
+        "sfxAudioCue": "Không có"
+      },
+      {
+        "id": "shot-5",
+        "shotNumber": 5,
+        "durationSeconds": 4,
+        "title": "Nỗi lòng tuổi thơ",
+        "cameraAngle": "Medium Close-up",
+        "visualPrompt": "Little girl on left looking up tearfully at mother sitting on right in red Ao Dai. 3D Pixar and Disney animation style, photorealistic, cinematic lighting, professional camera settings, micro lighting, micro shadow, micro geometry, micro high lighting contrast, micro edge, micro color details, micro texture, micro human skin texture. Ultra high quality video.",
+        "videoMotionPrompt": "[Context: Wholesome 3D animated family movie, heartwarming father mother and daughter moment] Slight zoom in on the little girl speaking emotionally while the mother looks down guiltily. 3D Pixar and Disney animation style, cinematic camera movement, micro lighting, micro shadow, micro texture, micro human skin texture. Ultra high quality video.",
+        "characterNames": ["Bé Hạnh", "Má (Mai)"],
+        "dialogue": {
+          "characterName": "Bé Hạnh",
+          "line": "Con thông cảm cho má, còn tuổi thơ của con thì sao?",
+          "emotion": "Tủi thân, nghẹn ngào"
+        },
+        "sfxAudioCue": "Không có"
+      },
+      {
+        "id": "shot-6",
+        "shotNumber": 6,
+        "durationSeconds": 4,
+        "title": "Lời hứa hẹn",
+        "cameraAngle": "Medium Close-up",
+        "visualPrompt": "Mother in red Ao Dai on right placing hand gently on girl's arm on left. 3D Pixar and Disney animation style, photorealistic, cinematic lighting, professional camera settings, micro lighting, micro shadow, micro geometry, micro high lighting contrast, micro edge, micro color details, micro texture, micro human skin texture. Ultra high quality video.",
+        "videoMotionPrompt": "[Context: Wholesome 3D animated family movie, heartwarming father mother and daughter moment] Camera focuses on the mother speaking reassuringly with a gentle nod. 3D Pixar and Disney animation style, cinematic camera movement, micro lighting, micro shadow, micro texture, micro human skin texture. Ultra high quality video.",
+        "characterNames": ["Má (Mai)", "Bé Hạnh"],
+        "dialogue": {
+          "characterName": "Má (Mai)",
+          "line": "Sau này cuộc sống của má ổn định, má sẽ quay về đón con.",
+          "emotion": "An ủi, hứa hẹn"
+        },
+        "sfxAudioCue": "Không có"
+      },
+      {
+        "id": "shot-7",
+        "shotNumber": 7,
+        "durationSeconds": 10,
+        "title": "Bà ngoại khuyên nhủ",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "Mother in red Ao Dai standing on left, elderly grandmother in brown blouse standing on right in rural living room. 3D Pixar and Disney animation style, photorealistic, cinematic lighting, professional camera settings, micro lighting, micro shadow, micro geometry, micro high lighting contrast, micro edge, micro color details, micro texture, micro human skin texture. Ultra high quality video.",
+        "videoMotionPrompt": "Camera starts on medium shot then cuts to close-up of the elderly grandmother speaking earnestly and gesturing with her hands, pleading with her daughter. 3D Pixar and Disney animation style, cinematic camera movement, micro lighting, micro shadow, micro texture, micro human skin texture. Ultra high quality video.",
+        "characterNames": ["Bà Ngoại", "Má (Mai)"],
+        "dialogue": {
+          "characterName": "Bà Ngoại",
+          "line": "Con cưới chồng mới thì dẫn bé Hạnh đi cùng con nhé, chứ bỏ con bé ở lại đây không có ba, cũng chẳng có mẹ bên cạnh, tội nghiệp nó lắm con ạ. Con giành quyền nuôi nó thì hãy làm tròn bổn phận của người mẹ.",
+          "emotion": "Xót xa, khuyên nhủ"
+        },
+        "sfxAudioCue": "Không có"
+      },
+      {
+        "id": "shot-8",
+        "shotNumber": 8,
+        "durationSeconds": 10,
+        "title": "Sự ích kỷ của người mẹ",
+        "cameraAngle": "Medium Close-up",
+        "visualPrompt": "Mother in red Ao Dai on left speaking frustatedly to sad elderly grandmother on right in living room. 3D Pixar and Disney animation style, photorealistic, cinematic lighting, professional camera settings, micro lighting, micro shadow, micro geometry, micro high lighting contrast, micro edge, micro color details, micro texture, micro human skin texture. Ultra high quality video.",
+        "videoMotionPrompt": "Camera alternates between medium shot and close-up of the mother speaking defensively with sharp hand gestures, while the grandmother listens in shock and sadness. 3D Pixar and Disney animation style, cinematic camera movement, micro lighting, micro shadow, micro texture, micro human skin texture. Ultra high quality video.",
+        "characterNames": ["Má (Mai)", "Bà Ngoại"],
+        "dialogue": {
+          "characterName": "Má (Mai)",
+          "line": "Làm sao con dẫn nó theo được hả má? Con về nhà chồng còn phải lo cho con riêng của chồng nữa, chứ dẫn nó theo chỉ tổ thêm vướng víu, thêm phiền phức cho con chứ được gì. Nó ở lại đây má tự lo cho nó đi, con còn phải lo cuộc sống của con nữa.",
+          "emotion": "Bực bội, ích kỷ, gay gắt"
+        },
+        "sfxAudioCue": "Không có"
+      },
+      {
+        "id": "shot-9",
+        "shotNumber": 9,
+        "durationSeconds": 6,
+        "title": "Bước chân ngày mẹ đi",
+        "cameraAngle": "Wide Shot",
+        "visualPrompt": "Little girl standing at open doorway on left watching mother in red Ao Dai walking away hand-in-hand with new husband on right in courtyard, transitioning to night bedroom with grandmother. 3D Pixar and Disney animation style, photorealistic, cinematic lighting, professional camera settings, micro lighting, micro shadow, micro geometry, micro high lighting contrast, micro edge, micro color details, micro texture, micro human skin texture. Ultra high quality video.",
+        "videoMotionPrompt": "[Context: Wholesome 3D animated family movie, heartwarming father mother and daughter moment] Mother and new husband walk away from camera on the right while little girl watches sadly from the doorway on the left, then dissolves to night scene where the girl sits on bed asking her grandmother. 3D Pixar and Disney animation style, cinematic camera movement, micro lighting, micro shadow, micro texture, micro human skin texture. Ultra high quality video.",
+        "characterNames": ["Bé Hạnh", "Má (Mai)", "Bà Ngoại"],
+        "dialogue": {
+          "characterName": "Bé Hạnh",
+          "line": "Khi nào má mới về đón con vậy bà?",
+          "emotion": "Buồn bã, ngây thơ"
+        },
+        "sfxAudioCue": "Tiếng bước chân trên đất"
+      },
+      {
+        "id": "shot-10",
+        "shotNumber": 10,
+        "durationSeconds": 8,
+        "title": "Hai bà cháu nương tựa nhau",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "Elderly grandmother on left and little girl with pigtails on right sitting on bed at night under warm table lamp light. 3D Pixar and Disney animation style, photorealistic, cinematic lighting, professional camera settings, micro lighting, micro shadow, micro geometry, micro high lighting contrast, micro edge, micro color details, micro texture, micro human skin texture. Ultra high quality video.",
+        "videoMotionPrompt": "[Context: Wholesome 3D animated family movie, heartwarming father mother and daughter moment] Close-up of grandmother speaking tenderly, then medium shot as she gently pats the little girl's shoulder while the girl smiles warmly. 3D Pixar and Disney animation style, cinematic camera movement, micro lighting, micro shadow, micro texture, micro human skin texture. Ultra high quality video.",
+        "characterNames": ["Bà Ngoại", "Bé Hạnh"],
+        "dialogue": {
+          "characterName": "Bà Ngoại",
+          "line": "Bà cũng không biết con ạ. Bây giờ Hạnh ở đây với bà nhé, bà sẽ chăm sóc con thật tốt, rồi hai bà cháu mình cùng đợi, đợi đến ngày má con quay về.",
+          "emotion": "Thương cảm, âu yếm"
+        },
+        "sfxAudioCue": "Tiếng côn trùng đêm"
+      }
+    ]
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "720p"
+  }
+}
