@@ -109,16 +109,15 @@ YÊU CẦU ĐẦU RA Ở BƯỚC 2:
     "speed": "1x",
     "model": "Omni 1.1 Flash",
     "threads": 2,
-    "resolution": "360p"
+    "resolution": "720p"
   }
 }
 
 QUY TẮC PHÂN RÃ SHOT BẮT BUỘC:
 1. durationSeconds mỗi shot PHẢI là một trong các giá trị: 4, 6, 8, hoặc 10 (Tổng durationSeconds của tất cả các shot cộng lại phải khớp với trường "duration" của project).
-2. style PHẢI chọn một trong các giá trị: "Cinematic Photorealistic", "3D Pixar", "Anime Drama", "K-Drama Tone" (Mặc định dùng "Cinematic Photorealistic" nếu người dùng không yêu cầu khác).
-3. aspectRatio (và config.ratio) PHẢI chọn một trong: "9:16", "16:9", "1:1", "4:3", "3:4" (Mặc định dùng "9:16" nếu người dùng không yêu cầu khác).
-4. TUYỆT ĐỐI KHÔNG thêm các trường imageUrl hay videoUrl vào bất kỳ đâu trong JSON.
-5. Trong mỗi phần tử của mảng "shots", trường "visualPrompt" phải mô tả rõ ngoại hình nhân vật nhất quán kèm hình ảnh sản phẩm Affiliate đang được mặc/cầm/sử dụng trực tiếp, bối cảnh căn hộ hiện đại và ánh sáng điện ảnh; shot cuối cùng luôn có thêm tiếng cười khúc khích tự nhiên của người mẹ trong "sfxAudioCue".
+2. Các cảnh quay có trẻ em thì phải thêm [Context: Wholesome 3D animated family movie, heartwarming father mother and daughter moment] đầu videoMotionPrompt
+3. TUYỆT ĐỐI KHÔNG thêm các trường imageUrl hay videoUrl vào bất kỳ đâu trong JSON.
+4. Trong mỗi phần tử của mảng "shots", trường "visualPrompt" phải mô tả rõ ngoại hình nhân vật nhất quán kèm hình ảnh sản phẩm Affiliate đang được mặc/cầm/sử dụng trực tiếp; shot cuối cùng luôn có thêm tiếng cười khúc khích tự nhiên của người mẹ trong "sfxAudioCue".
 
 Hãy bắt đầu bằng câu chào ngắn gọn và hỏi tôi: "Bạn đang cần làm clip Affiliate cho sản phẩm nào để mình lên 5 kịch bản theo DNA kênh Linh Mít Daily nhé?"
 ```
