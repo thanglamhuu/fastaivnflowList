@@ -1,4 +1,4 @@
-import { Shot, Character, Location, FlowMedia } from '../types';
+import { Shot, Character, Location, FlowMedia, VisualArtStyle } from '../types';
 /**
  * Tìm tất cả nhân vật có mặt trong shot:
  * 1. Dựa trên shot.characterNames
@@ -40,23 +40,33 @@ export function getShotReferenceMedias(
   return refs;
 }
 /**
- * Xây dựng prompt khóa nhận diện khuôn mặt và cố định trang phục nghiêm ngặt
+ * Xây dựng prompt khóa nhận diện khuôn mặt, cố định trang phục và ép phong cách visualStyle (Realistic / Anime / 3D Pixar)
  */
 export function buildConsistentImagePrompt(
   rawVisualPrompt: string,
   shotChars: Character[],
-  location?: Location
+  location?: Location,
+  visualStyle?: VisualArtStyle
 ): string {
+  let styleInstruction = '';
+  if (visualStyle === 'Anime') {
+    styleInstruction = 'Art Style: Japanese Anime aesthetic, high-end anime movie animation style, crisp cel-shaded lines, vibrant studio anime art direction.';
+  } else if (visualStyle === '3D Pixar') {
+    styleInstruction = 'Art Style: 3D Pixar / Disney animated feature film render, soft subsurface scattering, stylized expressive character proportions, cinematic 3D CGI lighting, Octane render quality.';
+  } else {
+    styleInstruction = 'Art Style: Hyperrealistic live-action cinematic photography, 8k resolution, authentic skin textures, natural realistic lighting, photorealistic movie still.';
+  }
   if (shotChars.length === 0) {
-    let prompt = rawVisualPrompt.trim();
+    let prompt = `[${styleInstruction}] ${rawVisualPrompt.trim()}`;
     if (location && location.description) {
       prompt += ` [Setting: ${location.name} - ${location.description}]`;
     }
     return prompt;
   }
   const hasReferenceImages = shotChars.some(c => c.avatarMedia?.mediaId || c.avatarMedia?.base64);
-  // Chỉ thị khóa nghiêm ngặt khuôn mặt và trang phục
+  // Chỉ thị khóa nghiêm ngặt khuôn mặt, trang phục và phong cách
   const rules = `[STRICT CHARACTER & OUTFIT CONSISTENCY RULES:
+${styleInstruction}
 You MUST strictly preserve the exact facial features, face identity, hairstyle, skin tone, and EXACT OUTFIT (clothing style, cut, and exact color) from the provided character reference image(s).
 IGNORE and OVERRIDE any conflicting clothing or dress descriptions in the scene prompt below. Do NOT change the color or style of the character's outfit from the reference image!
 ${shotChars.map((c, idx) => {

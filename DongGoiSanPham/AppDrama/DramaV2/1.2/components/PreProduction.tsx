@@ -53,7 +53,7 @@ export default function PreProduction({
           <button
             type="button"
             onClick={onAddCharacter}
-            className="flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black text-xs font-black uppercase tracking-wider rounded-xl shadow-lg shadow-amber-500/20 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#F31B17] hover:bg-[#d11713] text-white text-xs font-black uppercase tracking-wider rounded-xl shadow-lg shadow-red-950/20 active:scale-95 transition-all"
           >
             <span className="material-symbols-outlined text-base">person_add</span>
             Thêm nhân vật
@@ -64,7 +64,7 @@ export default function PreProduction({
             <p className="text-slate-400 text-sm mb-3">Chưa có nhân vật nào trong dự án.</p>
             <button
               onClick={onAddCharacter}
-              className="px-4 py-2 bg-amber-500 text-black text-xs font-bold rounded-xl"
+              className="px-4 py-2 bg-[#F31B17] hover:bg-[#d11713] text-white text-xs font-bold rounded-xl"
             >
               + Thêm nhân vật đầu tiên
             </button>
@@ -72,7 +72,7 @@ export default function PreProduction({
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {characters.map(char => (
-              <div key={char.id} className="relative bg-slate-900/40 border border-white/5 rounded-3xl overflow-hidden flex flex-col p-6 space-y-4 hover:border-amber-500/30 transition-all group shadow-xl">
+              <div key={char.id} className="relative bg-slate-900/40 border border-white/5 rounded-3xl overflow-hidden flex flex-col p-6 space-y-4 hover:border-[#F31B17]/30 transition-all group shadow-xl">
                 {/* Nút Xóa Nhân Vật */}
                 <button
                   type="button"
@@ -101,7 +101,7 @@ export default function PreProduction({
                         <span className="text-[10px] text-white font-bold uppercase bg-black/70 px-2 py-1 rounded">Đổi</span>
                       </div>
                     </div>
-                    <span className="text-[9px] text-amber-400 font-black uppercase tracking-tight text-center max-w-[100px] leading-tight">
+                    <span className="text-[9px] text-[#F31B17] font-black uppercase tracking-tight text-center max-w-[100px] leading-tight">
                       🔒 Khóa mặt & Trang phục
                     </span>
                   </div>
@@ -111,7 +111,7 @@ export default function PreProduction({
                       value={char.name}
                       onChange={(e) => onUpdateCharacter(char.id, { name: e.target.value })}
                       placeholder="Tên nhân vật..."
-                      className="text-lg font-black text-white tracking-tight uppercase italic bg-transparent border-b border-transparent hover:border-white/20 focus:border-amber-500 focus:outline-none w-full"
+                      className="text-lg font-black text-white tracking-tight uppercase italic bg-transparent border-b border-transparent hover:border-white/20 focus:border-[#F31B17] focus:outline-none w-full"
                     />
                     
                     <div className="space-y-1">
@@ -126,14 +126,14 @@ export default function PreProduction({
                     </div>
                     
                     <div className="pt-1">
-                      <p className="text-[9px] text-amber-500 uppercase font-black tracking-widest mb-1 flex items-center gap-1">
+                      <p className="text-[9px] text-[#F31B17] uppercase font-black tracking-widest mb-1 flex items-center gap-1">
                         <span className="material-symbols-outlined text-xs">record_voice_over</span>
                         Chọn giọng
                       </p>
                       <select 
                         value={char.selectedVoiceId}
                         onChange={(e) => onUpdateCharacter(char.id, { selectedVoiceId: e.target.value })}
-                        className="w-full bg-slate-950 border border-white/5 text-[11px] text-slate-200 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-amber-500 appearance-none cursor-pointer"
+                        className="w-full bg-slate-950 border border-white/5 text-[11px] text-slate-200 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-[#F31B17] appearance-none cursor-pointer"
                       >
                         <option value="">-- Chọn giọng --</option>
                         <optgroup label="Nam (Male)">
@@ -162,7 +162,7 @@ export default function PreProduction({
                   </div>
                   {/* Ô nhập Trang phục cố định */}
                   <div>
-                    <label className="text-[9px] text-amber-400 uppercase font-black tracking-widest block mb-1 flex items-center gap-1">
+                    <label className="text-[9px] text-[#F31B17] uppercase font-black tracking-widest block mb-1 flex items-center gap-1">
                       <span className="material-symbols-outlined text-xs">checkroom</span>
                       Trang phục cố định (Giữ nguyên xuyên suốt các Shot)
                     </label>
@@ -171,7 +171,7 @@ export default function PreProduction({
                       value={char.defaultOutfit}
                       onChange={(e) => onUpdateCharacter(char.id, { defaultOutfit: e.target.value })}
                       placeholder="VD: Váy dạ hội trắng tinh khôi / Suit đen cà vạt đỏ..."
-                      className="w-full bg-slate-950/60 border border-amber-500/20 focus:border-amber-500 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none"
+                      className="w-full bg-slate-950/60 border border-[#F31B17]/20 focus:border-[#F31B17] rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none"
                     />
                   </div>
                 </div>
@@ -190,7 +190,7 @@ export default function PreProduction({
           <button
             type="button"
             onClick={onAddLocation}
-            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black uppercase tracking-wider rounded-xl shadow-lg shadow-indigo-600/20 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#F31B17] hover:bg-[#d11713] text-white text-xs font-black uppercase tracking-wider rounded-xl shadow-lg shadow-red-950/20 active:scale-95 transition-all"
           >
             <span className="material-symbols-outlined text-base">add_location_alt</span>
             Thêm bối cảnh
@@ -201,7 +201,7 @@ export default function PreProduction({
             <p className="text-slate-400 text-sm mb-3">Chưa có bối cảnh nào trong danh sách.</p>
             <button
               onClick={onAddLocation}
-              className="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl"
+              className="px-4 py-2 bg-[#F31B17] hover:bg-[#d11713] text-white text-xs font-bold rounded-xl"
             >
               + Thêm bối cảnh đầu tiên
             </button>
@@ -209,7 +209,7 @@ export default function PreProduction({
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {locations.map(loc => (
-              <div key={loc.id} className="relative bg-slate-900/40 border border-white/5 rounded-[2rem] overflow-hidden flex flex-col md:flex-row p-6 gap-8 hover:border-amber-500/20 transition-all shadow-xl group">
+              <div key={loc.id} className="relative bg-slate-900/40 border border-white/5 rounded-[2rem] overflow-hidden flex flex-col md:flex-row p-6 gap-8 hover:border-[#F31B17]/20 transition-all shadow-xl group">
                 {/* Nút Xóa Bối Cảnh */}
                 <button
                   type="button"
@@ -225,7 +225,7 @@ export default function PreProduction({
                     value={loc.name}
                     onChange={(e) => onUpdateLocation(loc.id, { name: e.target.value })}
                     placeholder="Tên bối cảnh..."
-                    className="text-2xl font-black text-white uppercase italic tracking-tighter bg-transparent border-b border-transparent hover:border-white/20 focus:border-amber-500 focus:outline-none w-full pr-8"
+                    className="text-2xl font-black text-white uppercase italic tracking-tighter bg-transparent border-b border-transparent hover:border-white/20 focus:border-[#F31B17] focus:outline-none w-full pr-8"
                   />
                   <div>
                     <label className="text-[9px] text-slate-500 uppercase font-black tracking-widest block mb-1">Chi tiết không gian / Ánh sáng</label>
@@ -246,7 +246,7 @@ export default function PreProduction({
                     <button 
                       onClick={() => handleGenerateLocation(loc)}
                       disabled={loc.isGeneratingImage}
-                      className="flex-1 px-4 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 text-[10px] text-amber-500 font-black uppercase rounded-xl transition-all border border-amber-500/30 disabled:opacity-50"
+                      className="flex-1 px-4 py-2.5 bg-[#F31B17]/10 hover:bg-[#F31B17]/20 text-[10px] text-[#F31B17] font-black uppercase rounded-xl transition-all border border-[#F31B17]/30 disabled:opacity-50"
                     >
                       {loc.isGeneratingImage ? 'Đang tạo...' : 'AI Tạo ảnh'}
                     </button>
@@ -263,8 +263,8 @@ export default function PreProduction({
                   )}
                   {loc.isGeneratingImage && (
                     <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center">
-                      <div className="w-10 h-10 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mb-3" />
-                      <span className="text-[10px] text-amber-500 font-black uppercase tracking-widest animate-pulse">Đang xử lý...</span>
+                      <div className="w-10 h-10 border-2 border-[#F31B17] border-t-transparent rounded-full animate-spin mb-3" />
+                      <span className="text-[10px] text-[#F31B17] font-black uppercase tracking-widest animate-pulse">Đang xử lý...</span>
                     </div>
                   )}
                 </div>
@@ -277,7 +277,7 @@ export default function PreProduction({
       <div className="flex justify-center pt-12 border-t border-white/5">
         <button 
           onClick={onNext}
-          className="group flex items-center gap-4 px-12 py-5 bg-white text-slate-950 rounded-full font-black uppercase tracking-tighter hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-white/5"
+          className="group flex items-center gap-4 px-12 py-5 bg-[#F31B17] hover:bg-[#d11713] text-white rounded-full font-black uppercase tracking-tighter hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-red-950/20"
         >
           Sang Storyboard
           <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_right_alt</span>

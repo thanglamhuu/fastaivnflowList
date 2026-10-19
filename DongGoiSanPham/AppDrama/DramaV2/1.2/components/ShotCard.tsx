@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Shot, Character, Location, AspectRatio, VideoModel } from '../types';
+import { Shot, Character, Location, AspectRatio, VideoModel, VisualArtStyle } from '../types';
 import { flowService } from '../services/flowService';
 import { Flow } from 'flow-sdk';
 import { MATRIX_12_VOICES } from '../voicePresets';
@@ -9,30 +9,24 @@ interface ShotCardProps {
   index: number;
   characters: Character[];
   locations: Location[];
-  config: { model: VideoModel; resolution: '360p' | '720p' };
+  config: { model: VideoModel; resolution: '360p' | '720p'; visualStyle?: VisualArtStyle };
   onUpdate: (updates: Partial<Shot>) => void;
   aspectRatio: AspectRatio;
 }
 export default function ShotCard({ shot, index, characters, locations, config, onUpdate, aspectRatio }: ShotCardProps) {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [zoomMediaType, setZoomMediaType] = useState<'none' | 'image' | 'video'>('none');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  // Request IDs for cancellation / latest click tracking
   const imageReqIdRef = useRef<number>(0);
   const videoReqIdRef = useRef<number>(0);
-  // Identify all characters appearing in this shot
   const shotChars = getCharactersInShot(shot, characters);
-  const shotLoc = locations[0]; // Primary environment
-  // Collect character reference medias
+  const shotLoc = locations[0];
   const refMedias = getShotReferenceMedias(shotChars, shotLoc);
-  const lockedChars = shotChars.filter(c => c.avatarMedia?.url || c.avatarMedia?.base64 || c.avatarMedia?.mediaId);
-  // Identify speaking character for voice injection
   const speakingChar = characters.find(c => c.name === shot.dialogue?.characterName);
   const characterVoice = MATRIX_12_VOICES.find(v => v.id === speakingChar?.selectedVoiceId);
   const handlePickStartFrame = async () => {
     const media = await flowService.selectMedia('image');
     if (media) onUpdate({ startFrameMedia: media, imageStatus: 'completed' });
   };
-  // Enrich prompt with location and character descriptions
   const handleEnrichPrompt = () => {
     let extra = '';
     if (shotChars.length > 0) {
@@ -43,15 +37,12 @@ export default function ShotCard({ shot, index, characters, locations, config, o
     }
     onUpdate({ visualPrompt: (shot.visualPrompt + ' ' + extra).trim() });
   };
-  // Generate Image: Khóa nét mặt & giữ nguyên trang phục từ reference images
   const handleGenerateImage = async () => {
     const currentReqId = ++imageReqIdRef.current;
     setErrorMessage(null);
     onUpdate({ imageStatus: 'generating' });
     try {
-      // 1. Xây dựng prompt khóa nhân vật & trang phục
-      const consistentPrompt = buildConsistentImagePrompt(shot.visualPrompt, shotChars, shotLoc);
-      // 2. Truyền danh sách đầy đủ tất cả FlowMedia tham chiếu (chứa cả base64 để re-upload nếu cần)
+      const consistentPrompt = buildConsistentImagePrompt(shot.visualPrompt, shotChars, shotLoc, config.visualStyle);
       const result = await flowService.generateImage(consistentPrompt, aspectRatio, refMedias);
       if (currentReqId === imageReqIdRef.current) {
         if (result) {
@@ -68,15 +59,16 @@ export default function ShotCard({ shot, index, characters, locations, config, o
       }
     }
   };
-  // Generate Video: Gắn thông tin thời lượng shot.durationSeconds và resolution vào SDK call
   const handleGenerateVideo = async () => {
     const currentReqId = ++videoReqIdRef.current;
     setErrorMessage(null);
     onUpdate({ videoStatus: 'generating' });
     try {
       const chosenDuration = Number(shot.durationSeconds) || 6;
-      // Xây dựng prompt kèm thông số thời lượng chính xác
       let videoPrompt = shot.videoMotionPrompt || '';
+      if (config.visualStyle) {
+        videoPrompt += ` [Style: ${config.visualStyle}]`;
+      }
       videoPrompt += ` [Duration: ${chosenDuration}s]`;
       
       if (shot.dialogue && shot.dialogue.line) {
@@ -114,7 +106,7 @@ export default function ShotCard({ shot, index, characters, locations, config, o
       }
     }
   };
-  const handleDownload = async () => {
+  const handleDownloadVideo = async () => {
     if (!shot.videoMedia) return;
     await Flow.download({
       base64: shot.videoMedia.base64,
@@ -125,62 +117,48 @@ export default function ShotCard({ shot, index, characters, locations, config, o
   const isLandscape = aspectRatio === '16:9';
   const previewRatioClass = isLandscape ? 'aspect-video' : 'aspect-[9/16]';
   return (
-    <div className="relative bg-slate-900/60 border border-white/5 rounded-2xl p-4 md:p-5 flex flex-col justify-between hover:bg-slate-900/80 transition-all group overflow-hidden shadow-lg">
-      {/* Background Index Number */}
-      <div className="absolute -top-6 -left-6 text-7xl font-black text-white/5 pointer-events-none select-none italic">
-        {String(index + 1).padStart(2, '0')}
-      </div>
-      <div className="space-y-4 relative z-10">
-        {/* Header thông tin phân cảnh */}
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <div className="flex flex-wrap items-center gap-1.5 mb-1">
-              <span className="text-[10px] font-black text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded uppercase tracking-wider border border-amber-500/20">
-                #{shot.shotNumber}
-              </span>
-              {/* Lựa chọn thời lượng */}
-              <div className="flex items-center gap-1 bg-slate-950/80 px-2 py-0.5 rounded border border-white/10" title="Chọn thời lượng video">
-                <span className="material-symbols-outlined text-xs text-amber-400">timer</span>
-                <select
-                  value={shot.durationSeconds || 6}
-                  onChange={(e) => onUpdate({ durationSeconds: Number(e.target.value) })}
-                  className="bg-transparent text-amber-400 text-[11px] font-black rounded focus:outline-none cursor-pointer"
-                >
-                  <option value={2} className="bg-slate-900">2s</option>
-                  <option value={4} className="bg-slate-900">4s</option>
-                  <option value={6} className="bg-slate-900">6s</option>
-                  <option value={8} className="bg-slate-900">8s</option>
-                  <option value={10} className="bg-slate-900">10s</option>
-                </select>
-              </div>
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight truncate max-w-[130px]">
-                • {shot.cameraAngle}
-              </span>
-            </div>
-            <h3 className="text-base font-black text-white leading-snug uppercase tracking-tight line-clamp-1">{shot.title}</h3>
-            
-            {/* Badge màu xanh lá báo hiệu đã khóa mặt & trang phục */}
-            {lockedChars.length > 0 && (
-              <div className="mt-1 flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/25 max-w-fit">
-                <span className="material-symbols-outlined text-xs">lock</span>
-                <span>Đã khóa mặt & trang phục: {lockedChars.map(c => c.name).join(', ')}</span>
-              </div>
-            )}
+    <div className="relative bg-slate-900/60 border border-white rounded-2xl p-3.5 md:p-4 flex flex-col justify-between hover:bg-slate-900/80 transition-all group overflow-hidden shadow-lg">
+      <div className="space-y-3 relative z-10">
+        {/* Header: Số thứ tự to gấp đôi + Tên cảnh cùng dòng */}
+        <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-2.5">
+          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+            <span className="text-xl md:text-2xl font-black text-[#F31B17] bg-[#F31B17]/10 px-2.5 py-0.5 rounded-lg border border-[#F31B17]/30 leading-none shrink-0">
+              #{shot.shotNumber}
+            </span>
+            <h3 className="text-sm md:text-base font-black text-white uppercase tracking-tight truncate flex-1">
+              {shot.title}
+            </h3>
           </div>
-          <div className="flex -space-x-2 overflow-hidden shrink-0">
-            {shotChars.map(c => (
-              <div key={c.id} className="inline-block h-7 w-7 rounded-full ring-2 ring-slate-900 overflow-hidden bg-slate-800" title={c.name}>
-                {c.avatarMedia?.url ? (
-                  <img src={c.avatarMedia.url} className="h-full w-full object-cover" />
-                ) : (
-                  <div className="h-full w-full flex items-center justify-center text-[9px] text-slate-400 font-bold">{c.name[0]}</div>
-                )}
-              </div>
-            ))}
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1 bg-slate-950/80 px-2 py-0.5 rounded border border-white/10" title="Chọn thời lượng video">
+              <span className="material-symbols-outlined text-xs text-[#F31B17]">timer</span>
+              <select
+                value={shot.durationSeconds || 6}
+                onChange={(e) => onUpdate({ durationSeconds: Number(e.target.value) })}
+                className="bg-transparent text-[#F31B17] text-[11px] font-black rounded focus:outline-none cursor-pointer"
+              >
+                <option value={2} className="bg-slate-900">2s</option>
+                <option value={4} className="bg-slate-900">4s</option>
+                <option value={6} className="bg-slate-900">6s</option>
+                <option value={8} className="bg-slate-900">8s</option>
+                <option value={10} className="bg-slate-900">10s</option>
+              </select>
+            </div>
+            <div className="flex -space-x-1.5 overflow-hidden">
+              {shotChars.map(c => (
+                <div key={c.id} className="inline-block h-6 w-6 rounded-full ring-2 ring-slate-900 overflow-hidden bg-slate-800" title={c.name}>
+                  {c.avatarMedia?.url ? (
+                    <img src={c.avatarMedia.url} className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="h-full w-full flex items-center justify-center text-[9px] text-slate-400 font-bold">{c.name[0]}</div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         {errorMessage && (
-          <div className="p-2.5 bg-red-500/10 border border-red-500/30 rounded-lg text-red-300 text-xs flex items-center justify-between">
+          <div className="p-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-300 text-xs flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <span className="material-symbols-outlined text-sm">warning</span>
               <span className="text-[11px]">{errorMessage}</span>
@@ -191,49 +169,51 @@ export default function ShotCard({ shot, index, characters, locations, config, o
           </div>
         )}
         {/* Cụm nhập liệu: Thoại, Prompt hình ảnh, Prompt chuyển động */}
-        <div className="space-y-3">
-          {/* Ô thoại & giọng đọc */}
-          <div className="bg-slate-950/60 p-3 rounded-xl border border-white/5 space-y-2">
-            <div className="flex items-center justify-between">
-              <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Thoại & Giọng</p>
+        <div className="space-y-2.5">
+          <div className="bg-slate-950/60 p-2.5 rounded-xl border border-white/5 space-y-1.5">
+            <div className="flex flex-wrap items-center justify-between gap-1.5 text-[10px]">
+              <div className="flex items-center gap-1.5 truncate max-w-[70%]">
+                {shot.dialogue?.characterName ? (
+                  <span className="font-black text-white bg-[#F31B17]/30 px-1.5 py-0.5 rounded border border-[#F31B17]/40">
+                    {shot.dialogue.characterName}
+                  </span>
+                ) : null}
+                <span className="text-slate-400 font-bold uppercase tracking-wider">Thoại & Giọng</span>
+                {shot.dialogue?.emotion && (
+                  <span className="px-1.5 py-0.2 bg-[#F31B17]/15 text-red-300 rounded font-semibold text-[9px] border border-[#F31B17]/30">
+                    {shot.dialogue.emotion}
+                  </span>
+                )}
+              </div>
               {characterVoice && (
-                <span className={`text-[9px] px-2 py-0.2 rounded-full font-bold border ${characterVoice.badgeColor}`}>
+                <span className={`text-[9px] px-2 py-0.2 rounded-full font-bold border truncate max-w-[120px] ${characterVoice.badgeColor}`}>
                   {characterVoice.label}
                 </span>
               )}
             </div>
             {shot.dialogue ? (
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="font-bold text-amber-300 truncate max-w-[150px]">{shot.dialogue.characterName}</span>
-                  <span className="text-[9px] px-1.5 py-0.2 bg-indigo-500/20 text-indigo-300 rounded font-semibold">
-                    {shot.dialogue.emotion}
-                  </span>
-                </div>
-                <textarea 
-                  value={shot.dialogue.line}
-                  onChange={(e) => onUpdate({ dialogue: { ...shot.dialogue!, line: e.target.value } })}
-                  className="w-full bg-slate-900/40 p-2 rounded-lg text-xs text-slate-200 resize-none focus:outline-none border border-white/5 min-h-[44px]"
-                  placeholder="Lời thoại của nhân vật..."
-                />
-              </div>
+              <textarea 
+                value={shot.dialogue.line}
+                onChange={(e) => onUpdate({ dialogue: { ...shot.dialogue!, line: e.target.value } })}
+                className="w-full bg-slate-900/40 p-2 rounded-lg text-xs text-slate-200 resize-none focus:outline-none border border-white/5 min-h-[38px]"
+                placeholder="Lời thoại của nhân vật..."
+              />
             ) : (
-              <p className="text-[11px] text-slate-500 italic py-0.5">Cảnh quay không lời thoại</p>
+              <p className="text-[10px] text-slate-500 italic py-0.5">Cảnh quay không lời thoại</p>
             )}
             {shot.sfxAudioCue && (
               <div className="pt-1 border-t border-white/5 flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-xs text-amber-500">volume_up</span>
-                <span className="text-[9px] text-amber-400 font-bold uppercase tracking-tight truncate">{shot.sfxAudioCue}</span>
+                <span className="material-symbols-outlined text-xs text-[#F31B17]">volume_up</span>
+                <span className="text-[9px] text-[#F31B17] font-bold uppercase tracking-tight truncate">{shot.sfxAudioCue}</span>
               </div>
             )}
           </div>
-          {/* Ô Prompt hình ảnh */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
               <label className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Prompt Hình Ảnh</label>
               <button 
                 onClick={handleEnrichPrompt}
-                className="text-[9px] text-amber-400 hover:text-amber-300 flex items-center gap-0.5 transition-colors"
+                className="text-[9px] text-[#F31B17] hover:text-red-400 flex items-center gap-0.5 transition-colors"
                 title="Nối thêm thông tin bối cảnh và ngoại hình nhân vật"
               >
                 <span className="material-symbols-outlined text-xs">auto_awesome</span>
@@ -243,109 +223,111 @@ export default function ShotCard({ shot, index, characters, locations, config, o
             <textarea 
               value={shot.visualPrompt}
               onChange={(e) => onUpdate({ visualPrompt: e.target.value })}
-              className="w-full bg-slate-950/50 border border-slate-800/80 rounded-lg p-2 text-xs text-slate-300 h-16 resize-none focus:outline-none focus:ring-1 focus:ring-amber-500/30"
+              className="w-full bg-slate-950/50 border border-slate-800/80 rounded-lg p-2 text-xs text-slate-300 h-14 resize-none focus:outline-none focus:ring-1 focus:ring-[#F31B17]/30"
               placeholder="Mô tả phân cảnh..."
             />
           </div>
-          {/* Ô Prompt Chuyển động */}
           <div className="space-y-1">
             <label className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Prompt Chuyển Động & Camera</label>
             <textarea 
               value={shot.videoMotionPrompt}
               onChange={(e) => onUpdate({ videoMotionPrompt: e.target.value })}
-              className="w-full bg-slate-950/50 border border-slate-800/80 rounded-lg p-2 text-xs text-slate-300 h-14 resize-none focus:outline-none focus:ring-1 focus:ring-indigo-500/30"
+              className="w-full bg-slate-950/50 border border-slate-800/80 rounded-lg p-2 text-xs text-slate-300 h-12 resize-none focus:outline-none focus:ring-1 focus:ring-[#F31B17]/30"
               placeholder="Chuyển động camera, hành động..."
             />
           </div>
-          {/* Hàng nút bấm Tạo ảnh & Tạo video */}
-          <div className="flex gap-2 pt-1">
-            <button 
-              onClick={handleGenerateImage}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg border text-[11px] font-black uppercase tracking-wider transition-all shadow active:scale-95 ${
-                shot.imageStatus === 'generating'
-                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 hover:bg-amber-500/30'
-                  : 'bg-white/10 hover:bg-white/15 text-white border-white/15'
-              }`}
-              title="Tạo ảnh với khuôn mặt và trang phục khóa đồng nhất"
-            >
-              <span className={`material-symbols-outlined text-base ${shot.imageStatus === 'generating' ? 'animate-spin text-amber-400' : ''}`}>
-                {shot.imageStatus === 'generating' ? 'refresh' : 'photo_spark'}
-              </span>
-              <span>Tạo ảnh</span>
-            </button>
-            <button 
-              onClick={handleGenerateVideo}
-              disabled={!shot.startFrameMedia}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg text-white text-[11px] font-black uppercase tracking-wider transition-all shadow active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed ${
-                shot.videoStatus === 'generating'
-                  ? 'bg-indigo-600/60 border border-indigo-400 hover:bg-indigo-600'
-                  : 'bg-indigo-600 hover:bg-indigo-500 shadow-indigo-600/30'
-              }`}
-              title={!shot.startFrameMedia ? 'Vui lòng tạo hoặc chọn ảnh trước' : 'Tạo Video AI'}
-            >
-              <span className={`material-symbols-outlined text-base ${shot.videoStatus === 'generating' ? 'animate-spin' : ''}`}>
-                {shot.videoStatus === 'generating' ? 'sync' : 'videocam'}
-              </span>
-              <span>{shot.videoStatus === 'generating' ? 'Tạo lại Video' : 'Tạo Video AI'}</span>
-            </button>
-          </div>
         </div>
-        {/* Hàng hiển thị Ảnh và Video nhỏ gọn nằm ngang hàng nhau phía dưới */}
-        <div className="pt-2 border-t border-white/5">
-          <div className="grid grid-cols-2 gap-2.5">
-            {/* Start Frame Preview (Ảnh nhỏ) */}
-            <div className={`relative group/media ${previewRatioClass} max-h-44 bg-slate-950 rounded-xl border border-white/5 overflow-hidden flex items-center justify-center`}>
+        {/* 3 Cột: Cột 1 (Nút Tạo), Cột 2 (Ảnh), Cột 3 (Video) */}
+        <div className="pt-2 border-t border-white/10">
+          <div className="grid grid-cols-3 gap-2 items-center">
+            <div className="flex flex-col gap-2 h-full justify-center">
+              <button 
+                type="button"
+                onClick={handleGenerateImage}
+                disabled={shot.imageStatus === 'generating'}
+                className={`w-full py-2 px-1 rounded-lg border text-[11px] font-black uppercase tracking-wider transition-all text-center active:scale-95 ${
+                  shot.imageStatus === 'generating'
+                    ? 'bg-[#F31B17]/20 text-red-300 border-[#F31B17]/40 animate-pulse'
+                    : 'bg-white/10 hover:bg-white/20 text-white border-white/20 shadow'
+                }`}
+                title="Tạo ảnh phân cảnh"
+              >
+                {shot.imageStatus === 'generating' ? 'Đang tạo...' : 'Tạo ảnh'}
+              </button>
+              <button 
+                type="button"
+                onClick={handleGenerateVideo}
+                disabled={!shot.startFrameMedia || shot.videoStatus === 'generating'}
+                className={`w-full py-2 px-1 rounded-lg text-white text-[11px] font-black uppercase tracking-wider transition-all text-center active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed ${
+                  shot.videoStatus === 'generating'
+                    ? 'bg-[#F31B17]/60 border border-[#F31B17] animate-pulse'
+                    : 'bg-[#F31B17] hover:bg-[#d11713] shadow-red-950/30'
+                }`}
+                title={!shot.startFrameMedia ? 'Cần có ảnh trước khi tạo video' : 'Tạo video phân cảnh'}
+              >
+                {shot.videoStatus === 'generating' ? 'Đang tạo...' : 'Tạo video'}
+              </button>
+            </div>
+            {/* Cột 2: Ảnh */}
+            <div className={`relative group/media ${previewRatioClass} max-h-36 bg-slate-950 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center`}>
               {shot.startFrameMedia?.url ? (
-                <img src={shot.startFrameMedia.url} className="w-full h-full object-cover" />
+                <img 
+                  src={shot.startFrameMedia.url} 
+                  className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform" 
+                  onClick={() => setZoomMediaType('image')}
+                  title="Click để phóng to ảnh"
+                />
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-slate-600 p-2 text-center">
-                  <span className="material-symbols-outlined text-2xl mb-1">image</span>
-                  <span className="text-[9px] font-bold uppercase tracking-wider">Ảnh ({aspectRatio})</span>
+                <div className="w-full h-full flex flex-col items-center justify-center text-slate-600 p-1 text-center">
+                  <span className="material-symbols-outlined text-xl mb-0.5">image</span>
+                  <span className="text-[9px] font-bold uppercase tracking-wider">Chưa có ảnh</span>
                 </div>
               )}
+              
               <button 
                 onClick={handlePickStartFrame}
-                className="absolute bottom-1.5 right-1.5 p-1 bg-black/70 backdrop-blur rounded opacity-0 group-hover/media:opacity-100 transition-opacity hover:bg-black/90"
+                className="absolute bottom-1 right-1 p-1 bg-black/70 backdrop-blur rounded opacity-0 group-hover/media:opacity-100 transition-opacity hover:bg-black/90"
                 title="Tải ảnh từ máy"
               >
                 <span className="material-symbols-outlined text-white text-xs">upload_file</span>
               </button>
               {shot.imageStatus === 'generating' && (
-                <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center gap-1">
-                  <div className="w-6 h-6 border-2 border-amber-500/20 border-t-amber-400 rounded-full animate-spin" />
-                  <span className="text-[9px] text-amber-300 font-bold uppercase tracking-wider animate-pulse">Đang tạo...</span>
+                <div className="absolute inset-0 bg-black/75 backdrop-blur-sm flex flex-col items-center justify-center gap-1">
+                  <div className="w-5 h-5 border-2 border-[#F31B17]/20 border-t-[#F31B17] rounded-full animate-spin" />
+                  <span className="text-[9px] text-red-300 font-bold uppercase tracking-wider animate-pulse">Đang tạo...</span>
                 </div>
               )}
             </div>
-            {/* Video Preview (Video nhỏ) */}
-            <div className={`relative group/video ${previewRatioClass} max-h-44 bg-slate-950 rounded-xl border border-indigo-500/20 overflow-hidden flex items-center justify-center`}>
+            {/* Cột 3: Video */}
+            <div className={`relative group/video ${previewRatioClass} max-h-36 bg-slate-950 rounded-xl border border-[#F31B17]/30 overflow-hidden flex items-center justify-center`}>
               {shot.videoMedia?.url ? (
                 <video 
                   src={shot.videoMedia.url} 
-                  className="w-full h-full object-cover cursor-pointer"
-                  onClick={() => setIsFullscreen(true)}
+                  className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform"
+                  onClick={() => setZoomMediaType('video')}
+                  title="Click để phóng to video"
                   muted
                   autoPlay
                   loop
                 />
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-slate-600 p-2 text-center">
-                  <span className="material-symbols-outlined text-2xl mb-1">movie</span>
-                  <span className="text-[9px] font-bold uppercase tracking-wider">Video ({shot.durationSeconds || 6}s)</span>
+                <div className="w-full h-full flex flex-col items-center justify-center text-slate-600 p-1 text-center">
+                  <span className="material-symbols-outlined text-xl mb-0.5">movie</span>
+                  <span className="text-[9px] font-bold uppercase tracking-wider">Chưa có video</span>
                 </div>
               )}
               {shot.videoMedia && (
-                <div className="absolute inset-x-0 bottom-0 p-1.5 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex justify-between items-center translate-y-full group-hover/video:translate-y-0 transition-transform">
+                <div className="absolute inset-x-0 bottom-0 p-1 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex justify-between items-center translate-y-full group-hover/video:translate-y-0 transition-transform">
                   <button 
-                    onClick={() => setIsFullscreen(true)}
+                    onClick={() => setZoomMediaType('video')}
                     className="p-1 bg-white/10 backdrop-blur rounded hover:bg-white/20 transition-colors"
-                    title="Xem toàn màn hình"
+                    title="Phóng to video"
                   >
-                    <span className="material-symbols-outlined text-white text-xs">zoom_out_map</span>
+                    <span className="material-symbols-outlined text-white text-xs">zoom_in</span>
                   </button>
                   <button 
-                    onClick={handleDownload}
-                    className="p-1 bg-indigo-600 rounded hover:bg-indigo-500 transition-colors"
+                    onClick={handleDownloadVideo}
+                    className="p-1 bg-[#F31B17] rounded hover:bg-[#d11713] transition-colors"
                     title="Tải clip về máy"
                   >
                     <span className="material-symbols-outlined text-white text-xs">download</span>
@@ -353,26 +335,56 @@ export default function ShotCard({ shot, index, characters, locations, config, o
                 </div>
               )}
               {shot.videoStatus === 'generating' && (
-                <div className="absolute inset-0 bg-black/75 backdrop-blur-sm flex flex-col items-center justify-center gap-1.5">
-                  <div className="w-7 h-7 border-2 border-indigo-500/20 border-t-indigo-400 rounded-full animate-spin" />
-                  <span className="text-[9px] text-indigo-300 font-bold uppercase tracking-wider animate-pulse">Đang tạo video...</span>
+                <div className="absolute inset-0 bg-black/75 backdrop-blur-sm flex flex-col items-center justify-center gap-1">
+                  <div className="w-5 h-5 border-2 border-[#F31B17]/20 border-t-[#F31B17] rounded-full animate-spin" />
+                  <span className="text-[9px] text-red-300 font-bold uppercase tracking-wider animate-pulse">Đang tạo...</span>
                 </div>
               )}
             </div>
           </div>
         </div>
       </div>
-      {/* Fullscreen Lightbox */}
-      {isFullscreen && shot.videoMedia && (
-        <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-10 animate-in fade-in duration-300">
-          <div className={`relative w-full ${isLandscape ? 'max-w-4xl aspect-video' : 'max-w-lg aspect-[9/16]'} bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10`}>
-            <video src={shot.videoMedia.url} className="w-full h-full object-contain" controls autoPlay loop />
-            <button 
-              onClick={() => setIsFullscreen(false)}
-              className="absolute top-6 right-6 w-12 h-12 bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all border border-white/10"
-            >
-              <span className="material-symbols-outlined">close</span>
-            </button>
+      {/* MODAL ZOOM */}
+      {zoomMediaType !== 'none' && (
+        <div 
+          onClick={() => setZoomMediaType('none')}
+          className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 animate-in fade-in duration-200"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="relative flex flex-col items-center justify-center max-w-[85vw] max-h-[85vh] bg-slate-950 p-2 sm:p-3 rounded-2xl border border-white/20 shadow-2xl"
+          >
+            <div className="w-full flex justify-between items-center pb-2 px-1 border-b border-white/10 mb-2">
+              <span className="text-xs font-black text-[#F31B17] uppercase tracking-wider">
+                {zoomMediaType === 'video' ? `Phân cảnh #${shot.shotNumber} - Video` : `Phân cảnh #${shot.shotNumber} - Ảnh Start Frame`}
+              </span>
+              <button 
+                type="button"
+                onClick={() => setZoomMediaType('none')}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center text-white transition-all border border-white/20 active:scale-95"
+                title="Đóng xem thử"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+            <div className="flex items-center justify-center overflow-hidden max-h-[72vh] max-w-[80vw]">
+              {zoomMediaType === 'video' && shot.videoMedia?.url && (
+                <video 
+                  src={shot.videoMedia.url} 
+                  className="max-h-[70vh] max-w-full rounded-xl object-contain shadow-lg" 
+                  controls 
+                  autoPlay 
+                  loop 
+                />
+              )}
+              {zoomMediaType === 'image' && shot.startFrameMedia?.url && (
+                <img 
+                  src={shot.startFrameMedia.url} 
+                  className="max-h-[70vh] max-w-full rounded-xl object-contain shadow-lg" 
+                  alt={shot.title}
+                />
+              )}
+            </div>
           </div>
         </div>
       )}

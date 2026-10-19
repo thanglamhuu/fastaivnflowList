@@ -7,6 +7,9 @@ import PreProduction from './components/PreProduction';
 import Storyboard from './components/Storyboard';
 import Toast, { ToastItem, ToastType } from './components/Toast';
 import { Flow } from 'flow-sdk';
+import { checkLicense } from './license/aifastLicenseManager';
+import { LicenseGate } from './components/LicenseGate';
+import { LicenseStatus } from './components/LicenseStatus';
 /** Chuyển Uint8Array sang Base64 một cách an toàn mà không bị văng RangeError: Maximum call stack size exceeded */
 function uint8ArrayToBase64(bytes: Uint8Array): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -37,6 +40,7 @@ function base64ToUint8Array(base64: string): Uint8Array {
   return bytes;
 }
 export default function App() {
+  const [isLicensed, setIsLicensed] = useState<boolean | null>(null);
   const [projectData, setProjectData] = useState<ScriptProjectData>(DEFAULT_PROJECT);
   const [activeTab, setActiveTab] = useState<'pre' | 'story'>('pre');
   const [isMerging, setIsMerging] = useState(false);
@@ -44,6 +48,8 @@ export default function App() {
   const [mergeProgress, setMergeProgress] = useState(0);
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   useEffect(() => {
+    // Kiểm tra trạng thái kích hoạt license
+    checkLicense().then(result => setIsLicensed(result.valid));
     // Khởi tạo trước ffmpegService nếu có thể
     ffmpegService.load().catch(err => {
       console.warn("Khởi động nền FFmpeg Service:", err?.message || err);
@@ -213,7 +219,7 @@ export default function App() {
     }
   };
   /**
-   * Ghép & Tải Video với nhiều lớp chiến lược bảo đảm thành công 100%
+   * Ghép & Tải Video với nhiều lớp chiến lược bảo đảm thành công
    */
   const handleMergeVideo = async () => {
     const shotsWithVideo = projectData.project.shots.filter(s => s.videoMedia && s.videoMedia.base64);
@@ -367,6 +373,9 @@ export default function App() {
       setMergeProgress(0);
     }
   };
+  // Khóa luồng Render chính
+  if (isLicensed === null) return null;
+  if (isLicensed === false) return <LicenseGate onSuccess={() => setIsLicensed(true)} />;
   return (
     <div className="flex flex-col h-screen bg-[#070709] text-slate-200 overflow-hidden font-sans">
       <Header 
@@ -413,6 +422,18 @@ export default function App() {
           />
         )}
       </main>
+      <footer className="border-t border-white/5 bg-[#09080e] px-6 py-2.5 flex flex-wrap items-center justify-between text-xs text-slate-400">
+        <div className="flex items-center gap-3">
+          <img src="https://fastaivn.com/baner.png" alt="FastAI Logo" className="h-[28px] w-[80px] object-contain" />
+          <a href="https://fastaivn.com" target="_blank" rel="noopener noreferrer" className="text-[10px] text-slate-400 hover:text-[#F31B17] transition-colors">
+            fastaivn.com
+          </a>
+        </div>
+        <div className="flex items-center gap-4">
+          <LicenseStatus />
+          <p className="text-[9px] text-slate-600">App version 1.0.2</p>
+        </div>
+      </footer>
       <style>{`
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }

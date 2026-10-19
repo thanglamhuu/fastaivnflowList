@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Shot, Character, Location, AspectRatio, VideoModel } from '../types';
+import { Shot, Character, Location, AspectRatio, VideoModel, VisualArtStyle } from '../types';
 import ShotCard from './ShotCard';
 import { flowService } from '../services/flowService';
 import { MATRIX_12_VOICES } from '../voicePresets';
@@ -8,7 +8,7 @@ interface StoryboardProps {
   shots: Shot[];
   characters: Character[];
   locations: Location[];
-  config: { model: VideoModel; resolution: '360p' | '720p' };
+  config: { model: VideoModel; resolution: '360p' | '720p'; visualStyle?: VisualArtStyle };
   onUpdateShot: (id: string, updates: Partial<Shot>) => void;
   aspectRatio: AspectRatio;
   onToast?: (message: string, type?: 'info' | 'success' | 'warning' | 'error') => void;
@@ -56,7 +56,7 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
         const shotChars = getCharactersInShot(shot, characters);
         const shotLoc = locations[0];
         const refMedias = getShotReferenceMedias(shotChars, shotLoc);
-        const consistentPrompt = buildConsistentImagePrompt(shot.visualPrompt, shotChars, shotLoc);
+        const consistentPrompt = buildConsistentImagePrompt(shot.visualPrompt, shotChars, shotLoc, config.visualStyle);
         const result = await flowService.generateImage(consistentPrompt, aspectRatio, refMedias);
         if (result) {
           onUpdateShot(shot.id, { startFrameMedia: result, imageStatus: 'completed' });
@@ -69,13 +69,12 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
         console.error(`Lỗi tạo ảnh shot #${shot.shotNumber}:`, err);
         onUpdateShot(shot.id, { imageStatus: 'error' });
         errorCount++;
-        // Nếu thông báo dính cờ bot detection hoặc extension, cho nghỉ 4s trước khi sang shot kế tiếp
         if (err?.message?.includes('bất thường') || err?.message?.includes('tiện ích')) {
           onToast?.('Hệ thống đang điều tiết tốc độ gọi AI, đang tạm dừng 4 giây...', 'warning');
           await new Promise(r => setTimeout(r, 4000));
         }
       }
-      // Giãn cách 2.5s giữa các shot để không bị coi là spam request
+      // Giãn cách 2.5s giữa các shot
       if (i < shots.length - 1 && !abortBatch.current) {
         await new Promise(r => setTimeout(r, 2500));
       }
@@ -87,7 +86,6 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
   };
   /**
    * Tạo tất cả video:
-   * Lần lượt duyệt qua từng shot trong storyboard có pacing an toàn.
    */
   const handleGenerateAllVideos = async () => {
     if (isBatchGeneratingImages || isBatchGeneratingVideos) return;
@@ -112,7 +110,6 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
         total: shots.length,
         title: `Phân cảnh #${shot.shotNumber}: ${shot.title || 'Video AI'}`
       });
-      // Kiểm tra nếu shot chưa có Start Frame: Tự động tạo Start Frame khóa mặt & trang phục trước
       let currentStartFrameMedia = shot.startFrameMedia;
       if (!currentStartFrameMedia?.mediaId) {
         onToast?.(`Phân cảnh #${shot.shotNumber} chưa có Start Frame, đang tự tạo ảnh khóa nhân vật trước...`, 'info');
@@ -121,7 +118,7 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
           const shotChars = getCharactersInShot(shot, characters);
           const shotLoc = locations[0];
           const refMedias = getShotReferenceMedias(shotChars, shotLoc);
-          const consistentPrompt = buildConsistentImagePrompt(shot.visualPrompt, shotChars, shotLoc);
+          const consistentPrompt = buildConsistentImagePrompt(shot.visualPrompt, shotChars, shotLoc, config.visualStyle);
           const imgResult = await flowService.generateImage(consistentPrompt, aspectRatio, refMedias);
           if (imgResult) {
             currentStartFrameMedia = imgResult;
@@ -137,14 +134,15 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
           errorCount++;
           continue;
         }
-        // Nghỉ 2s sau khi tạo ảnh trước khi tạo video
         await new Promise(r => setTimeout(r, 2000));
       }
-      // Tiến hành tạo video cho shot hiện tại
       onUpdateShot(shot.id, { videoStatus: 'generating' });
       try {
         const chosenDuration = Number(shot.durationSeconds) || 6;
         let videoPrompt = shot.videoMotionPrompt || '';
+        if (config.visualStyle) {
+          videoPrompt += ` [Style: ${config.visualStyle}]`;
+        }
         videoPrompt += ` [Duration: ${chosenDuration}s]`;
         const speakingChar = characters.find(c => c.name === shot.dialogue?.characterName);
         const characterVoice = MATRIX_12_VOICES.find(v => v.id === speakingChar?.selectedVoiceId);
@@ -180,7 +178,6 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
         onUpdateShot(shot.id, { videoStatus: 'error' });
         errorCount++;
       }
-      // Giãn cách giữa các lần tạo video
       if (i < shots.length - 1 && !abortBatch.current) {
         await new Promise(r => setTimeout(r, 2000));
       }
@@ -200,12 +197,12 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
         <div>
           <div className="flex items-center gap-3 mb-1">
             <h2 className="text-xl md:text-2xl font-black text-white tracking-tighter uppercase italic">Storyboard Studio</h2>
-            <span className="px-2.5 py-0.5 bg-indigo-500/10 text-indigo-400 rounded-full text-[10px] font-black uppercase border border-indigo-500/20">
+            <span className="px-2.5 py-0.5 bg-[#F31B17]/10 text-[#F31B17] rounded-full text-[10px] font-black uppercase border border-[#F31B17]/20">
               {shots.length} Phân cảnh
             </span>
           </div>
           <p className="text-xs text-slate-400">
-            Đã sẵn sàng: <span className="text-amber-400 font-bold">{readyImagesCount}/{shots.length} Ảnh</span> • <span className="text-indigo-400 font-bold">{readyVideosCount}/{shots.length} Video</span>
+            Đã sẵn sàng: <span className="text-[#F31B17] font-bold">{readyImagesCount}/{shots.length} Ảnh</span> • <span className="text-[#F31B17] font-bold">{readyVideosCount}/{shots.length} Video</span>
           </p>
         </div>
         {/* 2 Nút tạo hàng loạt */}
@@ -227,10 +224,10 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
             title="Lần lượt tự động tạo ảnh cho tất cả các phân cảnh, khóa 100% nhận diện và trang phục từ ảnh tham chiếu"
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-lg ${
               isBatchGeneratingImages
-                ? 'bg-amber-500/30 text-amber-300 border border-amber-500/50 cursor-wait'
+                ? 'bg-[#F31B17]/30 text-red-300 border border-[#F31B17]/50 cursor-wait'
                 : isBusy
                 ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-white/5'
-                : 'bg-amber-500 hover:bg-amber-400 text-black shadow-amber-500/20'
+                : 'bg-[#F31B17] hover:bg-[#d11713] text-white shadow-red-950/20'
             }`}
           >
             <span className={`material-symbols-outlined text-base ${isBatchGeneratingImages ? 'animate-spin' : ''}`}>
@@ -249,10 +246,10 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
             title="Tự động lần lượt tạo video cho từng phân cảnh, xong phân cảnh này sẽ tự chạy phân cảnh kế tiếp"
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-lg ${
               isBatchGeneratingVideos
-                ? 'bg-indigo-600/60 text-white border border-indigo-400 cursor-wait'
+                ? 'bg-[#F31B17]/60 text-white border border-[#F31B17] cursor-wait'
                 : isBusy
                 ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-white/5'
-                : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-600/30'
+                : 'bg-[#F31B17] hover:bg-[#d11713] text-white shadow-red-950/30'
             }`}
           >
             <span className={`material-symbols-outlined text-base ${isBatchGeneratingVideos ? 'animate-spin' : ''}`}>
@@ -270,7 +267,7 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
       {isBusy && (
         <div className="bg-slate-950/80 border border-white/10 p-3.5 rounded-xl flex items-center justify-between gap-4 animate-in fade-in">
           <div className="flex items-center gap-3">
-            <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${isBatchGeneratingImages ? 'bg-amber-500/20 text-amber-400' : 'bg-indigo-500/20 text-indigo-400'}`}>
+            <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 bg-[#F31B17]/20 text-[#F31B17]`}>
               <span className="material-symbols-outlined text-base animate-spin">
                 {isBatchGeneratingImages ? 'photo_spark' : 'sync'}
               </span>
@@ -286,7 +283,7 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
           </div>
           <div className="w-28 bg-slate-800 h-1.5 rounded-full overflow-hidden shrink-0">
             <div 
-              className={`h-full transition-all duration-300 ${isBatchGeneratingImages ? 'bg-amber-400' : 'bg-indigo-500'}`}
+              className="h-full transition-all duration-300 bg-[#F31B17]"
               style={{ width: `${(batchProgress.current / (batchProgress.total || 1)) * 100}%` }}
             />
           </div>
