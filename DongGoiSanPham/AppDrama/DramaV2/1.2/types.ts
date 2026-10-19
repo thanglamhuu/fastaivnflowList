@@ -1,5 +1,6 @@
 export type VideoModel = 'Omni 1.1 Flash' | 'Veo 3.1 - Lite' | 'Veo 3.1 - Fast' | 'Veo 3.1 - Quality';
 export type AspectRatio = '16:9' | '9:16' | '1:1' | '4:3' | '3:4';
+export type VisualArtStyle = 'Realistic' | 'Anime' | '3D Pixar';
 export interface FlowMedia {
   mediaId: string;
   base64: string;
@@ -75,5 +76,6 @@ export interface ScriptProjectData {
     model: VideoModel;
     threads: number;
     resolution: '360p' | '720p';
+    visualStyle?: VisualArtStyle;
   };
 }
