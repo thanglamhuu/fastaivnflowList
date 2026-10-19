@@ -1,0 +1,157 @@
+{
+  "project": {
+    "title": "Tay bố là của con!",
+    "style": "Cinematic Photorealistic, natural warm family comedy",
+    "aspectRatio": "9:16",
+    "duration": "12s",
+    "premise": "Ở trong chiếc xe đang đỗ, bố đưa tay phải về phía sau; mẹ định nắm thì bé gái nhanh tay đẩy nhẹ tay mẹ ra rồi giữ tay bố bằng cả hai tay; bé nhìn ống kính lè lưỡi trêu và cười.",
+    "scriptMarkdown": "0–4s: Bố ngồi ghế lái của xe đang đỗ, đưa tay phải về phía sau. Mẹ đang cầm máy quay từ ghế sau trái, đưa tay tới. Bé ngồi ghế an toàn phía sau bên phải nhìn thấy.\n4–8s: Bé gạt nhẹ bàn tay mẹ sang bên, rồi nắm bàn tay bố bằng cả hai tay.\n8–12s: Bé vẫn giữ tay bố, nhìn thẳng vào camera, lè lưỡi trêu một nhịp rồi bật cười tươi. Mẹ cười khúc khích ngoài khung hình.",
+    "characters": [
+      {
+        "id": "char-bo",
+        "name": "Bố",
+        "referenceImage": "Bo.png",
+        "physicalDescription": "Nam Việt Nam trẻ, mặt oval cân đối, da sáng, tóc đen nâu gợn sóng bồng, đeo kính tròn kim loại mảnh, nét mặt hiền và nụ cười nhẹ.",
+        "defaultOutfit": "Áo sơ mi trắng cổ bẻ, tay áo xắn tới cẳng tay; quần tây xám than; giày sneaker trắng như ảnh Bo.png.",
+        "voiceTone": "Không có thoại trong clip."
+      },
+      {
+        "id": "char-me",
+        "name": "Mẹ",
+        "referenceImage": "Me.png",
+        "physicalDescription": "Nữ Việt Nam trẻ, da sáng, gương mặt thanh tú, tóc nâu hạt dẻ dài uốn sóng bồng, rẽ ngôi lệch, nụ cười dịu. Góc POV chỉ cho thấy bàn tay/cẳng tay, không thấy mặt.",
+        "defaultOutfit": "Váy midi màu kem sáng họa tiết hoa nhỏ, tay phồng ngắn, giày thấp màu kem như ảnh Me.png.",
+        "voiceTone": "Chỉ cười khúc khích tự nhiên ngoài khung hình."
+      },
+      {
+        "id": "char-chidai",
+        "name": "Chị Đại / Bé gái",
+        "referenceImage": "ChiDai.png",
+        "physicalDescription": "Bé gái châu Á nhỏ tuổi, da sáng, mặt bầu bĩnh, mắt đen tròn, tóc sẫm chia ngôi giữa và búi HAI búi nhỏ hai bên, có tóc con xõa nhẹ. Giữ tuổi ngoại hình theo ảnh tham chiếu, không ép bé trông nhỏ hơn.",
+        "defaultOutfit": "Váy xòe chữ A không tay màu xanh dương pastel, trang trí các nơ xanh nhỏ; giày quai ngang xanh nhạt như ảnh ChiDai.png.",
+        "voiceTone": "Không có thoại; tiếng cười bé trong trẻo."
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-car",
+        "name": "Khoang ô tô da kem",
+        "description": "Xe hạng sang đang đỗ an toàn; khoang da màu kem, ghế lái phía trước bên trái, hàng ghế sau có ghế an toàn cho bé tại bên phải; ánh sáng ban ngày ấm qua kính; góc POV từ hàng ghế sau bên trái hướng sang bé và bố."
+      }
+    ],
+    "props": [
+      {
+        "id": "prop-seat",
+        "name": "Ghế an toàn cho trẻ",
+        "description": "Ghế an toàn cho trẻ phù hợp độ tuổi, bé cài dây đúng cách, đặt ở phía sau bên phải."
+      },
+      {
+        "id": "prop-car",
+        "name": "Ô tô",
+        "description": "Xe đứng yên trong toàn bộ câu chuyện; nội thất da kem nhất quán."
+      }
+    ],
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 4,
+        "title": "Bố đưa tay, mẹ định nắm",
+        "cameraAngle": "POV medium two-shot",
+        "visualPrompt": "Use exact character images as identity + costume references: Bo.png (Vietnamese young adult man matching Bo.png exactly: oval youthful face, fair warm skin, wavy voluminous dark hair, thin round silver metal eyeglasses, gentle smile; white long-sleeve button-up shirt with sleeves rolled to the forearms, dark charcoal tailored trousers.), ChiDai.png (Young East Asian girl matching ChiDai.png exactly: round soft face, fair skin, large dark eyes, dark brown hair parted centrally into TWO small high buns with loose wisps; light pastel blue sleeveless A-line dress decorated with several small vivid-blue ribbon bows, matching pale blue strap shoes.), Me.png (Young Vietnamese woman matching Me.png exactly: fair skin, softly defined face, long chestnut brown wavy hair with side part, gentle smile; light cream floral-patterned midi dress with softly puffed short sleeves and cream low shoes. In this POV sequence only her hand/forearm is visible; do not invent a visible face or additional limbs.). Static parked luxury car, warm daylight, cream leather seats, left-hand driver in front-left seat, toddler seated in properly fitted child safety seat on rear-right, mother holding camera from rear-left. Father never operates the vehicle while reaching backward. All references preserve faces/hair AND outfits, without copying studio backdrop. Father extends his RIGHT hand backward between the front seats; his LEFT hand remains near wheel. Keep unambiguous hand positions and natural human anatomy. Frame: POV medium two-shot. The father in the front-left driver seat extends his RIGHT hand toward the rear seats while the car is parked. The mother’s hand enters slowly from the lower-left foreground. The girl looks at their hands.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father mother and daughter moment] Static parked luxury car, warm daylight, cream leather seats, left-hand driver in front-left seat, toddler seated in properly fitted child safety seat on rear-right, mother holding camera from rear-left. Father never operates the vehicle while reaching backward. All references preserve faces/hair AND outfits, without copying studio backdrop. Father extends his RIGHT hand backward between the front seats; his LEFT hand remains near wheel. Keep unambiguous hand positions and natural human anatomy. The father in the front-left driver seat extends his RIGHT hand toward the rear seats while the car is parked. The mother’s hand enters slowly from the lower-left foreground. The girl looks at their hands. Smooth realistic movement and anatomy, no camera cut within this shot. No spoken dialogue.",
+        "characterNames": [
+          "Bố",
+          "Mẹ",
+          "Chị Đại / Bé gái"
+        ],
+        "dialogue": {
+          "characterName": "",
+          "line": "",
+          "emotion": "curious anticipation"
+        },
+        "sfxAudioCue": "Âm thanh khoang xe yên tĩnh.",
+        "narrativeFunction": "HOOK",
+        "narrativeIntention": "A hand extended by dad starts a playful rivalry.",
+        "actingDirection": "Mother lifts her free hand toward father’s palm; girl notices without moving from her buckled child seat.",
+        "startState": "Father facing forward, right palm reached backward. Girl secured in child seat.",
+        "endState": "Father hand open and waiting; mother hand approaching but not touching; girl eyes on hands.",
+        "continuityLock": [
+          "Reference faces/hair/outfits unchanged",
+          "Parked car; child buckled rear-right; POV rear-left",
+          "Father RIGHT hand extended backward; mother hand starts foreground lower-left",
+          "Do not change hand ownership or mirror camera orientation"
+        ]
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 4,
+        "title": "Bé giành bàn tay bố",
+        "cameraAngle": "POV close medium on hands and girl",
+        "visualPrompt": "Use exact character images as identity + costume references: Bo.png (Vietnamese young adult man matching Bo.png exactly: oval youthful face, fair warm skin, wavy voluminous dark hair, thin round silver metal eyeglasses, gentle smile; white long-sleeve button-up shirt with sleeves rolled to the forearms, dark charcoal tailored trousers.), ChiDai.png (Young East Asian girl matching ChiDai.png exactly: round soft face, fair skin, large dark eyes, dark brown hair parted centrally into TWO small high buns with loose wisps; light pastel blue sleeveless A-line dress decorated with several small vivid-blue ribbon bows, matching pale blue strap shoes.), Me.png (Young Vietnamese woman matching Me.png exactly: fair skin, softly defined face, long chestnut brown wavy hair with side part, gentle smile; light cream floral-patterned midi dress with softly puffed short sleeves and cream low shoes. In this POV sequence only her hand/forearm is visible; do not invent a visible face or additional limbs.). Static parked luxury car, warm daylight, cream leather seats, left-hand driver in front-left seat, toddler seated in properly fitted child safety seat on rear-right, mother holding camera from rear-left. Father never operates the vehicle while reaching backward. All references preserve faces/hair AND outfits, without copying studio backdrop. Father extends his RIGHT hand backward between the front seats; his LEFT hand remains near wheel. Keep unambiguous hand positions and natural human anatomy. Frame: POV close medium on hands and girl. The girl gently redirects mother’s approaching hand aside using one hand, then secures father’s RIGHT hand with BOTH small hands. Keep each step ordered and clear.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father mother and daughter moment] Static parked luxury car, warm daylight, cream leather seats, left-hand driver in front-left seat, toddler seated in properly fitted child safety seat on rear-right, mother holding camera from rear-left. Father never operates the vehicle while reaching backward. All references preserve faces/hair AND outfits, without copying studio backdrop. Father extends his RIGHT hand backward between the front seats; his LEFT hand remains near wheel. Keep unambiguous hand positions and natural human anatomy. The girl gently redirects mother’s approaching hand aside using one hand, then secures father’s RIGHT hand with BOTH small hands. Keep each step ordered and clear. Smooth realistic movement and anatomy, no camera cut within this shot. No spoken dialogue.",
+        "characterNames": [
+          "Bố",
+          "Mẹ",
+          "Chị Đại / Bé gái"
+        ],
+        "dialogue": {
+          "characterName": "",
+          "line": "",
+          "emotion": "playful determination"
+        },
+        "sfxAudioCue": "Tiếng cử động nhẹ, không thêm hiệu ứng tát mạnh.",
+        "narrativeFunction": "CONFLICT",
+        "narrativeIntention": "The child gently claims dad’s hand in a funny, harmless moment.",
+        "actingDirection": "One gentle sideways nudge of mother’s hand, then girl places both hands around father’s extended hand, mild mischievous smile.",
+        "startState": "Mother hand close to father hand; girl looking at hands.",
+        "endState": "Mother hand out of contact, girl both hands clasping father’s right hand.",
+        "continuityLock": [
+          "Reference faces/hair/outfits unchanged",
+          "Parked car; child buckled rear-right; POV rear-left",
+          "Father RIGHT hand extended backward; mother hand starts foreground lower-left",
+          "Do not change hand ownership or mirror camera orientation"
+        ]
+      },
+      {
+        "id": "shot-3",
+        "shotNumber": 3,
+        "durationSeconds": 4,
+        "title": "Lè lưỡi trêu mẹ",
+        "cameraAngle": "POV close-up on girl",
+        "visualPrompt": "Use exact character images as identity + costume references: Bo.png (Vietnamese young adult man matching Bo.png exactly: oval youthful face, fair warm skin, wavy voluminous dark hair, thin round silver metal eyeglasses, gentle smile; white long-sleeve button-up shirt with sleeves rolled to the forearms, dark charcoal tailored trousers.), ChiDai.png (Young East Asian girl matching ChiDai.png exactly: round soft face, fair skin, large dark eyes, dark brown hair parted centrally into TWO small high buns with loose wisps; light pastel blue sleeveless A-line dress decorated with several small vivid-blue ribbon bows, matching pale blue strap shoes.), Me.png (Young Vietnamese woman matching Me.png exactly: fair skin, softly defined face, long chestnut brown wavy hair with side part, gentle smile; light cream floral-patterned midi dress with softly puffed short sleeves and cream low shoes. In this POV sequence only her hand/forearm is visible; do not invent a visible face or additional limbs.). Static parked luxury car, warm daylight, cream leather seats, left-hand driver in front-left seat, toddler seated in properly fitted child safety seat on rear-right, mother holding camera from rear-left. Father never operates the vehicle while reaching backward. All references preserve faces/hair AND outfits, without copying studio backdrop. Father extends his RIGHT hand backward between the front seats; his LEFT hand remains near wheel. Keep unambiguous hand positions and natural human anatomy. Frame: POV close-up on girl. With both small hands still holding father’s RIGHT hand at the edge of the frame, the girl turns her head to the camera, briefly sticks out her tongue playfully and then smiles broadly.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father mother and daughter moment] Static parked luxury car, warm daylight, cream leather seats, left-hand driver in front-left seat, toddler seated in properly fitted child safety seat on rear-right, mother holding camera from rear-left. Father never operates the vehicle while reaching backward. All references preserve faces/hair AND outfits, without copying studio backdrop. Father extends his RIGHT hand backward between the front seats; his LEFT hand remains near wheel. Keep unambiguous hand positions and natural human anatomy. With both small hands still holding father’s RIGHT hand at the edge of the frame, the girl turns her head to the camera, briefly sticks out her tongue playfully and then smiles broadly. Smooth realistic movement and anatomy, no camera cut within this shot. No spoken dialogue.",
+        "characterNames": [
+          "Bố",
+          "Mẹ",
+          "Chị Đại / Bé gái"
+        ],
+        "dialogue": {
+          "characterName": "",
+          "line": "",
+          "emotion": "joyful teasing"
+        },
+        "sfxAudioCue": "Tiếng bé cười trong trẻo; tiếng mẹ cười khúc khích tự nhiên ở cuối.",
+        "narrativeFunction": "PAYOFF",
+        "narrativeIntention": "The girl playfully acknowledges mom and shares a joyful laugh.",
+        "actingDirection": "Single head turn, one brief tongue-out gesture, immediate delighted smile; mother camera stays steady.",
+        "startState": "Girl holding father right hand with both hands and facing toward hands.",
+        "endState": "Girl smiling toward camera, both hands still holding father’s hand.",
+        "continuityLock": [
+          "Reference faces/hair/outfits unchanged",
+          "Parked car; child buckled rear-right; POV rear-left",
+          "Father RIGHT hand extended backward; mother hand starts foreground lower-left",
+          "Do not change hand ownership or mirror camera orientation"
+        ]
+      }
+    ]
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "720p"
+  }
+}

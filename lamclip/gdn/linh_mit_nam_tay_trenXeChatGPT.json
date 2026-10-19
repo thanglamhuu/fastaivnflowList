@@ -1,0 +1,106 @@
+{
+  "project": {
+    "title": "Bố đưa tay cho con – nụ cười ở ghế sau",
+    "style": "Cinematic Photorealistic, natural candid family video, realistic phone-camera perspective",
+    "aspectRatio": "9:16",
+    "duration": "10s",
+    "sourceDurationSeconds": 10.169,
+    "premise": "Trong khoang sau xe ô tô, một bé gái tương tác vui vẻ với bàn tay người bố đưa ra từ ghế trước rồi quay lại máy quay với vẻ mặt tinh nghịch, vui tươi. Đây là bản phân rã tái dựng từ hình ảnh video nguồn, không phải kịch bản affiliate sản phẩm cụ thể.",
+    "scriptMarkdown": "**0–4s:** Máy quay từ hàng ghế sau nhìn ra phía trước. Bố mặc áo xanh nhạt ngồi ghế trước, đưa một tay về phía bé gái ở hàng ghế sau. Bé nhìn xuống bàn tay bố và bắt đầu đặt tay vào. Một người lớn khác ở vị trí máy quay chỉ lộ chân và tay áo trắng.\n\n**4–10s:** Giữ nguyên góc quay và bố cục. Bé tương tác bằng hai bàn tay với tay bố, sau đó xoay mặt về máy quay; nét mặt chuyển từ chăm chú sang ngạc nhiên, vui vẻ và cười rộng miệng. Kết thúc ngay trên biểu cảm vui của bé.\n\n**Lưu ý:** Không suy đoán lời thoại hoặc giới thiệu công dụng sản phẩm vì hình ảnh không cho phép xác thực các chi tiết này.",
+    "characters": [
+      {
+        "id": "char-bo",
+        "name": "Bố",
+        "physicalDescription": "Người đàn ông trưởng thành, tóc đen ngắn, thấy chủ yếu phần đầu nhìn từ phía sau, vai và cánh tay; ngồi ở ghế trước bên trái khung hình. Không đủ dữ liệu để xác nhận đầy đủ khuôn mặt hay tuổi.",
+        "defaultOutfit": "Áo sơ mi dài tay màu xanh dương nhạt.",
+        "voiceTone": "Chưa xác minh từ lời nói của video nguồn; không tự tạo giọng hay lời thoại mới."
+      },
+      {
+        "id": "char-chidai",
+        "name": "Bé gái",
+        "physicalDescription": "Bé gái nhỏ tuổi, khuôn mặt tròn, má đầy, mắt to, tóc đen nâu búi cao trên đỉnh đầu với phụ kiện hạt sáng nhỏ, nét mặt linh hoạt. Ngồi hàng ghế sau phía bên phải khung hình.",
+        "defaultOutfit": "Áo dài tay màu trắng kem và váy màu kem nhiều tầng bèo ren/tulle xếp phồng.",
+        "voiceTone": "Giọng bé gái tự nhiên nếu có âm thanh đã xác minh; không tự thêm lời thoại."
+      },
+      {
+        "id": "char-camera-adult",
+        "name": "Người lớn cầm máy quay",
+        "physicalDescription": "Chỉ thấy đầu gối trong quần tối màu và một tay/cánh tay áo trắng dài tay ở hàng ghế sau phía dưới khung hình; không nhìn rõ gương mặt hay danh tính.",
+        "defaultOutfit": "Tay áo trắng, quần tối màu.",
+        "voiceTone": "Không xác định; không gán lời thoại nếu chưa đối chiếu audio."
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-car-interior",
+        "name": "Khoang trong xe ô tô",
+        "description": "Ô tô hiện đại có ghế và trần bọc màu be/kem, cụm cửa gió sau giữa hai ghế trước, màn hình trung tâm ở bảng táp-lô, cửa sổ trời kính lớn, nắng ban ngày và hàng cây/kiến trúc ngoài xe. Góc máy từ hàng ghế sau hướng về hàng ghế trước, bé ngồi bên phải khung hình, người bố ở phía trước bên trái. Bối cảnh xuyên suốt không thay đổi."
+      }
+    ],
+    "props": [
+      {
+        "id": "prop-car",
+        "name": "Nội thất xe ô tô màu kem",
+        "description": "Ghế bọc màu kem, cửa sổ trời, màn hình giữa, cửa gió giữa hai lưng ghế trước. Giữ bố cục cố định."
+      },
+      {
+        "id": "prop-hair-accessory",
+        "name": "Phụ kiện búi tóc của bé",
+        "description": "Những hạt sáng nhỏ trên búi tóc cao, giữ đúng vị trí trong toàn clip."
+      }
+    ],
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 4,
+        "title": "Bố đưa tay về ghế sau",
+        "cameraAngle": "Vertical rear-seat POV, medium-wide interior shot, static handheld phone perspective",
+        "visualPrompt": "Photorealistic candid family moment inside a modern beige luxury car in soft daylight. Camera from the back seat looks toward the front seats. On the left a Vietnamese adult father with short dark hair wears a pale blue long-sleeve shirt, seen mainly from behind and side. On frame right sits a small Vietnamese girl with a high dark hair bun decorated with little pearl-like beads, wearing a cream long-sleeve top and a fluffy layered cream tulle dress. Bottom foreground shows dark trousers and a white sleeve belonging to the person filming. Panoramic glass sunroof, central dashboard display, rear AC vents, warm beige leather upholstery, greenery visible through front windshield. The father's hand reaches backward toward the girl's hands. Preserve exact spatial arrangement and outfits.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father mother and daughter moment] Static handheld vertical smartphone view from the back row of a stationary-looking car interior. The father sits in the front left seat and gently extends one hand backward between the front seats, palm open toward the little girl seated on frame right. The girl looks down and lightly places her hand on his. Keep motion subtle, natural and continuous, with no seat switching or camera cut. Do not imply vehicle movement or distracting driver actions. Start: father's arm beginning to reach back and girl looking toward him. End: father's open hand near the girl's lap as she starts touching it.",
+        "characterNames": ["Bố", "Bé gái", "Người lớn cầm máy quay"],
+        "dialogue": {"characterName": null, "line": null, "emotion": "Không xác thực lời thoại từ hình ảnh; bé chăm chú và tò mò."},
+        "sfxAudioCue": "Use authentic ambient audio from the original recording if available; no invented speech or exaggerated SFX.",
+        "narrativeFunction": "SETUP",
+        "narrativeIntention": "Thiết lập tương tác gần gũi của bố và con trong không gian gia đình.",
+        "action": "Bố đưa bàn tay từ hàng ghế trước về phía bé; bé nhìn và đặt tay lên.",
+        "actingDirection": "Bố đưa tay chậm, thoải mái; bé cúi mắt theo bàn tay, cử chỉ nhỏ và tự nhiên.",
+        "startState": "Bố ngồi ghế trước, bé ngồi bên phải hàng ghế sau và nhìn về phía trước.",
+        "endState": "Bàn tay bố được đưa ra gần bé, bé bắt đầu chạm tay bố.",
+        "continuityLock": "Bố ở bên trái khung hình, bé bên phải, máy quay giữ POV từ hàng ghế sau, bố áo xanh nhạt, bé váy kem và tóc búi cao, nội thất xe màu kem, ánh sáng ban ngày."
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 6,
+        "title": "Bé quay lại cười với máy quay",
+        "cameraAngle": "Same rear-seat POV, medium shot with the girl in frame right; static handheld camera",
+        "visualPrompt": "Exact same photorealistic beige car interior and rear-seat composition as shot 1. Father in pale blue shirt remains front left with one arm reaching backward. Same little Vietnamese girl on frame right, dark high bun decorated with small pearl-like beads, cream long-sleeve top and layered frilly cream tulle dress. Her small hands interact with father's hand near her lap. The filming adult's white sleeve and dark trousers are still partially visible at the bottom foreground. Natural sunlight, glass sunroof, dashboard, rear AC vents and exterior trees remain unchanged. Capture the girl's lively facial expression as she turns toward the camera and smiles widely.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father mother and daughter moment] Continue directly from the previous shot without changing positions or wardrobe. The little girl gently plays with the father's open hand for a brief moment. She then lifts her chin and turns her face toward the camera, with a small surprised look that turns into a big natural smile and delighted open-mouth laugh. The father keeps his arm relaxed and extended; the adult filming remains mostly still. One continuous, believable turn of the girl's head, no sudden posture changes, no duplicated arms, no camera switch. Start: girl looking down at father's hand. End: girl looking at camera and laughing warmly.",
+        "characterNames": ["Bố", "Bé gái", "Người lớn cầm máy quay"],
+        "dialogue": {"characterName": null, "line": null, "emotion": "Bé chuyển từ chăm chú sang vui vẻ, tinh nghịch; lời nói chưa xác minh."},
+        "sfxAudioCue": "Preserve any real laugh and speech only after checking original audio. Do not automatically add mother's giggle: no such sound was verified as belonging to the mother.",
+        "narrativeFunction": "PAYOFF",
+        "narrativeIntention": "Kết thúc bằng nét mặt vui tươi, gần gũi của bé.",
+        "action": "Bé tương tác với bàn tay bố, quay về máy quay rồi cười.",
+        "actingDirection": "Tay bé chuyển động nhỏ, mắt ngước lên, đầu quay nhẹ; nở nụ cười dần thành tiếng cười tự nhiên, không diễn quá mức.",
+        "startState": "Bé cúi nhìn bàn tay bố và chạm tay vào.",
+        "endState": "Bé nhìn thẳng về phía máy quay và cười tươi; bố vẫn ở ghế trước.",
+        "continuityLock": "Giữ nguyên chiều vươn tay của bố, vị trí của bé, búi tóc và phụ kiện, màu váy, hướng góc máy và bố cục nội thất. Biểu cảm chuyển tiếp theo thứ tự: nhìn tay → quay đầu → ngạc nhiên/vui → cười."
+      }
+    ],
+    "sourceReview": {
+      "sourceFile": "abdc609a-aeb7-4cf9-87e7-396411d9eb7e.mp4",
+      "evidence": "Quan sát các khung hình tại các mốc từ 0 đến 9 giây; không có bản chép lời được xác minh.",
+      "notVerified": ["Lời thoại nguyên văn", "Danh tính hoặc giọng địa phương của người lớn", "Nhãn hiệu hoặc USP sản phẩm affiliate", "Có hay không tiếng mẹ cười ở cuối clip"],
+      "durationAdjustment": "Nguồn dài khoảng 10.169 giây; JSON dựng lại mục tiêu 10 giây để tuân thủ shot lengths {4, 6, 8, 10}."
+    }
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "720p"
+  }
+}

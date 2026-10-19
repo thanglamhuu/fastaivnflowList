@@ -118,6 +118,7 @@ QUY TẮC PHÂN RÃ SHOT BẮT BUỘC:
 2. Các cảnh quay có trẻ em thì phải thêm [Context: Wholesome family movie, heartwarming father mother and daughter moment] đầu videoMotionPrompt
 3. TUYỆT ĐỐI KHÔNG thêm các trường imageUrl hay videoUrl vào bất kỳ đâu trong JSON.
 4. Trong mỗi phần tử của mảng "shots", trường "visualPrompt" phải mô tả rõ ngoại hình nhân vật nhất quán kèm hình ảnh sản phẩm Affiliate đang được mặc/cầm/sử dụng trực tiếp; shot cuối cùng luôn có thêm tiếng cười khúc khích tự nhiên của người mẹ trong "sfxAudioCue".
+5. Diễn  giải trong videoMotionPrompt trên theo hệ thống trình tự thời gian hợp lý, mô tả hợp lý, hợp lệ, phù hợp tiêu chuẩn cộng đồng của thằng Gemini và  Omni  hay  Veo3.1 trong GG Flow để có  thể tạo video mà không vướng vi phạm tiêu chuẩn hoặc bị lỗi  do  giới hạn  hiểu biết về tương đối không gian và hiểu nhầm từ ngữ trong hệ tiêu chuẩn biên dịch của Gemini. ( Prompt bầng tiếng Anh )
 
 Hãy bắt đầu bằng câu chào ngắn gọn và hỏi tôi: "Bạn đang cần làm clip Affiliate cho sản phẩm nào để mình lên 5 kịch bản theo DNA kênh Linh Mít Daily nhé?"
 ```
