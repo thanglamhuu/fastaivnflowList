@@ -1,0 +1,92 @@
+{
+  "project": {
+    "title": "Tranh Giành Tay Bố Trên Xe Hơi",
+    "style": "Cinematic Photorealistic",
+    "aspectRatio": "9:16",
+    "duration": "10s",
+    "premise": "Trên ô tô, Bố đưa tay ra sau. Mẹ định nắm thì bị Chị Đại hất ra, độc chiếm tay Bố rồi quay sang lè lưỡi trêu Mẹ.",
+    "scriptMarkdown": "**Shot 1 (4s):** Bố lái xe, đưa tay ra ghế sau. Mẹ nắm tay Bố nhưng Chị Đại lập tức gạt tay Mẹ ra.\n**Shot 2 (6s):** Chị Đại nắm chặt tay Bố, quay sang nhìn Mẹ đắc ý, lè lưỡi trêu chọc và cười tít mắt.",
+    "characters": [
+      {
+        "id": "char-bo",
+        "name": "Bố",
+        "physicalDescription": "Đàn ông Việt Nam 30 tuổi, mặt thư sinh, đeo kính gọng mảnh, tóc đen gọn, dáng cao ráo.",
+        "defaultOutfit": "Áo sơ mi xanh nhạt dài tay lịch sự.",
+        "voiceTone": "Nam Ấm Áp Hài Hước (miền Bắc)"
+      },
+      {
+        "id": "char-me",
+        "name": "Mẹ",
+        "physicalDescription": "Phụ nữ Việt Nam 27 tuổi, trẻ đẹp sắc sảo, da trắng hồng, dáng thon gọn.",
+        "defaultOutfit": "Áo len trắng dài tay phối chân váy xám xếp ly.",
+        "voiceTone": "Nữ Trầm Bản Lĩnh (miền Bắc)"
+      },
+      {
+        "id": "char-chidai",
+        "name": "Chị Đại",
+        "physicalDescription": "Bé gái Việt Nam 3.5 tuổi, má phúng phính trắng hồng, mắt to tròn đen láy, tóc búi củ tỏi cài dây ngọc trai.",
+        "defaultOutfit": "Váy công chúa vải tweed màu kem phối voan bồng bềnh xinh xắn (sản phẩm Affiliate).",
+        "voiceTone": "Nữ Nhi Đồng Lém Lỉnh (miền Bắc)"
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-car",
+        "name": "Nội thất xe hơi sang trọng",
+        "description": "Bên trong ô tô cao cấp ghế da màu kem, cửa sổ trời thoáng đãng, ánh sáng ban ngày tự nhiên."
+      }
+    ],
+    "props": [
+      "Váy công chúa vải tweed màu kem phối chân voan bồng bềnh"
+    ],
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 4,
+        "title": "Màn tranh giành tay Bố",
+        "cameraAngle": "POV Medium Shot (Góc nhìn từ vị trí của Mẹ ở ghế sau)",
+        "visualPrompt": "Góc nhìn từ ghế sau ô tô ghế da kem. Bố mặc sơ mi xanh ngồi ghế lái vươn tay phải ra sau. Chị Đại (3.5 tuổi, má phúng phính, tóc búi đính ngọc trai, đang mặc sản phẩm Affiliate váy công chúa vải tweed màu kem phối voan bồng bềnh) ngồi ghế sau bên phải. Tay Mẹ (áo trắng, váy xám) vươn ra nắm tay Bố thì bị Chị Đại dùng tay gạt phắt ra.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father mother and daughter moment] Father reaches his right hand back between the car seats. Mother's hand holds Father's hand, then the cute little daughter quickly pushes Mother's hand away with a sassy expression.",
+        "characterNames": [
+          "Bố",
+          "Mẹ",
+          "Chị Đại"
+        ],
+        "dialogue": {
+          "characterName": "Mẹ",
+          "line": "Ơ kìa!",
+          "emotion": "Ngạc nhiên, bất ngờ"
+        },
+        "sfxAudioCue": "Tiếng động cơ xe êm ái kèm âm thanh hiệu ứng 'Hả?' ngạc nhiên hài hước."
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 6,
+        "title": "Nụ cười chiến thắng của Chị Đại",
+        "cameraAngle": "Medium Close-up",
+        "visualPrompt": "Trên ghế da kem ô tô, Chị Đại (3.5 tuổi, má phúng phính, tóc búi ngọc trai, mặc trực tiếp sản phẩm Affiliate váy công chúa vải tweed màu kem phối voan xòe) dùng hai bàn tay nhỏ nắm chặt bàn tay Bố. Bé quay mặt sang trái nhìn Mẹ, lè lưỡi trêu ngươi rồi cười tươi tít mắt khoe vẻ đắc ý.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father mother and daughter moment] The little girl holds her father's hand tightly with both hands, turns her head towards the camera, sticks out her tongue playfully, and bursts into a bright, adorable smile.",
+        "characterNames": [
+          "Bố",
+          "Mẹ",
+          "Chị Đại"
+        ],
+        "dialogue": {
+          "characterName": "Chị Đại",
+          "line": "Tay của Bố là của con cơ, lè!",
+          "emotion": "Lém lỉnh, đắc ý, tinh nghịch"
+        },
+        "sfxAudioCue": "Tiếng em bé cười khanh khách đáng yêu hoà cùng tiếng cười khúc khích tự nhiên của người mẹ ở cuối clip."
+      }
+    ]
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "720p"
+  }
+}

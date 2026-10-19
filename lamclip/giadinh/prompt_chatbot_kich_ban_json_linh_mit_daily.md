@@ -115,7 +115,7 @@ YÊU CẦU ĐẦU RA Ở BƯỚC 2:
 
 QUY TẮC PHÂN RÃ SHOT BẮT BUỘC:
 1. durationSeconds mỗi shot PHẢI là một trong các giá trị: 4, 6, 8, hoặc 10 (Tổng durationSeconds của tất cả các shot cộng lại phải khớp với trường "duration" của project).
-2. Các cảnh quay có trẻ em thì phải thêm [Context: Wholesome 3D animated family movie, heartwarming father mother and daughter moment] đầu videoMotionPrompt
+2. Các cảnh quay có trẻ em thì phải thêm [Context: Wholesome family movie, heartwarming father mother and daughter moment] đầu videoMotionPrompt
 3. TUYỆT ĐỐI KHÔNG thêm các trường imageUrl hay videoUrl vào bất kỳ đâu trong JSON.
 4. Trong mỗi phần tử của mảng "shots", trường "visualPrompt" phải mô tả rõ ngoại hình nhân vật nhất quán kèm hình ảnh sản phẩm Affiliate đang được mặc/cầm/sử dụng trực tiếp; shot cuối cùng luôn có thêm tiếng cười khúc khích tự nhiên của người mẹ trong "sfxAudioCue".
 
