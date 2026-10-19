@@ -1,0 +1,150 @@
+{
+  "project": {
+    "title": "Bố đang đón mẹ... cho tới khi thấy con gái",
+    "sourceVideo": "261019.mp4",
+    "version": "storyjson_v01",
+    "style": "Cinematic Photorealistic, natural family comedy, realistic handheld video",
+    "aspectRatio": "9:16",
+    "duration": "18s",
+    "premise": "Bố dang tay đón mẹ và bế mẹ trong một khoảnh khắc lãng mạn. Khi cô con gái nhỏ xuất hiện với chiếc giỏ hồng, bố lập tức đặt mẹ xuống rồi chạy đến đón con, để mẹ ngồi lại ngạc nhiên. Bố bế con lên, còn bé có biểu cảm phụng phịu đáng yêu.",
+    "scriptMarkdown": "0–4s: Bố đứng trên đường nội khu, nhìn mẹ đang chạy tới; bố dang tay. 4–8s: Mẹ chạy tới nhảy lên ôm, bố đỡ và bế mẹ; bé gái cầm giỏ hồng xuất hiện gần đó. 8–12s: Bố đặt mẹ xuống, mẹ ngồi lại trên mặt đường; bố quay người chạy đến chỗ con, chiếc giỏ hồng được đặt xuống đường. 12–18s: Bố cúi/ngồi xổm dang tay đón bé, đỡ bé lên bằng hai tay rồi bế trong lòng; bé hơi phụng phịu, bố nhìn con âu yếm. Không tự thêm lời thoại không xác minh được từ nguồn.",
+    "bigQuestion": "Bố đang dang tay đón ai: mẹ hay cô công chúa nhỏ?",
+    "oneInsight": "Một cú đổi hướng bất ngờ khiến khoảnh khắc gia đình trở nên vui nhộn.",
+    "referenceFiles": ["Bo.png", "Me.png", "ChiDai.png"],
+    "referencePolicy": "Reference photos are the source of truth for character identity, hairstyle, and outfits. The uploaded video is the source of truth for action order, blocking, setting, and broad emotional beats. Clothing therefore deliberately differs from the original clip.",
+    "characters": [
+      {
+        "id": "char-bo",
+        "name": "Bố",
+        "referenceImage": "Bo.png",
+        "physicalDescription": "Young Vietnamese/East Asian adult man, lean balanced build, gentle youthful face, wavy voluminous dark brown-black hair parted loosely in the middle, thin round silver-colored metal glasses, warm restrained smile. Preserve the exact facial identity and hairstyle in Bo.png; do not substitute the face of the man in the source video.",
+        "defaultOutfit": "White long-sleeve button-up shirt with sleeves rolled to the forearms, charcoal dark-gray straight tailored trousers, clean white sneakers, as seen in Bo.png.",
+        "voiceTone": "Warm, natural Vietnamese male voice; no dialogue is invented for the source clip."
+      },
+      {
+        "id": "char-me",
+        "name": "Mẹ",
+        "referenceImage": "Me.png",
+        "physicalDescription": "Young Vietnamese/East Asian adult woman, delicate oval face, clear bright skin, long chestnut-brown hair styled in loose flowing waves, soft friendly smile. Preserve the exact facial identity and hair in Me.png.",
+        "defaultOutfit": "Cream or ivory midi-length floral dress with short semi-sheer puff sleeves, softly gathered waist and tiered flowing skirt; light cream low-heeled shoes, matching Me.png.",
+        "voiceTone": "Natural gentle Vietnamese female voice; no dialogue is invented for the source clip."
+      },
+      {
+        "id": "char-chidai",
+        "name": "Chị Đại",
+        "referenceImage": "ChiDai.png",
+        "physicalDescription": "Young East Asian little girl with a round sweet face, dark wide-set expressive eyes, fair natural skin, soft full cheeks, black hair neatly arranged in two small high buns with loose wisps framing the face. Retain the same face and two-bun hairstyle as ChiDai.png; do not alter age appearance between shots.",
+        "defaultOutfit": "Sleeveless pastel baby-blue A-line dress with multiple small darker-blue ribbon bows, matching light-blue Mary Jane strap shoes, as seen in ChiDai.png.",
+        "voiceTone": "Natural toddler sounds only; no invented spoken line."
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-residential-road",
+        "name": "Đường nội khu rợp bóng cây, ban ngày",
+        "description": "Quiet broad paved road inside a residential neighborhood in bright daytime. Mature leafy trees line both sides, casting distinct moving patches of shade onto gray asphalt. Parked cars along both curbs, low-rise building facades, distant background depth and a pale yellow centerline. Clear dry weather. Keep vehicles parked and the road closed to moving traffic for staged family action. Natural handheld smartphone-like camera, grounded spatial continuity."
+      }
+    ],
+    "props": [
+      {
+        "id": "prop-pink-basket",
+        "name": "Giỏ nhựa màu hồng",
+        "description": "Small vivid hot-pink plastic toy/shopping basket with short handle, initially carried by the little girl and later left on the asphalt near where the mother sits. Preserve its size, shape and saturated pink hue across shots."
+      }
+    ],
+    "continuityBible": {
+      "character": "Bo.png, Me.png and ChiDai.png identity, hair, silhouette, clothing and footwear remain fixed in every shot.",
+      "spatial": "One shaded residential road; father begins closer to camera, mother approaches from farther ahead; daughter approaches in the same background-to-foreground direction. Handheld camera remains behind or slightly to the side of father until the closer daughter pickup moment.",
+      "action": "Father opens arms, catches mother, supports her briefly, sets mother safely down, turns toward daughter, crouches, then lifts child securely. Daughter carries pink basket, releases it to the ground before being picked up; never duplicate basket.",
+      "emotional": "Father welcoming -> briefly affectionate toward mother -> distracted with excitement by daughter -> warm and attentive. Mother joyful -> surprised, comic reaction. Daughter eager -> briefly pouty -> receives father's attention.",
+      "safety": "Stage on a pedestrian-safe closed residential road with no moving vehicles. Mother is gently lowered into a safe seated pose rather than dropped. Child is lifted with secure adult support under the arms and torso; avoid unsafe dangling or abrupt jerks."
+    },
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 4,
+        "title": "Bố mở tay đón mẹ",
+        "narrativeFunction": "HOOK_SETUP",
+        "narrativeIntention": "Tạo kỳ vọng về một màn đoàn tụ lãng mạn giữa bố và mẹ.",
+        "cameraAngle": "Handheld vertical wide-to-medium follow shot, from behind father's left shoulder",
+        "characterNames": ["Bố", "Mẹ", "Chị Đại"],
+        "visualPrompt": "Photorealistic vertical daytime scene on a quiet tree-lined residential road. Keep the precise identity and outfit of the young man from Bo.png in the foreground, seen mostly from behind/three-quarter profile, with dark wavy hair, round metal glasses, white rolled-sleeve shirt, charcoal trousers and white sneakers. The woman from Me.png, long chestnut waves and flowing cream puff-sleeve floral midi dress, approaches from the distant center. The young girl from ChiDai.png is farther back nearby, two small buns, pastel-blue sleeveless bow-decorated dress and blue Mary Jane shoes, holding a vivid pink plastic basket. Dappled sunlight, parked cars and low-rise buildings in consistent positions, casual family-film realism, no text overlays.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father mother and daughter moment] A single continuous handheld vertical shot from behind the father. He spots the approaching mother, turns his shoulders toward her and opens both arms in welcome. The mother moves toward him with cheerful anticipation. The daughter remains farther behind with her bright pink basket. One primary action: the father opening his arms to welcome the mother. Maintain natural timing, same street geography and subtle camera follow.",
+        "actingDirection": "Father: slight head turn and genuinely happy half-smile, arms open naturally without exaggerated posing. Mother: light eager steps toward him. Daughter: background presence, looking toward the adults.",
+        "startState": "Father standing closer to camera, arms down; mother approaching from far ahead; daughter behind her with pink basket.",
+        "endState": "Father faces mother with both arms open; mother has nearly reached him.",
+        "continuityLock": "Identity and outfits from all three photos; father near camera; mother approaching along road axis; daughter and vivid pink basket remain behind; stable midday dappled shadows.",
+        "dialogue": {"characterName": "", "line": "", "emotion": "joyful anticipation", "verification": "No dialogue transcribed or asserted from the original audio."},
+        "sfxAudioCue": "Outdoor road ambience, quiet footsteps, tree leaves; retain original audio if verified separately."
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 4,
+        "title": "Mẹ ôm bố, con xuất hiện",
+        "narrativeFunction": "MISDIRECTION",
+        "narrativeIntention": "Củng cố kỳ vọng bố ưu tiên ôm mẹ, đồng thời cho người xem nhận thấy bé đang tới.",
+        "cameraAngle": "Handheld medium-wide three-quarter rear shot",
+        "characterNames": ["Bố", "Mẹ", "Chị Đại"],
+        "visualPrompt": "Same tree-lined residential road, same photo-referenced cast and outfits. Father in white rolled-sleeve shirt and charcoal trousers holds mother securely in a warm embrace. Mother's long wavy brown hair falls over his shoulder; her cream floral puff-sleeve dress flows naturally. Their feet and torso are clearly staged for a safe supported brief lift. The little girl in the reference blue bow dress approaches at the side with her bright pink plastic basket. Natural dappled sun, parked cars fixed in the background.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father mother and daughter moment] Continue the same approach and camera axis. The mother reaches the father and wraps both arms around his shoulders. He supports her securely at the torso and gives her a brief joyful lift. The little girl walks nearer while carrying a bright pink plastic basket. Keep the adult movement careful and physically plausible; no fast spinning. End as the father notices the daughter arriving. One main action: the supported adult hug/lift.",
+        "actingDirection": "Mother: joyful, spontaneous smile, arms around father's shoulders. Father: delighted but stable, eyes begin shifting toward the child near the end. Daughter: small purposeful steps with a curious expectant look.",
+        "startState": "Father's arms are open and mother is within reach; daughter walks closer with basket.",
+        "endState": "Father is supporting mother in a brief embrace, glancing toward daughter; daughter has arrived close by.",
+        "continuityLock": "Mother securely held, same adult outfits and hair; daughter's pink basket still in her hand; no position swap or camera axis flip.",
+        "dialogue": {"characterName": "", "line": "", "emotion": "warm reunion", "verification": "No dialogue transcribed or asserted from the original audio."},
+        "sfxAudioCue": "Light outdoor footsteps and natural family reactions, no mandatory dialogue."
+      },
+      {
+        "id": "shot-3",
+        "shotNumber": 3,
+        "durationSeconds": 4,
+        "title": "Bố đổi hướng, mẹ ngơ ngác",
+        "narrativeFunction": "TURNING_POINT_COMEDY",
+        "narrativeIntention": "Cú bất ngờ: bố ngừng màn đón mẹ để chuyển sang đón con, tạo tình huống hài bằng hành động.",
+        "cameraAngle": "Handheld wide-medium shot, holds mother in near foreground as father moves toward daughter",
+        "characterNames": ["Bố", "Mẹ", "Chị Đại"],
+        "visualPrompt": "The same photorealistic residential road with tree shadows. Mother from Me.png is safely seated on the road in her cream floral midi dress, looking after the father in mild comic surprise; her long wavy chestnut hair remains the same. The small vivid pink basket rests on asphalt nearby. Father from Bo.png, white shirt, dark gray trousers, glasses, pivots away and takes several quick steps toward the girl from ChiDai.png who waits a short distance away in her baby-blue bow dress. Stationary parked cars, bright afternoon-like daylight; no moving traffic.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father mother and daughter moment] Continue directly from the supported embrace. The father gently sets the mother down into a safe seated position; he notices the little girl, turns and briskly moves toward her. The mother looks up after him, momentarily surprised. The child has placed the pink basket on the ground and faces the approaching father. One clear comic turning point: father switches attention from mother to child. Avoid any forceful drop, impact, dangerous fall or sudden collision.",
+        "actingDirection": "Father: quick recognition of daughter, eager but controlled pivot and steps. Mother: blink, slightly open mouth, puzzled look without melodrama. Child: pauses expectantly facing father.",
+        "startState": "Father supports mother in the embrace; daughter stands close carrying the basket.",
+        "endState": "Mother is safely seated; basket lies on the ground nearby; father reaches daughter and starts to lower himself to her height.",
+        "continuityLock": "Basket only one, bright pink; mother's costume and hairstyle unchanged; father's glasses, white shirt, dark trousers unchanged; daughter still in blue reference dress; no vehicle movement.",
+        "dialogue": {"characterName": "", "line": "", "emotion": "comic surprise", "verification": "No dialogue transcribed or asserted from the original audio."},
+        "sfxAudioCue": "Footsteps, soft rustle of fabric, minimal comedic pause; no exaggerated impact sound."
+      },
+      {
+        "id": "shot-4",
+        "shotNumber": 4,
+        "durationSeconds": 6,
+        "title": "Bố bế công chúa nhỏ",
+        "narrativeFunction": "PAYOFF",
+        "narrativeIntention": "Hoàn tất cú twist: bố dành toàn bộ sự chú ý cho con, trong khi biểu cảm bé tạo dư âm đáng yêu.",
+        "cameraAngle": "Handheld medium close-up, slightly low eye-level on father and daughter, gentle follow-up movement",
+        "characterNames": ["Bố", "Chị Đại"],
+        "visualPrompt": "Same daylight tree-lined residential street, framed closer on the young man from Bo.png and the little girl from ChiDai.png. Father has wavy dark hair, thin round metal glasses, youthful smiling face, white rolled-sleeve shirt, charcoal trousers and white sneakers. Daughter has the exact reference girl's round face, big dark eyes, soft cheeks and two small high hair buns, wearing the pastel blue bow-trim sleeveless dress with light-blue Mary Jane shoes. Father crouches, opens arms, then safely holds daughter against his torso. Girl shows a slight pouty, emotionally expressive toddler face before looking toward father. Cinematic natural light, lived-in family warmth, realistic hands and proportions.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father mother and daughter moment] Continue with father reaching the girl. He squats to her level, opens both arms and waits a brief beat. Then he gently supports her under the torso and lifts her into a secure, comfortable hold against his chest. The girl briefly looks pouty, then glances toward his face while he smiles affectionately. Keep the gesture natural with both hands supporting the child and no sudden swinging. End on their shared close framing. Preserve their exact photo-referenced identities and clothes. One primary action: father safely picking up his daughter.",
+        "actingDirection": "Father: relaxed knees, soft smile, attentive eye contact, both arms support child. Child: subtle pout with raised brow, small head turn toward father, unforced toddler movements; avoid forced crying or exaggerated distress.",
+        "startState": "Father crouching directly in front of standing daughter; daughter no longer holds the pink basket.",
+        "endState": "Father stands or nearly stands holding child securely against chest; daughter looks toward him or just off camera; playful domestic aftermath.",
+        "continuityLock": "Girl's two buns, blue bows and shoes; father's glasses and exact face; both hands supporting child's body; pink basket stays on asphalt outside close framing; same daytime road background.",
+        "dialogue": {"characterName": "", "line": "", "emotion": "gentle reassurance", "verification": "No dialogue transcribed or asserted from the original audio."},
+        "sfxAudioCue": "Natural outdoor atmosphere, soft child vocalization if generated, subtle natural mother's chuckle at end as an optional adaptation cue, not a verified sound from the source."
+      }
+    ]
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "720p"
+  },
+  "reviewFlags": [
+    "Original source audio was not reliably transcribed; no precise spoken dialogue is claimed.",
+    "Outfits deliberately follow the three supplied reference images rather than the source video's costumes.",
+    "Shot boundaries are an 18-second generation plan (4+4+4+6) and are not claims of exact source edit points.",
+    "For generation, use the three reference images as ingredients and set matching spatial reference frames per shot."
+  ]
+}
