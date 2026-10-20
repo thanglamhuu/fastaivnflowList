@@ -1,0 +1,133 @@
+{
+  "project": {
+    "title": "Bố Bế Mẹ Bỏ Quên Con",
+    "style": "Cinematic Photorealistic",
+    "aspectRatio": "9:16",
+    "duration": "18s",
+    "premise": "Cả mẹ và con gái cùng chạy đến ôm bố, nhưng bố lại chỉ bế mẹ lên khiến con gái dỗi khóc. Bố hoảng hốt bỏ mẹ xuống để dỗ con.",
+    "scriptMarkdown": "Shot 1: Mẹ và bé Mít chạy về phía Bố. Mẹ gọi 'Chồng yêu ơi!'. Bố dang tay nhấc bổng Mẹ lên ôm. Bé Mít chạy đến dang tay nhưng bị bỏ bơ.\nShot 2: Bé Mít vứt giỏ đồ chơi, mếu máo khóc. Bố giật mình, vội vàng thả Mẹ xuống đất rồi chạy lại phía bé Mít.\nShot 3: Bố dỗ dành 'Ra đây ba bế' rồi nhấc bé lên. Bé Mít dỗi, vừa khóc vừa lấy tay đẩy má Bố. Bố mỉm cười chịu trận, Mẹ cười lớn ngoài khung hình.",
+    "characters": [
+      {
+        "id": "char-bo",
+        "name": "Bố",
+        "referenceImage": "Bo.png",
+        "physicalDescription": "Use exact identity from referenced image. No text-based appearance reconstruction.",
+        "defaultOutfit": "Use exact outfit from referenced image. Do not redesign or recolor.",
+        "voiceTone": "Giọng nam thanh niên ấm áp, tự nhiên"
+      },
+      {
+        "id": "char-me",
+        "name": "Mẹ",
+        "referenceImage": "Me.png",
+        "physicalDescription": "Use exact identity from referenced image. No text-based appearance reconstruction.",
+        "defaultOutfit": "Use exact outfit from referenced image. Do not redesign or recolor.",
+        "voiceTone": "Giọng nữ trẻ trung, vui tươi"
+      },
+      {
+        "id": "char-con",
+        "name": "Con gái",
+        "referenceImage": "EmMit.png",
+        "physicalDescription": "Use exact identity from referenced image. No text-based appearance reconstruction.",
+        "defaultOutfit": "Use exact outfit from referenced image. Do not redesign or recolor.",
+        "voiceTone": "Giọng em bé đang khóc dỗi đáng yêu"
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-street",
+        "name": "Đường nội khu",
+        "description": "Một con đường nhỏ yên tĩnh nhiều cây xanh vào ban ngày, ánh nắng ấm áp."
+      }
+    ],
+    "props": [],
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 6,
+        "title": "Bố chỉ ôm Mẹ",
+        "narrativeFunction": "HOOK",
+        "narrativeIntention": "Tạo bối cảnh gia đình vui vẻ và cú lừa đầu tiên cho người xem",
+        "cameraAngle": "Medium Wide Shot",
+        "visualPrompt": "The father, mother, and toddler daughter from the provided reference images are on a sunlit residential street with green trees. The father stands with his back to the camera, while the mother and daughter run toward him. Natural daylight, realistic family atmosphere. Preserve exact reference identities, appearances, and outfits.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, comedic father and mother moment] The mother runs toward the father with open arms. The father catches the mother and lifts her into a warm embrace. The toddler daughter runs behind the mother with her arms open, waiting for a hug, but is completely ignored. Smooth camera tracking the mother's movement. Preserve exact photo-referenced identities, appearances, and clothes. One primary action: father lifting and hugging mother while daughter stands waiting.",
+        "characterNames": [
+          "Bố",
+          "Mẹ",
+          "Con gái"
+        ],
+        "dialogue": {
+          "characterName": "Mẹ",
+          "line": "Chồng yêu ơi!",
+          "emotion": "Hào hứng, vui vẻ"
+        },
+        "action": "Mẹ chạy đến nhảy lên ôm Bố, con gái chạy theo dang tay nhưng không được bế.",
+        "actingDirection": "Mẹ biểu cảm hạnh phúc, Bố ôm chặt Mẹ. Bé Mít ngơ ngác đứng nhìn.",
+        "startState": "Mẹ và con cùng chạy về phía Bố.",
+        "endState": "Bố đang ôm nhấc bổng Mẹ, con gái đứng dưới dang tay.",
+        "continuityLock": "Giữ nguyên bối cảnh đường phố và trang phục nhân vật.",
+        "sfxAudioCue": "Tiếng bước chân chạy, tiếng reo vui của Mẹ."
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 4,
+        "title": "Con khóc, Bố vội thả Mẹ",
+        "narrativeFunction": "TWIST",
+        "narrativeIntention": "Tạo tiếng cười bất ngờ qua sự hoảng hốt của Bố",
+        "cameraAngle": "Medium Shot",
+        "visualPrompt": "The father, mother, and toddler daughter from the provided reference images on the same sunlit street. The father is holding the mother, and the daughter stands below them. Eye-level cinematic framing. Preserve exact reference identities, appearances, and outfits.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, comedic moment] Continue naturally from the previous shot. The toddler daughter looks disappointed, drops her arms, and starts crying playfully. Reacting quickly to the crying, the father hurriedly puts the mother down on the ground in a comedic panic and turns to rush over to his daughter. Handheld camera movement. Preserve exact photo-referenced identities. One primary action: father hastily putting the mother down to comfort his crying daughter.",
+        "characterNames": [
+          "Bố",
+          "Mẹ",
+          "Con gái"
+        ],
+        "dialogue": {
+          "characterName": "Con gái",
+          "line": "Oa oa oa",
+          "emotion": "Khóc dỗi"
+        },
+        "action": "Con gái khóc, Bố giật mình thả vội Mẹ xuống để chạy ra dỗ con.",
+        "actingDirection": "Con mếu máo khóc nức nở. Bố biểu cảm hoảng hốt, thả Mẹ xuống luống cuống.",
+        "startState": "Bố đang bế Mẹ, con gái đứng dưới.",
+        "endState": "Mẹ ngồi bệt xuống đất, Bố đang lao về phía con gái.",
+        "continuityLock": "Giữ nguyên góc đường và ánh sáng.",
+        "sfxAudioCue": "Tiếng em bé vứt đồ chơi, tiếng khóc òa lên, tiếng 'bịch' khi Mẹ tiếp đất."
+      },
+      {
+        "id": "shot-3",
+        "shotNumber": 3,
+        "durationSeconds": 8,
+        "title": "Con dỗi tát Bố",
+        "narrativeFunction": "PUNCHLINE",
+        "narrativeIntention": "Kết thúc đáng yêu, hài hước với hành động dỗi của bé",
+        "cameraAngle": "Close-up",
+        "visualPrompt": "The father and toddler daughter from the provided reference images on the street. The father is squatting down right in front of the crying daughter. Warm lighting, shallow depth of field. Preserve exact reference identities, appearances, and outfits.",
+        "videoMotionPrompt": "[Context: Wholesome family movie, heartwarming father and daughter moment] The father gently lifts his crying daughter into his arms. As he holds her affectionately, the daughter innocently and playfully pushes his cheek with her little hand, still pouting. The father smiles warmly at her. Smooth, steady camera focus on their faces. Preserve exact photo-referenced identities. One primary action: father holding daughter while she playfully pushes his face in protest.",
+        "characterNames": [
+          "Bố",
+          "Con gái"
+        ],
+        "dialogue": {
+          "characterName": "Bố",
+          "line": "Ra đây ba bế nào. Ba xin lỗi ba xin lỗi.",
+          "emotion": "Ngọt ngào, hối lỗi"
+        },
+        "action": "Bố bế con lên dỗ, con vừa khóc vừa lấy tay đẩy vỗ vào má Bố.",
+        "actingDirection": "Bố biểu cảm dỗ dành, cười hiền. Bé Mít mặt phụng phịu, nức nở, động tác tay đẩy má Bố tự nhiên của trẻ con.",
+        "startState": "Bố ngồi xổm trước mặt con.",
+        "endState": "Bố đang đứng bế con trên tay, bé đang đẩy má Bố.",
+        "continuityLock": "Giữ nguyên trang phục Bố và Con, ánh sáng trên mặt không đổi.",
+        "sfxAudioCue": "Tiếng khóc nức nở của em bé hòa lẫn tiếng cười sảng khoái của Mẹ từ ngoài camera."
+      }
+    ]
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "720p"
+  }
+}
