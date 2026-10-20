@@ -241,31 +241,32 @@ export default function ShotCard({ shot, index, characters, locations, config, o
         <div className="pt-2 border-t border-white/10">
           <div className="grid grid-cols-3 gap-2 items-center">
             <div className="flex flex-col gap-2 h-full justify-center">
+              {/* Nút Tạo ảnh: Bỏ disabled khi đang generating để người dùng có thể bấm lại ngay */}
               <button 
                 type="button"
                 onClick={handleGenerateImage}
-                disabled={shot.imageStatus === 'generating'}
                 className={`w-full py-2 px-1 rounded-lg border text-[11px] font-black uppercase tracking-wider transition-all text-center active:scale-95 ${
                   shot.imageStatus === 'generating'
-                    ? 'bg-[#F31B17]/20 text-red-300 border-[#F31B17]/40 animate-pulse'
+                    ? 'bg-[#F31B17]/30 text-white border-[#F31B17] animate-pulse'
                     : 'bg-white/10 hover:bg-white/20 text-white border-white/20 shadow'
                 }`}
-                title="Tạo ảnh phân cảnh"
+                title={shot.imageStatus === 'generating' ? 'Đang tạo (bấm lại để chạy lại ngay theo prompt mới)' : 'Tạo ảnh phân cảnh'}
               >
-                {shot.imageStatus === 'generating' ? 'Đang tạo...' : 'Tạo ảnh'}
+                {shot.imageStatus === 'generating' ? 'Tạo lại' : 'Tạo ảnh'}
               </button>
+              {/* Nút Tạo video: Chỉ disable khi !shot.startFrameMedia, KHÔNG disable khi videoStatus === 'generating' */}
               <button 
                 type="button"
                 onClick={handleGenerateVideo}
-                disabled={!shot.startFrameMedia || shot.videoStatus === 'generating'}
+                disabled={!shot.startFrameMedia}
                 className={`w-full py-2 px-1 rounded-lg text-white text-[11px] font-black uppercase tracking-wider transition-all text-center active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed ${
                   shot.videoStatus === 'generating'
-                    ? 'bg-[#F31B17]/60 border border-[#F31B17] animate-pulse'
+                    ? 'bg-[#F31B17]/70 border border-white/40 animate-pulse'
                     : 'bg-[#F31B17] hover:bg-[#d11713] shadow-red-950/30'
                 }`}
-                title={!shot.startFrameMedia ? 'Cần có ảnh trước khi tạo video' : 'Tạo video phân cảnh'}
+                title={!shot.startFrameMedia ? 'Cần có ảnh trước khi tạo video' : shot.videoStatus === 'generating' ? 'Đang tạo video (bấm lại để chạy lại ngay)' : 'Tạo video phân cảnh'}
               >
-                {shot.videoStatus === 'generating' ? 'Đang tạo...' : 'Tạo video'}
+                {shot.videoStatus === 'generating' ? 'Tạo lại' : 'Tạo video'}
               </button>
             </div>
             {/* Cột 2: Ảnh */}

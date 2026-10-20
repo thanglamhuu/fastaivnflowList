@@ -157,13 +157,26 @@ self.onmessage = function(e) {
         ffmpeg.exec.apply(ffmpeg, _data.args);
         data = ffmpeg.ret;
         ffmpeg.reset();
+        if (data !== 0) {
+          handleError(new Error("FFmpeg exited with code " + data));
+          return;
+        }
         break;
       case MSG.WRITE_FILE:
         ffmpeg.FS.writeFile(_data.path, _data.data);
         data = true;
         break;
       case MSG.READ_FILE:
-        data = ffmpeg.FS.readFile(_data.path);
+        try {
+          data = ffmpeg.FS.readFile(_data.path);
+          if (!data || data.length === 0) {
+            handleError(new Error("File " + _data.path + " rỗng hoặc không tồn tại."));
+            return;
+          }
+        } catch (readErr) {
+          handleError(new Error("Không thể đọc file " + _data.path + ": " + (readErr && readErr.message ? readErr.message : readErr)));
+          return;
+        }
         break;
       case MSG.DELETE_FILE:
         try {
@@ -193,7 +206,7 @@ self.onmessage = function(e) {
     if (!this.worker) await this.load();
     return this.send(MSG.WRITE_FILE, { path: name, data });
   }
-  async readFile(name: string) {
+  async readFile(name: string): Promise<Uint8Array> {
     if (!this.worker) await this.load();
     return this.send(MSG.READ_FILE, { path: name });
   }
