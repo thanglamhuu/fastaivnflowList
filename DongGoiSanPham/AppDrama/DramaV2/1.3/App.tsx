@@ -13,9 +13,10 @@ import { LicenseGate } from './components/LicenseGate';
 import { LicenseStatus } from './components/LicenseStatus';
 import { buildStoreZip } from './utils/zipBuilder';
 /**
- * Chuyển Uint8Array sang Base64 một cách an toàn bằng FileReader mà không bị lỗi Maximum call stack size exceeded
+ * Chuyển Uint8Array sang Base64 một cách an toàn bằng FileReader
+ * Tuyệt đối không dùng btoa(String.fromCharCode(...)) vì sẽ gây lỗi Call Stack Exceeded với video/zip
  */
-function uint8ArrayToBase64(bytes: Uint8Array, mimeType: string = 'video/mp4'): Promise<string> {
+function uint8ArrayToBase64(bytes: Uint8Array, mimeType: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const blob = new Blob([bytes], { type: mimeType });
     const reader = new FileReader();
@@ -43,6 +44,28 @@ function base64ToUint8Array(base64: string): Uint8Array {
   }
   return bytes;
 }
+/** Làm sạch tên file trước khi tải về máy */
+function sanitizeFileName(name: string, fallback: string, ext: string): string {
+  const clean = (name || fallback)
+    .replace(/\.[^.]*$/, '')
+    .replace(/[^a-zA-Z0-9_\-]/g, '_')
+    .replace(/_+/g, '_')
+    .slice(0, 35);
+  return `${clean || fallback}.${ext}`;
+}
+/**
+ * Hàm tải file chuẩn mực và an toàn tuyệt đối trong Flow Sandbox:
+ * Môi trường iframe sandboxed chặn hoàn toàn `document.createElement('a').click()` và `URL.createObjectURL()`.
+ * BẮT BUỘC phải dùng `Flow.download()` trực tiếp.
+ */
+async function downloadViaFlow(bytes: Uint8Array, filename: string, mimeType: any) {
+  const base64 = await uint8ArrayToBase64(bytes, mimeType);
+  return await Flow.download({
+    base64,
+    mimeType,
+    filename
+  });
+}
 export default function App() {
   const [isLicensed, setIsLicensed] = useState<boolean | null>(null);
   const [projectData, setProjectData] = useState<ScriptProjectData>(DEFAULT_PROJECT);
@@ -65,7 +88,7 @@ export default function App() {
   const addToast = useCallback((message: string, type: ToastType = 'info') => {
     const id = `toast-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
     setToasts(prev => [...prev, { id, message, type }]);
-    const timeout = type === 'error' ? 7000 : 4500;
+    const timeout = type === 'error' ? 8000 : 5000;
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id));
     }, timeout);
@@ -185,54 +208,52 @@ export default function App() {
     try {
       const dataStr = JSON.stringify(projectData, null, 2);
       const bytes = new TextEncoder().encode(dataStr);
-      // Dùng hàm uint8ArrayToBase64 an toàn cho file JSON lớn
-      const base64 = await uint8ArrayToBase64(bytes, 'application/json');
+      const filename = sanitizeFileName(projectData.project.title, 'script_project', 'json');
       
-      await Flow.download({
-        base64,
-        mimeType: 'application/json',
-        filename: `${projectData.project.title.replace(/[^a-zA-Z0-9_\-]/g, '_')}_script.json`
-      });
+      await downloadViaFlow(bytes, filename, 'application/json');
       addToast('Đã xuất file kịch bản JSON thành công!', 'success');
     } catch (err: any) {
       addToast('Lỗi khi xuất file: ' + (err?.message || 'Vui lòng thử lại.'), 'error');
     }
   }, [projectData, addToast]);
   /**
-   * HẠNG MỤC 3: Nén tất cả các clips thành 1 file ZIP duy nhất bằng buildStoreZip (pure TS, uncompressed mode)
+   * HẠNG MỤC: TẢI TOÀN BỘ CLIPS
+   * Lưu ý quan trọng: Flow.download chỉ hỗ trợ các định dạng được phép (MP4, PNG, JSON,... KHÔNG cho phép ZIP).
+   * Do đó: Tải lần lượt từng clip .mp4 qua Flow.download để đảm bảo 100% người dùng nhận được file trong thư mục Downloads của máy tính!
    */
   const handleDownloadZip = async () => {
     const shotsWithVideo = projectData.project.shots.filter(s => s.videoMedia && s.videoMedia.base64);
     if (shotsWithVideo.length === 0) {
-      addToast("Chưa có video clip nào được tạo để nén ZIP.", 'warning');
+      addToast("Chưa có video clip nào được tạo để tải về.", 'warning');
       return;
     }
     setIsZipping(true);
-    addToast(`Đang đóng gói ${shotsWithVideo.length} clips vào file ZIP duy nhất...`, 'info');
+    addToast(`Đang bắt đầu tải ${shotsWithVideo.length} clips về máy tính của bạn...`, 'info');
     try {
-      const zipEntries: Array<{ name: string; data: Uint8Array }> = [];
+      let downloadedCount = 0;
       for (let i = 0; i < shotsWithVideo.length; i++) {
         const shot = shotsWithVideo[i];
-        const bytes = base64ToUint8Array(shot.videoMedia!.base64);
-        const cleanTitle = (shot.title || 'Shot').replace(/[^a-zA-Z0-9_\-]/g, '_').slice(0, 25);
-        const fileName = `Shot_${String(shot.shotNumber).padStart(2, '0')}_${cleanTitle}.mp4`;
-        zipEntries.push({ name: fileName, data: bytes });
+        const cleanTitle = (shot.title || 'Shot').replace(/[^a-zA-Z0-9_\-]/g, '_').slice(0, 20);
+        const fileName = sanitizeFileName(`Shot_${String(shot.shotNumber).padStart(2, '0')}_${cleanTitle}`, `clip_${i + 1}`, 'mp4');
+        
+        const cleanBase64 = shot.videoMedia!.base64.includes(',') 
+          ? shot.videoMedia!.base64.split(',')[1] 
+          : shot.videoMedia!.base64;
+        await Flow.download({
+          base64: cleanBase64,
+          mimeType: 'video/mp4',
+          filename: fileName
+        });
+        downloadedCount++;
+        // Nghỉ một chút giữa các file để trình duyệt ghi file mượt mà
+        if (i < shotsWithVideo.length - 1) {
+          await new Promise(r => setTimeout(r, 600));
+        }
       }
-      // Xây dựng gói ZIP uncompressed chuẩn PKZip
-      const zipBytes = buildStoreZip(zipEntries);
-      const zipBase64 = await uint8ArrayToBase64(zipBytes, 'application/zip');
-      const cleanProjectTitle = (projectData.project.title || 'AI_Film')
-        .replace(/[^a-zA-Z0-9_\-]/g, '_')
-        .slice(0, 25);
-      await Flow.download({
-        base64: zipBase64,
-        mimeType: 'application/zip',
-        filename: `${cleanProjectTitle}_All_Clips.zip`
-      });
-      addToast(`Đã tải thành công file ZIP chứa ${shotsWithVideo.length} clips!`, 'success');
+      addToast(`Đã tải thành công toàn bộ ${downloadedCount} clips về máy tính!`, 'success');
     } catch (err: any) {
-      console.error('Lỗi khi tạo file ZIP:', err);
-      addToast('Lỗi khi tạo gói ZIP: ' + (err?.message || 'Vui lòng thử lại.'), 'error');
+      console.error('Lỗi khi tải clips:', err);
+      addToast('Lỗi khi tải file: ' + (err?.message || 'Vui lòng thử lại.'), 'error');
     } finally {
       setIsZipping(false);
     }
@@ -249,11 +270,10 @@ export default function App() {
     setIsMergeModalOpen(true);
   };
   /**
-   * HẠNG MỤC 1: Sửa triệt để lỗi đứng hình khi ghép video
-   * - Loại bỏ hoàn toàn concat demuxer (-c copy)
-   * - Chuẩn hóa khung hình theo aspectRatio & resolution (scale, pad, setsar=1, fps=30, format=yuv420p)
-   * - BẮT BUỘC reset timestamp: setpts=PTS-STARTPTS (video) và asetpts=PTS-STARTPTS (audio)
-   * - Nối qua filter_complex concat=n=N:v=1:a=1 (hoặc fallback v=1:a=0 nếu có clip thiếu tiếng)
+   * HẠNG MỤC: Ghép video chuẩn hóa:
+   * - Quy tắc FFmpeg filter concat: xen kẽ [v0][a0][v1][a1]...[vn][an]concat=n=N:v=1:a=1[outv][outa]
+   * - Reset timestamp với setpts=PTS-STARTPTS và asetpts=PTS-STARTPTS
+   * - Tải video hoàn chỉnh qua Flow.download({ mimeType: 'video/mp4' })
    */
   const handleMergeSelectedVideos = async (selectedShots: Shot[]) => {
     if (selectedShots.length < 2) {
@@ -298,13 +318,12 @@ export default function App() {
       const inputArgs: string[] = [];
       fileNames.forEach(name => inputArgs.push('-i', name));
       let mergeSuccess = false;
-      // === CHIẾN LƯỢC 1 (Chính): Chuẩn hóa Video + Audio với setpts / asetpts ===
+      // === CHIẾN LƯỢC 1 (Chính): Chuẩn hóa Video + Audio với thứ tự xen kẽ [v0][a0][v1][a1]... ===
       try {
         console.log(`[Ghép Video] Đang chuẩn hóa Video & Audio (${targetW}x${targetH}, 30fps, reset PTS)...`);
         
-        let filterParts: string[] = [];
-        let concatVideoInputs = '';
-        let concatAudioInputs = '';
+        const filterParts: string[] = [];
+        let concatInterleavedInputs = '';
         for (let i = 0; i < fileNames.length; i++) {
           filterParts.push(
             `[${i}:v]scale=${targetW}:${targetH}:force_original_aspect_ratio=decrease,pad=${targetW}:${targetH}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[v${i}]`
@@ -312,10 +331,9 @@ export default function App() {
           filterParts.push(
             `[${i}:a]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,asetpts=PTS-STARTPTS[a${i}]`
           );
-          concatVideoInputs += `[v${i}]`;
-          concatAudioInputs += `[a${i}]`;
+          concatInterleavedInputs += `[v${i}][a${i}]`;
         }
-        const concatLine = `${concatVideoInputs}${concatAudioInputs}concat=n=${fileNames.length}:v=1:a=1[outv][outa]`;
+        const concatLine = `${concatInterleavedInputs}concat=n=${fileNames.length}:v=1:a=1[outv][outa]`;
         const fullFilter = `${filterParts.join(';')};${concatLine}`;
         await ffmpegService.exec([
           ...inputArgs,
@@ -335,15 +353,15 @@ export default function App() {
           '-y', outputFileName,
         ]);
         mergeSuccess = true;
-        console.log('[Ghép Video] Ghép thành công bằng Filter Complex Video + Audio!');
+        console.log('[Ghép Video] Ghép thành công bằng Filter Complex Video + Audio (đủ tiếng)!');
       } catch (audioFilterErr: any) {
-        console.warn('[Ghép Video] Thử ghép kèm Audio lỗi (có thể có clip không có tiếng). Tự động fallback sang Video Only:', audioFilterErr?.message || audioFilterErr);
+        console.warn('[Ghép Video] Thử ghép kèm Audio lỗi (có thể có clip không có âm thanh). Tự động fallback sang Video Only:', audioFilterErr?.message || audioFilterErr);
       }
       // === CHIẾN LƯỢC 2 (Fallback): Chuẩn hóa Video Only nếu có clip không chứa Audio stream ===
       if (!mergeSuccess) {
         console.log(`[Ghép Video] Fallback chuẩn hóa Video Only (${targetW}x${targetH}, 30fps, reset PTS)...`);
         
-        let filterParts: string[] = [];
+        const filterParts: string[] = [];
         let concatVideoInputs = '';
         for (let i = 0; i < fileNames.length; i++) {
           filterParts.push(
@@ -369,23 +387,19 @@ export default function App() {
         mergeSuccess = true;
         console.log('[Ghép Video] Ghép thành công bằng Filter Complex Video Only!');
       }
-      setMergeProgress(92);
-      addToast("Đang chuẩn bị file video hoàn chỉnh...", 'info');
-      // Đọc file kết quả và kiểm tra kích thước
+      setMergeProgress(90);
+      addToast("Đang chuẩn bị file tải xuống máy tính...", 'info');
+      // Đọc file kết quả từ FFmpeg virtual fs
       const outputData = await ffmpegService.readFile(outputFileName);
       if (!outputData || outputData.length === 0) {
         throw new Error("Dữ liệu video xuất ra rỗng.");
       }
-      const base64Merged = await uint8ArrayToBase64(outputData, 'video/mp4');
-      setMergeProgress(98);
-      const cleanProjectTitle = (projectData.project.title || 'Phim_AI')
-        .replace(/[^a-zA-Z0-9_\-]/g, '_')
-        .slice(0, 30);
-      await Flow.download({
-        base64: base64Merged,
-        mimeType: 'video/mp4',
-        filename: `${cleanProjectTitle}_Full.mp4`
-      });
+      setMergeProgress(95);
+      const filename = sanitizeFileName(projectData.project.title, 'Phim_AI_Full', 'mp4');
+      
+      // BẮT BUỘC dùng Flow.download() vì đây là cổng tải file hợp lệ duy nhất của Flow sandbox
+      await downloadViaFlow(outputData, filename, 'video/mp4');
+      setMergeProgress(100);
       addToast(`Ghép thành công ${selectedShots.length} phân cảnh và đã tải video hoàn chỉnh về máy!`, 'success');
       setIsMergeModalOpen(false);
     } catch (error: any) {
@@ -468,7 +482,7 @@ export default function App() {
         </div>
         <div className="flex items-center gap-4">
           <LicenseStatus />
-          <p className="text-[9px] text-slate-600">App version 1.0.3</p>
+          <p className="text-[9px] text-slate-600">App version 1.3</p>
         </div>
       </footer>
       <style>{`

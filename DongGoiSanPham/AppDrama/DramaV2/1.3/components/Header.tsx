@@ -215,7 +215,7 @@ export default function Header({
         </div>
         <div className="hidden lg:flex items-center gap-3">
           <LicenseStatus />
-          <p className="text-[9px] text-slate-600">App version 1.0.2</p>
+          <p className="text-[9px] text-slate-600">App version 1.3</p>
         </div>
       </div>
     </header>
