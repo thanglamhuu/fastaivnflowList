@@ -5,15 +5,19 @@ import { ffmpegService } from './services/ffmpegService';
 import Header from './components/Header';
 import PreProduction from './components/PreProduction';
 import Storyboard from './components/Storyboard';
+import MergeModal from './components/MergeModal';
 import Toast, { ToastItem, ToastType } from './components/Toast';
 import { Flow } from 'flow-sdk';
 import { checkLicense } from './license/aifastLicenseManager';
 import { LicenseGate } from './components/LicenseGate';
 import { LicenseStatus } from './components/LicenseStatus';
-/** Chuyển Uint8Array sang Base64 một cách an toàn mà không bị văng RangeError: Maximum call stack size exceeded */
-function uint8ArrayToBase64(bytes: Uint8Array): Promise<string> {
+import { buildStoreZip } from './utils/zipBuilder';
+/**
+ * Chuyển Uint8Array sang Base64 một cách an toàn bằng FileReader mà không bị lỗi Maximum call stack size exceeded
+ */
+function uint8ArrayToBase64(bytes: Uint8Array, mimeType: string = 'video/mp4'): Promise<string> {
   return new Promise((resolve, reject) => {
-    const blob = new Blob([bytes], { type: 'video/mp4' });
+    const blob = new Blob([bytes], { type: mimeType });
     const reader = new FileReader();
     reader.onloadend = () => {
       const res = reader.result as string;
@@ -43,6 +47,9 @@ export default function App() {
   const [isLicensed, setIsLicensed] = useState<boolean | null>(null);
   const [projectData, setProjectData] = useState<ScriptProjectData>(DEFAULT_PROJECT);
   const [activeTab, setActiveTab] = useState<'pre' | 'story'>('pre');
+  
+  // Trạng thái modal ghép và tiến trình
+  const [isMergeModalOpen, setIsMergeModalOpen] = useState(false);
   const [isMerging, setIsMerging] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
   const [mergeProgress, setMergeProgress] = useState(0);
@@ -174,13 +181,14 @@ export default function App() {
       addToast('Không thể chuẩn hóa file JSON: ' + (err?.message || 'Lỗi cấu trúc dữ liệu'), 'error');
     }
   };
-  const handleExport = useCallback(() => {
+  const handleExport = useCallback(async () => {
     try {
       const dataStr = JSON.stringify(projectData, null, 2);
       const bytes = new TextEncoder().encode(dataStr);
-      const base64 = btoa(Array.from(bytes, (b) => String.fromCharCode(b)).join(''));
+      // Dùng hàm uint8ArrayToBase64 an toàn cho file JSON lớn
+      const base64 = await uint8ArrayToBase64(bytes, 'application/json');
       
-      Flow.download({
+      await Flow.download({
         base64,
         mimeType: 'application/json',
         filename: `${projectData.project.title.replace(/[^a-zA-Z0-9_\-]/g, '_')}_script.json`
@@ -190,142 +198,185 @@ export default function App() {
       addToast('Lỗi khi xuất file: ' + (err?.message || 'Vui lòng thử lại.'), 'error');
     }
   }, [projectData, addToast]);
+  /**
+   * HẠNG MỤC 3: Nén tất cả các clips thành 1 file ZIP duy nhất bằng buildStoreZip (pure TS, uncompressed mode)
+   */
   const handleDownloadZip = async () => {
     const shotsWithVideo = projectData.project.shots.filter(s => s.videoMedia && s.videoMedia.base64);
     if (shotsWithVideo.length === 0) {
-      addToast("Chưa có video clip nào được tạo để tải về.", 'warning');
+      addToast("Chưa có video clip nào được tạo để nén ZIP.", 'warning');
       return;
     }
     setIsZipping(true);
+    addToast(`Đang đóng gói ${shotsWithVideo.length} clips vào file ZIP duy nhất...`, 'info');
     try {
-      addToast(`Bắt đầu tải ${shotsWithVideo.length} clips về máy...`, 'info');
+      const zipEntries: Array<{ name: string; data: Uint8Array }> = [];
       for (let i = 0; i < shotsWithVideo.length; i++) {
         const shot = shotsWithVideo[i];
-        if (shot.videoMedia?.base64) {
-          const cleanTitle = (shot.title || 'Shot').replace(/[^a-zA-Z0-9_\-]/g, '_').slice(0, 25);
-          await Flow.download({
-            base64: shot.videoMedia.base64,
-            mimeType: 'video/mp4',
-            filename: `Shot_${String(shot.shotNumber).padStart(2, '0')}_${cleanTitle}.mp4`
-          });
-        }
+        const bytes = base64ToUint8Array(shot.videoMedia!.base64);
+        const cleanTitle = (shot.title || 'Shot').replace(/[^a-zA-Z0-9_\-]/g, '_').slice(0, 25);
+        const fileName = `Shot_${String(shot.shotNumber).padStart(2, '0')}_${cleanTitle}.mp4`;
+        zipEntries.push({ name: fileName, data: bytes });
       }
-      addToast(`Đã tải thành công toàn bộ ${shotsWithVideo.length} clips!`, 'success');
+      // Xây dựng gói ZIP uncompressed chuẩn PKZip
+      const zipBytes = buildStoreZip(zipEntries);
+      const zipBase64 = await uint8ArrayToBase64(zipBytes, 'application/zip');
+      const cleanProjectTitle = (projectData.project.title || 'AI_Film')
+        .replace(/[^a-zA-Z0-9_\-]/g, '_')
+        .slice(0, 25);
+      await Flow.download({
+        base64: zipBase64,
+        mimeType: 'application/zip',
+        filename: `${cleanProjectTitle}_All_Clips.zip`
+      });
+      addToast(`Đã tải thành công file ZIP chứa ${shotsWithVideo.length} clips!`, 'success');
     } catch (err: any) {
-      console.error('Error downloading clips:', err);
-      addToast('Lỗi khi tải clips: ' + (err?.message || 'Vui lòng kiểm tra quyền tải.'), 'error');
+      console.error('Lỗi khi tạo file ZIP:', err);
+      addToast('Lỗi khi tạo gói ZIP: ' + (err?.message || 'Vui lòng thử lại.'), 'error');
     } finally {
       setIsZipping(false);
     }
   };
   /**
-   * Ghép & Tải Video với nhiều lớp chiến lược bảo đảm thành công
+   * Mở Modal chọn các Shot cần ghép khi bấm "Ghép & Tải"
    */
-  const handleMergeVideo = async () => {
+  const handleOpenMergeModal = () => {
     const shotsWithVideo = projectData.project.shots.filter(s => s.videoMedia && s.videoMedia.base64);
-    
     if (shotsWithVideo.length < 2) {
       addToast("Cần ít nhất 2 clips video đã tạo xong để ghép thành phim hoàn chỉnh.", 'warning');
       return;
     }
+    setIsMergeModalOpen(true);
+  };
+  /**
+   * HẠNG MỤC 1: Sửa triệt để lỗi đứng hình khi ghép video
+   * - Loại bỏ hoàn toàn concat demuxer (-c copy)
+   * - Chuẩn hóa khung hình theo aspectRatio & resolution (scale, pad, setsar=1, fps=30, format=yuv420p)
+   * - BẮT BUỘC reset timestamp: setpts=PTS-STARTPTS (video) và asetpts=PTS-STARTPTS (audio)
+   * - Nối qua filter_complex concat=n=N:v=1:a=1 (hoặc fallback v=1:a=0 nếu có clip thiếu tiếng)
+   */
+  const handleMergeSelectedVideos = async (selectedShots: Shot[]) => {
+    if (selectedShots.length < 2) {
+      addToast("Vui lòng chọn ít nhất 2 phân cảnh để ghép phim.", 'warning');
+      return;
+    }
     setIsMerging(true);
     setMergeProgress(5);
-    addToast(`Đang chuẩn bị ghép ${shotsWithVideo.length} clips video...`, 'info');
+    addToast(`Đang chuẩn hóa và ghép ${selectedShots.length} phân cảnh...`, 'info');
     const fileNames: string[] = [];
     const outputFileName = 'output_merged.mp4';
-    const concatListFileName = 'concat_list.txt';
+    // Xác định kích thước chuẩn theo aspectRatio và resolution
+    const is916 = projectData.project.aspectRatio === '9:16';
+    const is720p = projectData.config.resolution !== '360p';
+    let targetW = 1280;
+    let targetH = 720;
+    if (is916) {
+      targetW = is720p ? 720 : 360;
+      targetH = is720p ? 1280 : 640;
+    } else {
+      targetW = is720p ? 1280 : 640;
+      targetH = is720p ? 720 : 360;
+    }
     try {
       setMergeProgress(10);
       await ffmpegService.load((msg) => {
         console.log('[FFmpeg Log]', msg);
       });
-      setMergeProgress(20);
-      // Ghi các file clip vào Virtual FS
-      for (let i = 0; i < shotsWithVideo.length; i++) {
+      setMergeProgress(18);
+      // 1. Ghi các file clip vào Virtual FS
+      for (let i = 0; i < selectedShots.length; i++) {
         const name = `clip_${i}.mp4`;
         fileNames.push(name);
-        const base64Data = shotsWithVideo[i].videoMedia!.base64;
+        const base64Data = selectedShots[i].videoMedia!.base64;
         const bytes = base64ToUint8Array(base64Data);
         await ffmpegService.writeFile(name, bytes);
-        setMergeProgress(20 + Math.round(((i + 1) / shotsWithVideo.length) * 20));
+        setMergeProgress(18 + Math.round(((i + 1) / selectedShots.length) * 22));
       }
       ffmpegService.onProgress(({ progress }) => {
-        setMergeProgress(40 + Math.round(progress * 45));
+        setMergeProgress(40 + Math.round(progress * 48));
       });
+      const inputArgs: string[] = [];
+      fileNames.forEach(name => inputArgs.push('-i', name));
       let mergeSuccess = false;
-      // === CHIẾN LƯỢC 1: Concat Demuxer (-c copy) ===
+      // === CHIẾN LƯỢC 1 (Chính): Chuẩn hóa Video + Audio với setpts / asetpts ===
       try {
-        console.log('[Ghép Video] Đang thử phương án 1: Concat Demuxer (Stream copy)...');
-        const listContent = fileNames.map(f => `file '${f}'`).join('\n');
-        await ffmpegService.writeFile(concatListFileName, new TextEncoder().encode(listContent));
+        console.log(`[Ghép Video] Đang chuẩn hóa Video & Audio (${targetW}x${targetH}, 30fps, reset PTS)...`);
+        
+        let filterParts: string[] = [];
+        let concatVideoInputs = '';
+        let concatAudioInputs = '';
+        for (let i = 0; i < fileNames.length; i++) {
+          filterParts.push(
+            `[${i}:v]scale=${targetW}:${targetH}:force_original_aspect_ratio=decrease,pad=${targetW}:${targetH}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[v${i}]`
+          );
+          filterParts.push(
+            `[${i}:a]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,asetpts=PTS-STARTPTS[a${i}]`
+          );
+          concatVideoInputs += `[v${i}]`;
+          concatAudioInputs += `[a${i}]`;
+        }
+        const concatLine = `${concatVideoInputs}${concatAudioInputs}concat=n=${fileNames.length}:v=1:a=1[outv][outa]`;
+        const fullFilter = `${filterParts.join(';')};${concatLine}`;
         await ffmpegService.exec([
-          '-f', 'concat',
-          '-safe', '0',
-          '-i', concatListFileName,
-          '-c', 'copy',
-          '-movflags', 'faststart',
+          ...inputArgs,
+          '-filter_complex', fullFilter,
+          '-map', '[outv]',
+          '-map', '[outa]',
+          '-c:v', 'libx264',
+          '-preset', 'ultrafast',
+          '-crf', '23',
+          '-r', '30',
+          '-pix_fmt', 'yuv420p',
+          '-c:a', 'aac',
+          '-b:a', '128k',
+          '-ar', '44100',
+          '-ac', '2',
+          '-movflags', '+faststart',
           '-y', outputFileName,
         ]);
         mergeSuccess = true;
-        console.log('[Ghép Video] Ghép thành công bằng Concat Demuxer!');
-      } catch (concatErr) {
-        console.warn('[Ghép Video] Concat Demuxer không thành công, chuyển sang Filter Complex:', concatErr);
+        console.log('[Ghép Video] Ghép thành công bằng Filter Complex Video + Audio!');
+      } catch (audioFilterErr: any) {
+        console.warn('[Ghép Video] Thử ghép kèm Audio lỗi (có thể có clip không có tiếng). Tự động fallback sang Video Only:', audioFilterErr?.message || audioFilterErr);
       }
-      // === CHIẾN LƯỢC 2: Filter Complex Video + Audio ===
+      // === CHIẾN LƯỢC 2 (Fallback): Chuẩn hóa Video Only nếu có clip không chứa Audio stream ===
       if (!mergeSuccess) {
-        try {
-          console.log('[Ghép Video] Đang thử phương án 2: Filter Complex (Video + Audio)...');
-          const inputArgs: string[] = [];
-          fileNames.forEach(name => inputArgs.push('-i', name));
-          const filterInputs = fileNames.map((_, i) => `[${i}:v][${i}:a]`).join('');
-          const filterComplex = `${filterInputs}concat=n=${fileNames.length}:v=1:a=1[outv][outa]`;
-          await ffmpegService.exec([
-            ...inputArgs,
-            '-filter_complex', filterComplex,
-            '-map', '[outv]',
-            '-map', '[outa]',
-            '-c:v', 'libx264',
-            '-preset', 'ultrafast',
-            '-crf', '23',
-            '-c:a', 'aac',
-            '-pix_fmt', 'yuv420p',
-            '-movflags', 'faststart',
-            '-y', outputFileName,
-          ]);
-          mergeSuccess = true;
-        } catch (audioErr) {
-          console.warn('[Ghép Video] Lỗi ghép audio (có thể có clip không có tiếng):', audioErr);
+        console.log(`[Ghép Video] Fallback chuẩn hóa Video Only (${targetW}x${targetH}, 30fps, reset PTS)...`);
+        
+        let filterParts: string[] = [];
+        let concatVideoInputs = '';
+        for (let i = 0; i < fileNames.length; i++) {
+          filterParts.push(
+            `[${i}:v]scale=${targetW}:${targetH}:force_original_aspect_ratio=decrease,pad=${targetW}:${targetH}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[v${i}]`
+          );
+          concatVideoInputs += `[v${i}]`;
         }
-      }
-      // === CHIẾN LƯỢC 3: Filter Complex Video Only ===
-      if (!mergeSuccess) {
-        console.log('[Ghép Video] Đang thử phương án 3: Filter Complex (Video Only)...');
-        const inputArgs: string[] = [];
-        fileNames.forEach(name => inputArgs.push('-i', name));
-        const filterInputs = fileNames.map((_, i) => `[${i}:v]`).join('');
-        const filterComplex = `${filterInputs}concat=n=${fileNames.length}:v=1:a=0[outv]`;
+        const concatLine = `${concatVideoInputs}concat=n=${fileNames.length}:v=1:a=0[outv]`;
+        const fullFilter = `${filterParts.join(';')};${concatLine}`;
         await ffmpegService.exec([
           ...inputArgs,
-          '-filter_complex', filterComplex,
+          '-filter_complex', fullFilter,
           '-map', '[outv]',
           '-c:v', 'libx264',
           '-preset', 'ultrafast',
           '-crf', '23',
+          '-r', '30',
           '-pix_fmt', 'yuv420p',
-          '-movflags', 'faststart',
+          '-movflags', '+faststart',
           '-an',
           '-y', outputFileName,
         ]);
         mergeSuccess = true;
+        console.log('[Ghép Video] Ghép thành công bằng Filter Complex Video Only!');
       }
-      setMergeProgress(90);
+      setMergeProgress(92);
       addToast("Đang chuẩn bị file video hoàn chỉnh...", 'info');
-      // Đọc file kết quả
-      const outputData = await ffmpegService.readFile(outputFileName) as Uint8Array;
+      // Đọc file kết quả và kiểm tra kích thước
+      const outputData = await ffmpegService.readFile(outputFileName);
       if (!outputData || outputData.length === 0) {
         throw new Error("Dữ liệu video xuất ra rỗng.");
       }
-      const base64Merged = await uint8ArrayToBase64(outputData);
+      const base64Merged = await uint8ArrayToBase64(outputData, 'video/mp4');
       setMergeProgress(98);
       const cleanProjectTitle = (projectData.project.title || 'Phim_AI')
         .replace(/[^a-zA-Z0-9_\-]/g, '_')
@@ -335,45 +386,22 @@ export default function App() {
         mimeType: 'video/mp4',
         filename: `${cleanProjectTitle}_Full.mp4`
       });
-      addToast(`Ghép thành công ${shotsWithVideo.length} phân cảnh và đã tải video về máy!`, 'success');
+      addToast(`Ghép thành công ${selectedShots.length} phân cảnh và đã tải video hoàn chỉnh về máy!`, 'success');
+      setIsMergeModalOpen(false);
     } catch (error: any) {
       console.error("Lỗi khi Ghép & Tải video:", error);
-      
-      addToast(
-        "Trình duyệt gặp sự cố bộ nhớ khi ghép WASM. Đang kích hoạt chế độ tự động tải riêng từng clip cho bạn...",
-        'warning'
-      );
-      try {
-        for (let i = 0; i < shotsWithVideo.length; i++) {
-          const shot = shotsWithVideo[i];
-          if (shot.videoMedia?.base64) {
-            const cleanTitle = (shot.title || 'Shot').replace(/[^a-zA-Z0-9_\-]/g, '_').slice(0, 25);
-            await Flow.download({
-              base64: shot.videoMedia.base64,
-              mimeType: 'video/mp4',
-              filename: `Shot_${String(shot.shotNumber).padStart(2, '0')}_${cleanTitle}.mp4`
-            });
-          }
-        }
-        addToast("Đã tải đầy đủ các clips về máy thành công!", 'success');
-      } catch (fallbackErr: any) {
-        addToast(
-          "Không thể tải video: " + (fallbackErr?.message || error?.message || "Vui lòng thử lại."),
-          'error'
-        );
-      }
+      addToast("Không thể ghép video: " + (error?.message || "Vui lòng thử lại."), 'error');
     } finally {
       // Dọn dẹp Virtual FS
       for (const name of fileNames) {
         try { await ffmpegService.deleteFile(name); } catch (_) {}
       }
       try { await ffmpegService.deleteFile(outputFileName); } catch (_) {}
-      try { await ffmpegService.deleteFile(concatListFileName); } catch (_) {}
       setIsMerging(false);
       setMergeProgress(0);
     }
   };
-  // Khóa luồng Render chính
+  // Khóa luồng Render chính nếu chưa qua License
   if (isLicensed === null) return null;
   if (isLicensed === false) return <LicenseGate onSuccess={() => setIsLicensed(true)} />;
   return (
@@ -386,7 +414,7 @@ export default function App() {
         onImport={handleImport}
         onExport={handleExport}
         onDownloadZip={handleDownloadZip}
-        onMerge={handleMergeVideo}
+        onMerge={handleOpenMergeModal}
         onConfigChange={(c) => setProjectData(prev => ({ ...prev, config: { ...prev.config, ...c } }))}
         onAspectRatioChange={handleAspectRatioChange}
         onErrorToast={(msg) => addToast(msg, 'error')}
@@ -397,6 +425,15 @@ export default function App() {
       
       {/* Toast Notification Container */}
       <Toast toasts={toasts} onDismiss={dismissToast} />
+      {/* Modal Chọn Phân Cảnh Để Ghép */}
+      <MergeModal 
+        shots={projectData.project.shots}
+        isOpen={isMergeModalOpen}
+        onClose={() => setIsMergeModalOpen(false)}
+        onConfirm={handleMergeSelectedVideos}
+        isMerging={isMerging}
+        mergeProgress={mergeProgress}
+      />
       <main className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-6 lg:p-8">
         {activeTab === 'pre' ? (
           <PreProduction 
@@ -431,7 +468,7 @@ export default function App() {
         </div>
         <div className="flex items-center gap-4">
           <LicenseStatus />
-          <p className="text-[9px] text-slate-600">App version 1.0.2</p>
+          <p className="text-[9px] text-slate-600">App version 1.0.3</p>
         </div>
       </footer>
       <style>{`
