@@ -1,0 +1,32 @@
+export interface MediaReference {
+  mediaId: string;
+  base64: string;
+  mimeType: string;
+  name?: string;
+}
+export type SceneId = 'SCENE_1' | 'SCENE_2' | 'SCENE_3' | 'SCENE_4';
+export interface SceneData {
+  id: SceneId;
+  index: number;
+  label: string;
+  stageName: string;
+  dialogue: string;
+  actionPrompt: string;
+  status: 'idle' | 'generating_image' | 'generating_video' | 'success' | 'error';
+  errorMessage?: string;
+  keyframeMedia?: MediaReference;
+  videoMedia?: MediaReference;
+  wordCount: number;
+  isWordCountValid: boolean;
+  showCustomPrompt?: boolean;
+}
+export interface StudioConfig {
+  productNameAndSpecs: string;
+  bgSetting: string;
+  customBgSetting: string;
+  cameraAngle: string;
+  outfit: string;
+  scriptTemplate: string;
+  voiceActor: string;
+  filterNoise: boolean;
+}
