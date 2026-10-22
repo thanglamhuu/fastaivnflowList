@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Flow } from 'flow-sdk';
 import { MediaReference, SceneData, StudioConfig } from './types';
 import { DEFAULT_SCENES } from './constants';
 import {
@@ -8,6 +7,7 @@ import {
   generateScript4Scenes,
   renderSceneVideo,
 } from './services/studioAi';
+import { scanProductWithAI } from './services/generation';
 import { TopActionBar } from './components/TopActionBar';
 import { LeftConfigPanel } from './components/LeftConfigPanel';
 import { RightProductionGrid } from './components/RightProductionGrid';
@@ -33,6 +33,7 @@ export default function App() {
   const [isGeneratingImages, setIsGeneratingImages] = useState<boolean>(false);
   const [isGeneratingScript, setIsGeneratingScript] = useState<boolean>(false);
   const [isRenderingVideos, setIsRenderingVideos] = useState<boolean>(false);
+  const [isScanningProduct, setIsScanningProduct] = useState<boolean>(false);
   const [activeVideoCount, setActiveVideoCount] = useState<number>(0);
   // Trạng thái Merge Modal
   const [isMergeModalOpen, setIsMergeModalOpen] = useState<boolean>(false);
@@ -119,6 +120,25 @@ export default function App() {
   };
   const handleCloseZoomMedia = () => {
     setZoomModal((prev) => ({ ...prev, isOpen: false }));
+  };
+  // ✨ AI Phân tích sản phẩm
+  const handleScanProduct = async () => {
+    if (!productMedia || isScanningProduct) return;
+    setIsScanningProduct(true);
+    try {
+      const result = await scanProductWithAI(productMedia);
+      if (result) {
+        const fullSpec = `${result.brandName ? `[${result.brandName}] ` : ''}${result.productSummary || ''}`.trim();
+        setConfig((prev) => ({
+          ...prev,
+          productNameAndSpecs: fullSpec || prev.productNameAndSpecs,
+        }));
+      }
+    } catch (err) {
+      console.error('Lỗi phân tích sản phẩm:', err);
+    } finally {
+      setIsScanningProduct(false);
+    }
   };
   // 1. ✨ TẠO LẠI 4 ẢNH (Nano Banana Pro)
   const handleGenerate4Images = async () => {
@@ -280,6 +300,7 @@ export default function App() {
     setIsMergeModalOpen(true);
   };
   const canMakeImages = !!modelMedia && !!productMedia;
+  const hasKeyframes = scenes.some((s) => !!s.keyframeMedia);
   return (
     <div className="flex flex-col h-screen w-full bg-[#050608] text-zinc-100 overflow-hidden font-sans">
       {/* Top Action Bar */}
@@ -292,14 +313,14 @@ export default function App() {
         isGeneratingScript={isGeneratingScript}
         isRenderingVideos={isRenderingVideos}
         canMakeImages={canMakeImages}
-        hasKeyframes={canMakeImages}
+        hasKeyframes={hasKeyframes}
         hasEnoughVideosToMerge={hasEnoughVideosToMerge}
         completedVideoCount={completedVideos.length}
         activeVideoCount={activeVideoCount}
       />
       {/* Main Studio Layout: Cột Trái Thiết Lập + Khu Vực Sản Xuất Tích Hợp Preview */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Cột Trái: Thiết lập Bối cảnh, Mẫu Kịch Bản & Giọng Đọc */}
+        {/* Cột Trái: Thiết lập Bối cảnh, Mẫu Kịch Bản, Giọng Đọc & Quét SP */}
         <LeftConfigPanel
           config={config}
           onChangeConfig={handleChangeConfig}
@@ -308,6 +329,8 @@ export default function App() {
           productMedia={productMedia}
           setProductMedia={setProductMedia}
           isBusy={isGeneratingImages || isRenderingVideos}
+          onScanProduct={handleScanProduct}
+          isScanning={isScanningProduct}
         />
         {/* Khu Vực Sản Xuất (Lưới 4 Scene Card tích hợp Preview và Phóng to) */}
         <RightProductionGrid

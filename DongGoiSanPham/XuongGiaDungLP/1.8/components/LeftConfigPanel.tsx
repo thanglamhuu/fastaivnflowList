@@ -16,6 +16,8 @@ interface LeftConfigPanelProps {
   productMedia: MediaReference | null;
   setProductMedia: (m: MediaReference | null) => void;
   isBusy: boolean;
+  onScanProduct: () => Promise<void>;
+  isScanning: boolean;
 }
 export const LeftConfigPanel: React.FC<LeftConfigPanelProps> = ({
   config,
@@ -25,6 +27,8 @@ export const LeftConfigPanel: React.FC<LeftConfigPanelProps> = ({
   productMedia,
   setProductMedia,
   isBusy,
+  onScanProduct,
+  isScanning,
 }) => {
   const [modelLoading, setModelLoading] = useState(false);
   const [productLoading, setProductLoading] = useState(false);
@@ -161,6 +165,20 @@ export const LeftConfigPanel: React.FC<LeftConfigPanelProps> = ({
             </div>
           </div>
         </div>
+        {/* AI Product Scan Button */}
+        {productMedia && (
+          <button
+            type="button"
+            onClick={onScanProduct}
+            disabled={isScanning || isBusy}
+            className="w-full py-1.5 px-2 rounded bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 border border-amber-500/40 text-amber-300 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
+            <span className={`material-symbols-outlined text-[14px] ${isScanning ? 'animate-spin' : ''}`}>
+              {isScanning ? 'sync' : 'auto_awesome'}
+            </span>
+            {isScanning ? 'Đang phân tích...' : '✨ AI Quét Sản Phẩm'}
+          </button>
+        )}
         {/* CHỌN VOICE NGAY DƯỚI ẢNH NHÂN VẬT */}
         <div className="space-y-1.5 p-2 rounded-lg bg-zinc-950/60 border border-zinc-800/80">
           <div className="flex items-center gap-1.5">
