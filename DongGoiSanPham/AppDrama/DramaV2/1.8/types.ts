@@ -79,3 +79,10 @@ export interface ScriptProjectData {
     visualStyle?: VisualArtStyle;
   };
 }
+Trình tạo công cụ
+Mô tả cách bạn muốn chỉnh sửa công cụ này.
+
+
+
+Google Flow có thể mắc sai sót nên bạn hãy xác minh nội dung do Google Flow tạo. Công cụ này có thể tiêu tốn tín dụng
+

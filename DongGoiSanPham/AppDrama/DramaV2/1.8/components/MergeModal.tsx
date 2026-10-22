@@ -210,9 +210,11 @@ export default function MergeModal({
                 : 'bg-[#F31B17] hover:bg-[#d11713] shadow-lg shadow-[#F31B17]/25'
             }`}
           >
-            <span className={`material-symbols-outlined text-base ${isMerging ? 'animate-spin' : ''}`}>
-              {isMerging ? 'progress_activity' : 'video_merge'}
-            </span>
+            {isMerging && (
+              <span className="material-symbols-outlined text-base animate-spin">
+                progress_activity
+              </span>
+            )}
             <span>
               {isMerging 
                 ? `Đang ghép ${Math.round(mergeProgress)}%` 

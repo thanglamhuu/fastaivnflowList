@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { Shot, Character, Location, AspectRatio, VideoModel, VisualArtStyle } from '../types';
+import { Shot, Character, Location, AspectRatio, VideoModel, VisualArtStyle, FlowMedia } from '../types';
 import ShotCard from './ShotCard';
-import { flowService } from '../services/flowService';
+import { flowService, extractLastFrameFromVideo } from '../services/flowService';
 import { MATRIX_12_VOICES } from '../voicePresets';
 import { getCharactersInShot, getShotReferenceMedias, buildConsistentImagePrompt } from '../utils/promptHelper';
 interface StoryboardProps {
@@ -187,6 +187,167 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
       onToast?.(`Đã hoàn thành tạo video: ${successCount}/${shots.length} thành công${errorCount > 0 ? `, ${errorCount} lỗi` : ''}!`, successCount > 0 ? 'success' : 'error');
     }
   };
+  /**
+   * DÂY CHUYỀN ALL SHOT:
+   * Chạy tự động tạo clip nối tiếp từ đầu đến cuối kịch bản:
+   * Shot này tạo xong sẽ tự động trích xuất endframe làm Start Frame cho shot tiếp theo và tạo tiếp clip.
+   */
+  const handleGenerateAllChainedVideos = async () => {
+    if (isBatchGeneratingImages || isBatchGeneratingVideos) return;
+    if (shots.length === 0) {
+      onToast?.('Chưa có phân cảnh nào trong Storyboard.', 'warning');
+      return;
+    }
+    setIsBatchGeneratingVideos(true);
+    abortBatch.current = false;
+    setBatchProgress({ current: 0, total: shots.length, title: 'Bắt đầu dây chuyền All shot...' });
+    onToast?.(`Khởi động dây chuyền tự động tạo clip nối tiếp từ đầu đến cuối kịch bản (${shots.length} phân cảnh)...`, 'info');
+    let currentStartFrameMedia: FlowMedia | undefined = undefined;
+    for (let i = 0; i < shots.length; i++) {
+      if (abortBatch.current) {
+        onToast?.('Đã dừng dây chuyền All shot.', 'warning');
+        break;
+      }
+      const shot = shots[i];
+      setBatchProgress({
+        current: i + 1,
+        total: shots.length,
+        title: `Đang tạo clip Shot #${shot.shotNumber}: ${shot.title || 'Video'}`
+      });
+      // 1. Kiểm tra ảnh Start Frame
+      if (i === 0) {
+        if (shot.startFrameMedia && shot.startFrameMedia.mediaId) {
+          currentStartFrameMedia = shot.startFrameMedia;
+        } else {
+          onToast?.(`Shot #1 chưa có Start Frame, đang tự tạo ảnh khóa nhân vật trước...`, 'info');
+          onUpdateShot(shot.id, { imageStatus: 'generating' });
+          try {
+            const shotChars = getCharactersInShot(shot, characters);
+            const shotLoc = locations[0];
+            const refMedias = getShotReferenceMedias(shotChars, shotLoc);
+            const consistentPrompt = buildConsistentImagePrompt(shot.visualPrompt, shotChars, shotLoc, config.visualStyle);
+            const imgResult = await flowService.generateImage(consistentPrompt, aspectRatio, refMedias);
+            if (imgResult) {
+              currentStartFrameMedia = imgResult;
+              onUpdateShot(shot.id, { startFrameMedia: imgResult, imageStatus: 'completed' });
+            } else {
+              onUpdateShot(shot.id, { imageStatus: 'error', videoStatus: 'error' });
+              onToast?.('Không thể tạo ảnh Start Frame cho Shot #1. Dây chuyền All shot dừng lại.', 'error');
+              break;
+            }
+          } catch (imgErr: any) {
+            console.error('Lỗi tạo ảnh shot 1 trong All shot:', imgErr);
+            onUpdateShot(shot.id, { imageStatus: 'error', videoStatus: 'error' });
+            onToast?.('Lỗi tạo ảnh Shot #1: ' + (imgErr?.message || 'Thử lại'), 'error');
+            break;
+          }
+          await new Promise(r => setTimeout(r, 2000));
+        }
+      } else {
+        // Với shot thứ 2 trở đi, nếu chưa có currentStartFrameMedia từ endframe của shot trước thì kiểm tra shot hiện tại
+        if (!currentStartFrameMedia) {
+          currentStartFrameMedia = shot.startFrameMedia;
+        }
+        if (!currentStartFrameMedia?.mediaId) {
+          onToast?.(`Shot #${shot.shotNumber} chưa có ảnh Start Frame. Đang tạo ảnh theo kịch bản...`, 'info');
+          onUpdateShot(shot.id, { imageStatus: 'generating' });
+          try {
+            const shotChars = getCharactersInShot(shot, characters);
+            const shotLoc = locations[0];
+            const refMedias = getShotReferenceMedias(shotChars, shotLoc);
+            const consistentPrompt = buildConsistentImagePrompt(shot.visualPrompt, shotChars, shotLoc, config.visualStyle);
+            const imgResult = await flowService.generateImage(consistentPrompt, aspectRatio, refMedias);
+            if (imgResult) {
+              currentStartFrameMedia = imgResult;
+              onUpdateShot(shot.id, { startFrameMedia: imgResult, imageStatus: 'completed' });
+            } else {
+              onUpdateShot(shot.id, { imageStatus: 'error', videoStatus: 'error' });
+              onToast?.(`Không thể tạo ảnh Start Frame cho Shot #${shot.shotNumber}. Dừng dây chuyền.`, 'error');
+              break;
+            }
+          } catch (imgErr: any) {
+            console.error(`Lỗi tạo ảnh shot #${shot.shotNumber}:`, imgErr);
+            onUpdateShot(shot.id, { imageStatus: 'error', videoStatus: 'error' });
+            onToast?.(`Lỗi tạo ảnh Shot #${shot.shotNumber}: ${imgErr?.message || 'Thử lại'}`, 'error');
+            break;
+          }
+          await new Promise(r => setTimeout(r, 2000));
+        }
+      }
+      if (abortBatch.current) break;
+      // 2. Tạo video cho shot hiện tại
+      onUpdateShot(shot.id, { videoStatus: 'generating' });
+      let videoResult: FlowMedia | null = null;
+      try {
+        const chosenDuration = Number(shot.durationSeconds) || 6;
+        let videoPrompt = shot.videoMotionPrompt || '';
+        if (config.visualStyle) {
+          videoPrompt += ` [Style: ${config.visualStyle}]`;
+        }
+        videoPrompt += ` [Duration: ${chosenDuration}s]`;
+        const speakingChar = characters.find(c => c.name === shot.dialogue?.characterName);
+        const characterVoice = MATRIX_12_VOICES.find(v => v.id === speakingChar?.selectedVoiceId);
+        if (shot.dialogue && shot.dialogue.line) {
+          let voiceInfo = '';
+          if (characterVoice) {
+            voiceInfo = `[Voice Profile: ${characterVoice.label} (${characterVoice.subLabel}), Base Voice: ${characterVoice.baseVoice}, Gender: ${characterVoice.gender}, Speed: ${characterVoice.speed}, Pitch: ${characterVoice.pitch}, Acoustic: ${characterVoice.acousticProfile}, Emotion: ${shot.dialogue.emotion || 'Natural'}]`;
+          }
+          videoPrompt += ` ${voiceInfo} ${shot.dialogue.characterName} nói: "${shot.dialogue.line}"`;
+        }
+        if (shot.sfxAudioCue) {
+          videoPrompt += ` [SFX: ${shot.sfxAudioCue}]`;
+        }
+        videoResult = await flowService.generateVideo({
+          prompt: videoPrompt.trim(),
+          firstFrameImageMediaId: currentStartFrameMedia?.mediaId,
+          startFrameBase64: currentStartFrameMedia?.base64,
+          startFrameMimeType: currentStartFrameMedia?.mimeType,
+          modelDisplayName: config.model,
+          aspectRatio: (aspectRatio === '9:16' || aspectRatio === '16:9') ? aspectRatio : '9:16',
+          durationSeconds: chosenDuration,
+          resolution: config.resolution || '720p'
+        });
+        if (videoResult) {
+          onUpdateShot(shot.id, { videoMedia: videoResult, videoStatus: 'completed' });
+        } else {
+          onUpdateShot(shot.id, { videoStatus: 'error' });
+          onToast?.(`Tạo video Shot #${shot.shotNumber} thất bại. Dừng dây chuyền All shot.`, 'error');
+          break;
+        }
+      } catch (videoErr: any) {
+        console.error(`Lỗi tạo video shot #${shot.shotNumber}:`, videoErr);
+        onUpdateShot(shot.id, { videoStatus: 'error' });
+        onToast?.(`Lỗi tạo video Shot #${shot.shotNumber}: ${videoErr?.message || 'Thử lại'}. Dừng dây chuyền.`, 'error');
+        break;
+      }
+      if (abortBatch.current) break;
+      // 3. Tách End Frame và truyền sang Shot tiếp theo nếu chưa phải shot cuối
+      if (i < shots.length - 1 && !abortBatch.current && videoResult) {
+        const nextShot = shots[i + 1];
+        setBatchProgress({
+          current: i + 1,
+          total: shots.length,
+          title: `Đang trích xuất End Frame từ Shot #${shot.shotNumber} sang Shot #${nextShot.shotNumber}...`
+        });
+        try {
+          const extractedEndFrame = await extractLastFrameFromVideo(videoResult);
+          onUpdateShot(nextShot.id, { startFrameMedia: extractedEndFrame, imageStatus: 'completed' });
+          currentStartFrameMedia = extractedEndFrame;
+          onToast?.(`Đã tách End Frame từ Shot #${shot.shotNumber} sang Shot #${nextShot.shotNumber}!`, 'info');
+        } catch (frameErr: any) {
+          console.warn(`Lỗi tách frame từ video shot #${shot.shotNumber}:`, frameErr);
+          onToast?.(`Không thể trích xuất endframe của Shot #${shot.shotNumber}, chuyển sang dùng Start Frame sẵn có hoặc tạo mới...`, 'warning');
+          currentStartFrameMedia = undefined;
+        }
+        // Giãn cách an toàn 2000ms trước khi tạo shot tiếp theo
+        await new Promise(r => setTimeout(r, 2000));
+      }
+    }
+    setIsBatchGeneratingVideos(false);
+    if (!abortBatch.current) {
+      onToast?.('Dây chuyền All shot đã hoàn tất toàn bộ các phân cảnh trong kịch bản!', 'success');
+    }
+  };
   const isBusy = isBatchGeneratingImages || isBatchGeneratingVideos;
   const readyImagesCount = shots.filter(s => s.startFrameMedia && s.startFrameMedia.mediaId).length;
   const readyVideosCount = shots.filter(s => s.videoMedia && s.videoMedia.mediaId).length;
@@ -301,6 +462,13 @@ export default function Storyboard({ shots, characters, locations, config, onUpd
             config={config}
             onUpdate={(updates) => onUpdateShot(shot.id, updates)}
             aspectRatio={aspectRatio}
+            isFirstShot={index === 0}
+            isLastShot={index === shots.length - 1}
+            previousShotVideo={index > 0 ? shots[index - 1].videoMedia : undefined}
+            onUpdateNextShot={index < shots.length - 1 ? (updates) => onUpdateShot(shots[index + 1].id, updates) : undefined}
+            onToast={onToast}
+            onRunAllChain={index === 0 ? handleGenerateAllChainedVideos : undefined}
+            isAllChainRunning={isBatchGeneratingVideos}
           />
         ))}
       </div>

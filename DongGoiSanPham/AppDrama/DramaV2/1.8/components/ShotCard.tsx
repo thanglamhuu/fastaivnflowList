@@ -17,6 +17,8 @@ interface ShotCardProps {
   previousShotVideo?: FlowMedia;
   onUpdateNextShot?: (updates: Partial<Shot>) => void;
   onToast?: (message: string, type?: 'info' | 'success' | 'warning' | 'error') => void;
+  onRunAllChain?: () => void;
+  isAllChainRunning?: boolean;
 }
 export default function ShotCard({ 
   shot, 
@@ -30,7 +32,9 @@ export default function ShotCard({
   isLastShot = false,
   previousShotVideo,
   onUpdateNextShot,
-  onToast
+  onToast,
+  onRunAllChain,
+  isAllChainRunning = false
 }: ShotCardProps) {
   const [zoomMediaType, setZoomMediaType] = useState<'none' | 'image' | 'video'>('none');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -397,6 +401,25 @@ export default function ShotCard({
                   <span>{isGeneratingVideoAndNext ? 'Đang tạo...' : 'Tạo clip & Ảnh kế'}</span>
                 </button>
               )}
+              {/* 5. Nút All shot: Chỉ hiển thị nếu là Shot đầu tiên (isFirstShot === true) */}
+              {isFirstShot && (
+                <button
+                  type="button"
+                  onClick={onRunAllChain}
+                  disabled={isAllChainRunning}
+                  title="Tạo clip tất cả các shot, trong đó khi tạo clip shot này xong sẽ tự lấy endframe của shot này làm ảnh shot tiếp theo và tạo tiếp clip tiếp theo cho đến hết"
+                  className={`w-full py-1.5 px-1 rounded-lg border text-[10px] md:text-[10.5px] font-black uppercase tracking-wider transition-all text-center active:scale-95 disabled:cursor-not-allowed flex items-center justify-center gap-1 leading-tight shadow-md ${
+                    isAllChainRunning
+                      ? 'bg-amber-600/50 text-amber-200 border-amber-400 animate-pulse'
+                      : 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white border-amber-400/50 shadow-amber-950/30'
+                  }`}
+                >
+                  <span className={`material-symbols-outlined text-xs ${isAllChainRunning ? 'animate-spin' : ''}`}>
+                    {isAllChainRunning ? 'sync' : 'bolt'}
+                  </span>
+                  <span>{isAllChainRunning ? 'Đang chạy All...' : 'All shot'}</span>
+                </button>
+              )}
             </div>
             {/* Cột 2: Ảnh */}
             <div className={`relative group/media ${previewRatioClass} max-h-36 bg-slate-950 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center`}>
@@ -521,59 +544,3 @@ export default function ShotCard({
     </div>
   );
 }
-Trình tạo công cụ
-Giữ  nguyên 100% chi tiết  qui trình tới thời  điểm hiện tại. Không thêm, bớt, không được sửa chữa, không thay  thế bất kì chi tiết nào  của qui trình ngoại trừ yêu  cầu  sau  đây:
-
-Trong màn hình Storyboard (`src/components/Storyboard.tsx` và `src/components/ShotCard.tsx`), hãy bổ sung chế độ lấy frame cuối cùng (endframe) của clip ở shot trước làm ảnh Start Frame (`startFrameMedia`) cho shot tiếp theo với các chi tiết cụ thể sau:
-
-### 1. Xây dựng hàm tách End Frame từ Video (`extractLastFrameFromVideo`)
-Thêm một hàm tiện ích (trong `src/services/flowService.ts` hoặc `src/utils/videoFrameExtractor.ts`) nhận vào `videoMedia: FlowMedia` và trả về `Promise<FlowMedia>`:
-- Tạo một phần tử `<video>` trong bộ nhớ (`document.createElement('video')`), gán `muted = true`, `playsInline = true`, và nạp nguồn từ `videoMedia.url || "data:video/mp4;base64," + videoMedia.base64`.
-- Đợi sự kiện `loadedmetadata`, sau đó gán `video.currentTime = Math.max(0, video.duration - 0.08)` để lấy frame cuối cùng của video.
-- Đợi sự kiện `seeked`, vẽ frame hiện tại của video lên `<canvas>` với đúng kích thước gốc (`video.videoWidth` x `video.videoHeight`), xuất ra chuỗi `dataUrl = canvas.toDataURL('image/jpeg', 0.95)` và tách lấy phần `base64`.
-- Gọi `Flow.upload({ base64, mimeType: 'image/jpeg', name: 'Extracted_EndFrame.jpg' })` (bọc trong `try/catch`, nếu `Flow.upload` lỗi thì tạo `mediaId: "endframe-" + Date.now()`) để trả về đối tượng `FlowMedia` hoàn chỉnh gồm `{ mediaId, base64, mimeType: 'image/jpeg', url: dataUrl }`.
-
-### 2. Cập nhật `src/components/Storyboard.tsx` để truyền thông tin Shot trước/sau xuống `ShotCard`
-Trong `Storyboard.tsx`, giữ nguyên toàn bộ giao diện và tính năng hiện có, chỉ truyền thêm các props sau vào `<ShotCard />`:
-- `isFirstShot={index === 0}`
-- `isLastShot={index === shots.length - 1}`
-- `previousShotVideo={index > 0 ? shots[index - 1].videoMedia : undefined}`
-- `onUpdateNextShot={index < shots.length - 1 ? (updates) => onUpdateShot(shots[index + 1].id, updates) : undefined}`
-- `onToast={onToast}`
-
-### 3. Cập nhật `src/components/ShotCard.tsx` với 2 nút chức năng mới đúng vị trí yêu cầu
-Trong khu vực Cột 1 (cột chứa các nút bấm tạo ảnh/video) của `ShotCard.tsx`, sắp xếp thứ tự các nút từ trên xuống dưới như sau:
-
-1. **Nút "Tạo ảnh"** (Giữ nguyên 100% như hiện tại).
-2. **Nút "Từ Shot trước"**:
-   - **Điều kiện hiển thị:** Chỉ hiển thị nếu shot này KHÔNG phải shot đầu tiên (`!isFirstShot`) VÀ shot ngay trước đó đã có clip được tạo (`Boolean(previousShotVideo && previousShotVideo.base64)`).
-   - **Vị trí:** Nằm ngay dưới nút **"Tạo ảnh"** và nằm trên nút **"Tạo video"**.
-   - **Hành động khi bấm:** Tách ảnh endframe từ `previousShotVideo` (clip của shot trước) bằng hàm `extractLastFrameFromVideo`, sau đó cập nhật làm ảnh Start Frame của shot hiện tại: `onUpdate({ startFrameMedia: extractedMedia, imageStatus: 'completed' })` và hiện thông báo toast thành công.
-3. **Nút "Tạo video"** (Giữ nguyên 100% như hiện tại).
-4. **Nút "Tạo clip & Ảnh kế tiếp"**:
-   - **Điều kiện hiển thị:** Chỉ hiển thị nếu shot đó KHÔNG phải shot cuối cùng (`!isLastShot`).
-   - **Vị trí:** Nằm ngay dưới nút **"Tạo video"** trong `ShotCard`.
-   - **Tooltip khi di chuột vào (`title`):** `"Tạo clip cho shot này và lấy endframe của shot làm ảnh tham chiếu cho shot tiếp theo"`
-   - **Điều kiện kích hoạt:** Chỉ cho bấm khi shot hiện tại đã có `shot.startFrameMedia` (giống điều kiện của nút Tạo video).
-   - **Hành động khi bấm:** Thực hiện tạo video clip cho shot hiện tại (giống hệt quy trình của `handleGenerateVideo`). Ngay sau khi tạo clip cho shot hiện tại thành công và nhận được `result` (`videoMedia`), tự động tách ảnh endframe của clip vừa tạo ra bằng `extractLastFrameFromVideo(result)` và gán vào ảnh tham chiếu đầu cảnh (`startFrameMedia`) của shot tiếp theo thông qua `onUpdateNextShot({ startFrameMedia: extractedEndFrame, imageStatus: 'completed' })`, đồng thời hiển thị toast thông báo đã tạo xong clip và cập nhật ảnh Start Frame cho shot kế tiếp.
-Tóm tắt các nội dung đã triển khai:
-Hàm tiện ích extractLastFrameFromVideo (services/flowService.ts):
-
-Khởi tạo phần tử <video> ngầm với muted = true, playsInline = true.
-Lắng nghe loadedmetadata, dịch chuyển playhead đến currentTime = Math.max(0, video.duration - 0.08) để lấy chính xác frame hình cuối của video.
-Khi sự kiện seeked kích hoạt, vẽ toàn bộ frame lên <canvas> đúng kích thước gốc video.videoWidth x video.videoHeight, chuyển đổi thành chuỗi base64 JPEG chất lượng cao (0.95).
-Tự động gọi Flow.upload để tạo mediaId cho phiên Flow hiện tại (kèm fallback an toàn endframe-TIMESTAMP), trả về FlowMedia hoàn chỉnh gồm mediaId, base64, mimeType, và url.
-Cập nhật components/Storyboard.tsx:
-
-Giữ nguyên 100% giao diện, tính năng và luồng xử lý hiện tại.
-Truyền đầy đủ các props xuống <ShotCard />: isFirstShot, isLastShot, previousShotVideo, onUpdateNextShot, và onToast.
-Cập nhật Cột 1 trong components/ShotCard.tsx theo đúng thứ tự 4 nút:
-
-Nút 1: "Tạo ảnh" (giữ nguyên).
-Nút 2: "Từ Shot trước": Chỉ hiển thị nếu !isFirstShot và previousShotVideo của shot trước đã có clip. Khi bấm, chạy extractLastFrameFromVideo và gán vào startFrameMedia của shot hiện tại kèm thông báo Toast.
-Nút 3: "Tạo video" (giữ nguyên).
-Nút 4: "Tạo clip & Ảnh kế tiếp": Chỉ hiển thị nếu !isLastShot (nằm ngay dưới nút "Tạo video"). Khi bấm, tạo video cho shot hiện tại, sau khi thành công sẽ lập tức bóc tách endframe của clip vừa tạo và gán làm ảnh startFrameMedia của shot tiếp theo qua onUpdateNextShot.
-Bạn muốn tạo gì?
-
-Google Flow có thể mắc sai sót nên bạn hãy xác minh nội dung do Google Flow tạo. Công cụ này có thể tiêu tốn tín dụng
-

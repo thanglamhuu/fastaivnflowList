@@ -12,7 +12,90 @@ async function rateLimitDelay(): Promise<void> {
   }
   lastApiCallTimestamp = Date.now();
 }
+/**
+ * Trích xuất frame cuối cùng (endframe) từ videoMedia làm ảnh Start Frame cho shot tiếp theo
+ */
+export async function extractLastFrameFromVideo(videoMedia: FlowMedia): Promise<FlowMedia> {
+  return new Promise((resolve, reject) => {
+    try {
+      const video = document.createElement('video');
+      video.muted = true;
+      video.playsInline = true;
+      video.crossOrigin = 'anonymous';
+      const videoSrc = videoMedia.url || (videoMedia.base64 ? `data:${videoMedia.mimeType || 'video/mp4'};base64,${videoMedia.base64}` : '');
+      if (!videoSrc) {
+        return reject(new Error('Dữ liệu video nguồn không hợp lệ để tách frame.'));
+      }
+      video.src = videoSrc;
+      // Đặt timeout đề phòng video bị treo giải mã
+      const timeoutId = setTimeout(() => {
+        cleanup();
+        reject(new Error('Quá thời gian trích xuất frame từ video.'));
+      }, 15000);
+      const cleanup = () => {
+        clearTimeout(timeoutId);
+        video.onloadedmetadata = null;
+        video.onseeked = null;
+        video.onerror = null;
+        video.pause();
+        video.removeAttribute('src');
+        video.load();
+      };
+      video.onerror = () => {
+        cleanup();
+        reject(new Error('Không thể tải dữ liệu video để trích xuất frame.'));
+      };
+      video.onloadedmetadata = () => {
+        // Gán currentTime về gần cuối video (trừ 0.08s) để đảm bảo bắt được frame hình cuối
+        video.currentTime = Math.max(0, video.duration - 0.08);
+      };
+      video.onseeked = async () => {
+        try {
+          const width = video.videoWidth || 1280;
+          const height = video.videoHeight || 720;
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            cleanup();
+            return reject(new Error('Không thể khởi tạo Canvas 2D.'));
+          }
+          ctx.drawImage(video, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+          const base64 = dataUrl.split(',')[1];
+          let mediaId = `endframe-${Date.now()}`;
+          try {
+            const uploaded = await Flow.upload({
+              base64,
+              mimeType: 'image/jpeg',
+              name: 'Extracted_EndFrame.jpg'
+            });
+            if (uploaded?.mediaId) {
+              mediaId = uploaded.mediaId;
+            }
+          } catch (uploadErr) {
+            console.warn('Flow.upload endframe cảnh báo:', uploadErr);
+          }
+          cleanup();
+          resolve({
+            mediaId,
+            base64,
+            mimeType: 'image/jpeg',
+            url: dataUrl
+          });
+        } catch (seekErr) {
+          cleanup();
+          reject(seekErr);
+        }
+      };
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
 export const flowService = {
+  extractLastFrameFromVideo,
   async selectMedia(filter: 'image' | 'video' | 'all' = 'image'): Promise<FlowMedia | null> {
     try {
       const media = await Flow.media.select({ filter });

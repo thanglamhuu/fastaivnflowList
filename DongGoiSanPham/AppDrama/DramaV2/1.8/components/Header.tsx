@@ -57,7 +57,7 @@ export default function Header({
             <span className="material-symbols-outlined text-white font-black text-2xl">movie_filter</span>
           </div>
           <div>
-            <h1 className="text-base md:text-lg font-black text-white tracking-tighter uppercase italic">Flow AI Short Film Studio</h1>
+            <h1 className="text-base md:text-lg font-black text-white tracking-tighter uppercase italic">FastAIVN.com Film Studio</h1>
             <div className="flex items-center gap-3 mt-0.5">
               <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider truncate max-w-[200px]">
                 {project.title}
@@ -185,9 +185,11 @@ export default function Header({
                   : 'bg-[#F31B17] hover:bg-[#d11713] shadow-md shadow-[#F31B17]/20'
             }`}
           >
-            <span className={`material-symbols-outlined text-base ${isMerging ? 'animate-spin' : ''}`}>
-              {isMerging ? 'progress_activity' : 'video_merge'}
-            </span>
+            {isMerging && (
+              <span className="material-symbols-outlined text-base animate-spin">
+                progress_activity
+              </span>
+            )}
             <span>{isMerging ? `Đang xử lý ${Math.round(mergeProgress)}%` : 'Ghép & Tải'}</span>
           </button>
         </div>
