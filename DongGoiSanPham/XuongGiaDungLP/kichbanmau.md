@@ -1,1 +1,3 @@
+Tạo ảnh bối cảnh: tạo ảnh cửa hàng không có người nhưng có thiết kế tông màu tường, màu sắc trong cửa hàng nhận diện thương hiệu giống bộ quần áo nhân vật đang mặc, cửa hàng này có rất nhiều quạt như ảnh đính kèm được trình bày đẹp , nhiều kệ
+
     Quạt Cầm Tay Jisulife Tích Điện Mini Fan 7 (Life 7), 3600mAh/5000mAh là sản phẩm quạt cầm tay đến từ thương hiệu Jisulife của Trung Quốc. Quạt cầm tay gấp gọn Jisulife Life 7 một chiếc quạt di động tối ưu được thiết kế để giữ bạn mát mẻ và thoải mái ở mọi nơi. Quạt này có thiết kế 12 lá cánh và động cơ không chổi than nâng cấp, mang lại luồng gió mạnh mẽ lên đến 5m/s.Chiếc quạt di động tối ưu được thiết kế để giữ bạn mát mẻ và thoải mái ở mọi nơi. 
