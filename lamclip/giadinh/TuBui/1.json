@@ -1,0 +1,98 @@
+
+{
+  "project": {
+    "title": "Muốn Làm Quen Mẹ Phải Xin Phép Con",
+    "style": "Cinematic Photorealistic",
+    "aspectRatio": "9:16",
+    "duration": "10s",
+    "premise": "Trong phòng khách ấm cúng, bé gái khoảng 2 tuổi thấy mẹ quá đẹp nên nghiêm túc dặn mẹ không được nói chuyện với người lạ. Khi mẹ ngạc nhiên hỏi lý do, bé tự tin tuyên bố rằng bất kỳ ai muốn làm quen mẹ đều phải xin phép bé Bông trước. Mẹ bật cười rạng rỡ và âu yếm xoa đầu con gái.",
+    "scriptMarkdown": "KỊCH BẢN: MUỐN LÀM QUEN MẸ PHẢI XIN PHÉP CON\n\nTHỜI LƯỢNG: 10 GIÂY\nTỶ LỆ: 9:16\nPHONG CÁCH: Hài gia đình đời thường, chân thực, ấm áp.\n\nBỐI CẢNH: Phòng khách hiện đại với sofa bọc vải màu kem sáng, bình hoa trang trí và ánh nắng dịu xuyên qua rèm cửa.\n\nNHÂN VẬT: Mẹ và Chị Đại (bé Bông, khoảng 2 tuổi).\n\nGÓC MÁY: Eye-level Medium Close-Up, bố cục hai mẹ con cố định xuyên suốt.\n\nSHOT 1 (00:00–00:04) - HOOK\nMẹ ngồi bên trái sofa, tựa má nhẹ lên tay, nhìn con âu yếm. Bé Bông ngồi bên phải, hai tay chống nạnh, nghiêm mặt kiểu bà cụ non và nói: 'Mẹ ơi, mẹ đẹp quá, đừng nói chuyện với người lạ nha!'\nMẹ ngạc nhiên, hơi nghiêng đầu và hỏi: 'Sao thế con?' [NEEDS_REVIEW: Lời thoại bổ sung vì JSON nguồn chưa cung cấp câu hỏi cụ thể.]\n\nSHOT 2 (00:04–00:10) - TWIST & PUNCHLINE\nBé Bông vẫn ngồi bên phải, giơ ngón tay trỏ lên, nhìn mẹ nghiêm túc và tuyên bố: 'Muốn làm quen mẹ, phải xin phép Bông trước nha!'\nMẹ bật cười rạng rỡ, đưa tay nhẹ nhàng vuốt tóc con gái. Bé cười toe toét, tự hào và nghiêng người về phía mẹ. Hai mẹ con cùng cười vui vẻ. Kết thúc bằng khoảnh khắc mẹ âu yếm con.\n\nLƯU Ý: Giữ nguyên lời thoại chính, đúng người nói. Không thêm nhân vật hoặc tình tiết mới. Câu hỏi của Mẹ cần được xác nhận trước khi khóa kịch bản.",
+    "characters": [
+      {
+        "id": "char-me",
+        "name": "Mẹ",
+        "referenceImage": "Me.png",
+        "physicalDescription": "Use exact identity from referenced image. No text-based appearance reconstruction.",
+        "defaultOutfit": "Use exact outfit from referenced image. Do not redesign or recolor.",
+        "voiceTone": "Natural Northern Vietnamese adult female voice, gentle, affectionate, softly curious and amused. Warm spontaneous laughter."
+      },
+      {
+        "id": "char-chi-dai",
+        "name": "Chị Đại",
+        "referenceImage": "ChiDai.png",
+        "physicalDescription": "Use exact identity from referenced image. No text-based appearance reconstruction.",
+        "defaultOutfit": "Use exact outfit from referenced image. Do not redesign or recolor.",
+        "voiceTone": "Authentic Northern Vietnamese toddler girl voice, approximately two years old, sweet, innocent, naturally high-pitched, slightly lisping and hilariously bossy. Natural toddler pronunciation, never adult-sounding."
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-phong-khach-luxury",
+        "name": "Sofa phòng khách ấm cúng",
+        "description": "An elegant, warm and cozy modern Vietnamese family living room featuring a comfortable light cream upholstered fabric sofa, soft neutral cushions, a decorative vase of fresh flowers and gentle natural daylight filtering through sheer curtains. Warm neutral color palette, subtle home decorations and a welcoming family atmosphere. The mother sits on screen left and the toddler daughter sits on screen right. Both characters remain seated throughout the entire story. Preserve the exact same sofa, cushions, flower vase, curtains, architecture, furniture placement, lighting direction and camera perspective across both shots."
+      }
+    ],
+    "props": [],
+    "shots": [
+      {
+        "id": "shot-1",
+        "shotNumber": 1,
+        "durationSeconds": 4,
+        "title": "Bé Dặn Mẹ Không Nói Chuyện Với Người Lạ",
+        "narrativeFunction": "HOOK",
+        "narrativeIntention": "Immediately capture attention through the toddler daughter's unexpectedly serious and protective advice to her beautiful mother, creating an adorable contrast between her young age and bossy attitude.",
+        "cameraAngle": "Locked-off eye-level medium close-up two-shot, vertical 9:16, mother seated on screen left and toddler daughter on screen right, both faces and upper-body gestures clearly visible.",
+        "visualPrompt": "A vertical 9:16 photorealistic cinematic family comedy frame inside an elegant, warm modern Vietnamese living room. The mother and toddler daughter from the provided character reference images sit close together on a comfortable light cream upholstered sofa. The mother sits on screen left, resting her cheek lightly against one hand, with her body turned slightly toward her daughter and a gentle affectionate smile. The toddler daughter sits on screen right, upright and facing her mother, with both hands placed playfully on her hips in a confident, adorable little-boss pose. Her facial expression is earnest and slightly serious, as if preparing to give her mother important advice. Both characters are clearly visible from approximately the waist upward, with their faces, hands and natural interaction unobstructed. A vase of fresh flowers, soft neutral cushions and sheer curtains are visible in the background. Gentle natural daylight enters from the side, creating warm soft illumination and realistic skin tones. Fixed eye-level medium close-up, authentic family vlog atmosphere, cinematic photorealism, natural depth of field. Preserve the exact character identities, facial features, hairstyles, outfits and accessories from the provided reference images. Do not redesign, recolor or reconstruct their appearances. No additional people, no wardrobe changes, no text overlays.",
+        "videoMotionPrompt": "[Context: Wholesome family comedy, affectionate mother and toddler daughter moment in a cozy living room.] Duration: 4 seconds. Begin from the provided starting reference frame. Maintain a fixed eye-level medium close-up two-shot throughout.\n\n00:00–00:02.8: The toddler daughter sits upright on screen right with both hands playfully on her hips. She looks directly into her mother's eyes with an earnest, protective expression and says in a cute, naturally high-pitched, slightly lisping Northern Vietnamese toddler voice: 'Mẹ ơi, mẹ đẹp quá, đừng nói chuyện với người lạ nha!' She emphasizes her warning through a small serious head movement while remaining seated. The mother sits on screen left, listening affectionately with a soft smile.\n\n00:02.8–00:03.6: The mother raises her eyebrows slightly, tilts her head toward the daughter and asks softly in a curious Northern Vietnamese female voice: 'Sao thế con?' This optional line is marked NEEDS_REVIEW because the exact wording was not supplied in the source.\n\n00:03.6–00:04: The toddler begins lifting one index finger from her hands-on-hips position, preparing to explain her condition. The mother maintains her curious expression and attentive gaze.\n\nEnd with the daughter beginning to raise her index finger while looking seriously at her mother. The mother remains seated on screen left, eyebrows slightly raised and head gently tilted toward her daughter. Maintain realistic childlike acting, natural body physics, accurate Vietnamese lip synchronization and distinct character voices. No cuts, no zooms, no camera repositioning. Preserve exact reference identities, hairstyles, outfits, accessories, sofa arrangement, background and lighting.",
+        "characterNames": [
+          "Mẹ",
+          "Chị Đại"
+        ],
+        "dialogue": {
+          "characterName": "Chị Đại",
+          "line": "Mẹ ơi, mẹ đẹp quá, đừng nói chuyện với người lạ nha!",
+          "emotion": "Nghiêm túc, đáng yêu, bảo vệ mẹ, giọng bé gái miền Bắc khoảng 2 tuổi, ngọng nghịu tự nhiên."
+        },
+        "action": "Bé Bông ngồi chống nạnh, nghiêm túc dặn mẹ không được nói chuyện với người lạ vì mẹ quá đẹp. Mẹ ngạc nhiên, nghiêng đầu hỏi lý do. Bé bắt đầu giơ ngón tay để giải thích.",
+        "actingDirection": "Daughter: sits upright, hands on hips, serious little-boss expression, direct eye contact, naturally expressive toddler speech. Toward the end, raises one index finger to emphasize her upcoming explanation. Mother: relaxed posture, cheek lightly resting against one hand, gentle smile transitioning into playful surprise, slight eyebrow raise and natural head tilt.",
+        "startState": "Mother sits on the left side of the cream sofa, resting her cheek lightly on one hand and looking affectionately at her daughter. Daughter sits on the right side with both hands on her hips, facing her mother seriously.",
+        "endState": "Mother remains seated on screen left, looking curiously toward her daughter with slightly raised eyebrows and a gentle head tilt. Daughter remains seated on screen right, beginning to raise one index finger while maintaining a serious expression.",
+        "continuityLock": "Preserve exact reference identities, hairstyles, outfits and accessories. Mother remains on screen left and daughter on screen right. Both remain seated on the same cream sofa. Daughter's index finger must be beginning to rise at the end of this shot so shot 2 can continue naturally. Maintain identical camera height, focal length, framing, sofa upholstery, cushions, flower vase, curtains, furniture placement and natural daylight direction. No character position swaps or sudden pose changes.",
+        "sfxAudioCue": "00:00–00:02.8: Clear Northern Vietnamese toddler dialogue with natural childlike pronunciation and precise lip synchronization. 00:02.8–00:03.6: Mother's soft curious question, if approved. 00:03.6–00:04: Short natural conversational pause with subtle clothing rustle. Gentle warm acoustic background music at very low volume, soft indoor ambience. Dialogue must remain clear and intelligible. No unrelated voices."
+      },
+      {
+        "id": "shot-2",
+        "shotNumber": 2,
+        "durationSeconds": 6,
+        "title": "Muốn Quen Mẹ Phải Qua Ải Con",
+        "narrativeFunction": "TWIST & PUNCHLINE",
+        "narrativeIntention": "Deliver the adorable comedic payoff as the toddler confidently declares herself the gatekeeper for anyone wanting to meet her mother, followed by the mother's spontaneous laughter and affectionate reaction.",
+        "cameraAngle": "Identical locked-off eye-level medium close-up two-shot, vertical 9:16, mother seated on screen left and toddler daughter on screen right, both faces and hand gestures clearly visible.",
+        "visualPrompt": "A vertical 9:16 photorealistic cinematic family comedy frame inside the exact same elegant, warm Vietnamese living room established in the previous shot. The mother from the provided character reference image remains seated on screen left of the light cream upholstered sofa, facing her toddler daughter with a curious, slightly surprised expression and a gentle head tilt. The toddler daughter from the provided character reference image remains seated on screen right, facing her mother with a confident, adorably serious expression. One of the daughter's small index fingers is beginning to rise in a playful authoritative gesture. The mother looks directly into her daughter's eyes, waiting for her explanation. Both characters are visible from approximately the waist upward, with clear facial expressions and unobstructed hand gestures. Preserve the exact same cream sofa, neutral cushions, flower vase, sheer curtains, background furniture, natural daylight direction and camera perspective. Warm, soft cinematic illumination, realistic skin textures, authentic family interaction and natural depth of field. Preserve the exact identities, facial features, hairstyles, outfits and accessories from the provided character reference images. No additional people, no wardrobe changes, no text overlays, no camera repositioning.",
+        "videoMotionPrompt": "[Context: Wholesome family comedy, adorable protective toddler daughter and affectionate mother interaction.] Duration: 6 seconds. Begin from the exact final visual state of shot 1. Maintain the same fixed eye-level medium close-up two-shot.\n\n00:00–00:01: The toddler daughter completes raising one small index finger in front of herself while sitting on screen right. She looks directly at her mother with a comically serious, confident little-boss expression. The mother remains seated on screen left, watching her daughter curiously.\n\n00:01–00:03.8: The toddler daughter makes one small, playful index-finger emphasis gesture and declares in a sweet, slightly lisping Northern Vietnamese toddler voice: 'Muốn làm quen mẹ, phải xin phép Bông trước nha!' Her expression is earnest, proud and adorably authoritative. The mother listens, her surprised expression gradually turning into a delighted smile. Keep the toddler's finger at a comfortable distance from the mother's face.\n\n00:03.8–00:05: The mother bursts into warm, spontaneous laughter. She gently reaches one hand toward her daughter's head and affectionately strokes her hair without disturbing the reference hairstyle or accessories. The daughter lowers her raised finger, smiles proudly and leans slightly toward her mother.\n\n00:05–00:06: The mother continues smiling and softly laughing while gently caressing her daughter's hair. The daughter giggles naturally, looking delighted and comfortable beside her mother. End on a warm, joyful shared mother-daughter moment.\n\nMaintain natural body physics, age-appropriate toddler gestures, realistic facial expressions, accurate Vietnamese lip synchronization and consistent character voices. No exaggerated cartoon movements, no camera cuts, no zooms, no angle changes. Preserve exact photo-referenced identities, hairstyles, outfits, accessories, seating positions, sofa, background furniture and lighting. The primary comedic action is the daughter's confident condition followed by the mother's affectionate reaction.",
+        "characterNames": [
+          "Mẹ",
+          "Chị Đại"
+        ],
+        "dialogue": {
+          "characterName": "Chị Đại",
+          "line": "Muốn làm quen mẹ, phải xin phép Bông trước nha!",
+          "emotion": "Tự tin, nghiêm nghị kiểu bà cụ non, đáng yêu và hơi đắc ý, giọng bé gái miền Bắc khoảng 2 tuổi, ngọng nghịu tự nhiên, nhấn mạnh ở cụm 'xin phép Bông'."
+        },
+        "action": "Bé Bông giơ ngón tay trỏ, nghiêm túc tuyên bố ai muốn làm quen mẹ phải xin phép bé trước. Mẹ bật cười rạng rỡ, nhẹ nhàng vuốt tóc con gái. Bé cười tự hào và nghiêng người về phía mẹ.",
+        "actingDirection": "Daughter: completes the index-finger gesture, maintains confident eye contact and a mock-serious toddler expression while speaking. After delivering the punchline, lowers her hand, smiles proudly and leans gently toward her mother. Mother: curious expression transforms into delighted surprise, spontaneous warm laughter, gentle affectionate hair-stroking gesture and a loving smile. Both characters remain naturally seated and emotionally connected.",
+        "startState": "Mother sits on screen left, head slightly tilted, looking curiously toward her daughter. Daughter sits on screen right, facing her mother with one index finger beginning to rise and a serious expression.",
+        "endState": "Mother remains seated on screen left, smiling and laughing warmly while gently stroking her daughter's hair. Daughter remains seated on screen right, smiling proudly and leaning slightly toward her mother. Both share a joyful, affectionate moment.",
+        "continuityLock": "Start directly from the exact final state of shot 1. Daughter must complete raising the same index finger before delivering her condition. Mother must react after hearing the punchline, not before. Daughter lowers her finger before leaning toward her mother. Preserve exact reference character identities, hairstyles, outfits and accessories, including all hair accessories during the mother's gentle hair-stroking gesture. Mother stays on screen left, daughter on screen right. Maintain identical sofa, cushions, flower vase, curtains, lighting direction, camera height and framing. No sudden changes in position or environment.",
+        "sfxAudioCue": "00:00–00:01: Soft indoor ambience and subtle fabric movement as the toddler raises her finger. 00:01–00:03.8: Clear Northern Vietnamese toddler punchline, accurately lip-synchronized, naturally high-pitched and slightly lisping. 00:03.8–00:05: Mother's spontaneous bright laughter and soft fabric rustle during the affectionate gesture. 00:05–00:06: Natural toddler giggle mixed with the mother's warm chuckle. Gentle acoustic background music remains very low and must not obscure dialogue or laughter. No additional speech or unrelated sound effects."
+      }
+    ]
+  },
+  "config": {
+    "ratio": "9:16",
+    "speed": "1x",
+    "model": "Omni 1.1 Flash",
+    "threads": 2,
+    "resolution": "720p"
+  }
+}
