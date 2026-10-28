@@ -7,6 +7,7 @@ export function countWords(text: string): number {
 }
 /**
  * Sinh kịch bản 4 phân cảnh bán hàng chuẩn Affiliate Việt Nam
+ * Tự động phân loại đặc tính vật liệu sản phẩm CỨNG vs MỀM để điều chỉnh actionPrompt
  */
 export async function generateScript4Scenes(
   config: StudioConfig,
@@ -17,18 +18,26 @@ export async function generateScript4Scenes(
     ? 'Bối cảnh đồng nhất được cố định theo hình ảnh bối cảnh thực tế do người dùng tải lên'
     : (config.bgSetting === '14. Tự nhập bối cảnh tùy chỉnh' ? config.customBgSetting : config.bgSetting);
   const prompt = `Viết kịch bản video bán hàng TikTok/Reels Affiliate chuẩn phong cách xưởng sản xuất Việt Nam.
-Sản phẩm: "${config.productNameAndSpecs || 'Sản phẩm gia dụng chất lượng cao chuẩn xưởng'}"
+Sản phẩm & Thông số: "${config.productNameAndSpecs || 'Sản phẩm gia dụng chất lượng cao chuẩn xưởng'}"
 Mẫu Hook kịch bản được chọn: "${config.scriptTemplate}"
 Bối cảnh quay: "${bgDescription}"
-QUY TẮC BẮT BUỘC:
+TỰ ĐỘNG PHÂN TÍCH VẬT LIỆU SẢN PHẨM & QUY TẮC ACTION PROMPT (RẤT QUAN TRỌNG):
+Hãy tự động phân loại sản phẩm này thuộc nhóm CỨNG hay MỀM dựa trên tên, thông số và hình ảnh tham chiếu:
+1. NHÓM SẢN PHẨM CỨNG (Máy móc, đồ điện tử, đồ gia dụng kim loại/nhựa cứng, mũ bảo hiểm, nồi chiên, điện thoại, dụng cụ cơ khí...):
+   - Yêu cầu actionPrompt BẮT BUỘC nhấn mạnh việc giữ nguyên hình dạng vỏ ngoài kiên cố, bề mặt cứng cáp, tuyệt đối không bị biến dạng khi thao tác hay gõ/chạm.
+   - Ví dụ hành động: "The phone screen lights up while the casing remains rigid and solid", "Presenter taps firmly on the hard metallic shell which remains perfectly rigid and unyielding", "Presenter showcases the sturdy solid surface without any deformation".
+2. NHÓM SẢN PHẨM MỀM (Khẩu trang, quần áo, màng bọc thực phẩm, khăn lau, đệm mút, vải vóc, găng tay cao su...):
+   - Yêu cầu actionPrompt BẮT BUỘC cho phép và mô tả sự co giãn, đàn hồi hoặc uốn lượn tự nhiên theo cử động tay/khuôn mặt mà không làm mất chất liệu và hoa văn gốc.
+   - Ví dụ hành động: "The mask stretches naturally to fit the face tightly without losing its texture", "Presenter gently stretches the elastic fabric to demonstrate its natural flexibility while retaining its original weave", "The cling wrap clings and flexes smoothly around the bowl showing authentic stretch".
+QUY TẮC BẮT BUỘC VỀ NỘI DUNG & ĐỊNH DẠNG:
 1. Trả về đúng 4 phân cảnh ứng với 4 giai đoạn bán hàng:
    - Cảnh 1 (Hook): Thu hút chú ý, khơi dậy tò mò theo đúng phong cách mẫu "${config.scriptTemplate}".
-   - Cảnh 2 (Chất liệu): Cận cảnh chất liệu, độ hoàn thiện tinh tế, độ dày dặn, cảm giác cầm nắm.
-   - Cảnh 3 (Công năng): Thử nghiệm độ bền, khả năng chống nước, chịu lực hoặc tính năng vượt trội.
+   - Cảnh 2 (Chất liệu): Cận cảnh chất liệu, độ hoàn thiện tinh tế, độ dày dặn, cảm giác cầm nắm (áp dụng đúng quy tắc CỨNG hoặc MỀM).
+   - Cảnh 3 (Công năng): Thử nghiệm độ bền, khả năng chịu lực/độ dẻo dai đàn hồi theo đúng bản chất vật liệu.
    - Cảnh 4 (Kêu gọi hành động CTA): Kêu gọi nhấn giỏ hàng góc trái, chính sách kiểm tra hàng trước khi thanh toán.
 2. Lời thoại tiếng Việt tự nhiên, đời thường, dân dã gần gũi, xưng hô "em - các bác" hoặc "bên em - anh chị".
 3. ĐỘ DÀI MỖI ĐOẠN THOẠI BẮT BUỘC TỪ 20 ĐẾN 25 TỪ (tuyệt đối không viết quá 26 từ hay dưới 16 từ) để đọc vừa khít 8 giây video.
-4. actionPrompt: Mô tả hành động và biểu cảm của người mẫu bằng tiếng Anh tự nhiên, hướng ống kính camera, tương tác với sản phẩm.
+4. actionPrompt: Mô tả hành động và biểu cảm của người mẫu bằng tiếng Anh tự nhiên, hướng ống kính camera, tương tác với sản phẩm tuân thủ nghiêm ngặt quy tắc CỨNG/MỀM ở trên.
 Trả về duy nhất định dạng JSON thuần không bọc markdown backtick:
 {
   "scenes": [
@@ -39,7 +48,12 @@ Trả về duy nhất định dạng JSON thuần không bọc markdown backtick
   ]
 }`;
   const textOptions: any = {
-    systemInstruction: 'Bạn là chuyên gia viết kịch bản video ngắn TikTok/Reels triệu view bán hàng Affiliate tại Việt Nam. Bạn luôn xuất ra JSON hợp lệ thuần túy.',
+    systemInstruction: `Bạn là giám đốc sản xuất và chuyên gia biên kịch video thương mại ngắn TikTok/Reels Affiliate triệu view tại Việt Nam.
+Bạn có chuyên môn sâu về vật lý và thị giác sản phẩm:
+- Tự động nhận diện bản chất cơ học của sản phẩm (SẢN PHẨM CỨNG vs SẢN PHẨM MỀM).
+- Với sản phẩm CỨNG: luôn chỉ định trong actionPrompt việc giữ nguyên cấu trúc vỏ ngoài cứng cáp (structural rigidity, non-deformable casing, firm solid shell).
+- Với sản phẩm MỀM: luôn chỉ định trong actionPrompt sự co giãn đàn hồi tự nhiên (natural stretch, elastic flexibility, adaptive contouring).
+Luôn xuất ra JSON hợp lệ thuần túy không chứa markdown backtick.`,
   };
   const imagesInput: Array<{ base64: string; mimeType: string }> = [];
   productMedias.forEach((pm) => {
@@ -69,15 +83,15 @@ Trả về duy nhất định dạng JSON thuần không bọc markdown backtick
     scenes: [
       {
         dialogue: `Chỉ bằng vài cốc trà đá mà nhận ngay một ${config.productNameAndSpecs.slice(0, 20) || 'sản phẩm xịn'}, ở đâu nói thế các bác chớ vội tin ngay nhé!`,
-        actionPrompt: 'Person energetically holds up the hero product towards the camera with an expressive engaging smile.',
+        actionPrompt: 'Person energetically holds up the hero product towards the camera with an expressive engaging smile while preserving its authentic physical shape.',
       },
       {
         dialogue: 'Hàng chuẩn xưởng em đúc gia công đanh chắc, từng đường may tỉ mỉ, các bác nhận hàng cầm trên tay là ưng ý liền.',
-        actionPrompt: 'Presenter taps the solid product material firmly, showing seamless edges and pristine finishing.',
+        actionPrompt: 'Presenter presents the product material firmly, highlighting pristine surface finishing with zero distortion.',
       },
       {
         dialogue: 'Thiết kế chịu va đập và kháng nước siêu bền, dùng quăng quật thoải mái nhiều năm trời mà không lo trầy xước hay móp méo.',
-        actionPrompt: 'Presenter tests the product sturdiness enthusiastically, demonstrating reliability and comfort.',
+        actionPrompt: 'Presenter demonstrates authentic material durability with realistic physical tactile interaction.',
       },
       {
         dialogue: 'Đủ màu sắc cho các bác lựa chọn, nhấn ngay giỏ hàng góc trái màn hình nhận giá khuyến mãi xuất xưởng hôm nay!',
@@ -194,8 +208,7 @@ VOICE & ACCENT: Native Vietnamese speaker, ${config.voiceActor} (clear, enthusia
   }
   let videoResult;
   if (hasSceneKeyframe) {
-    // 🌟 Khi Scene card ĐÃ CÓ ẢNH: lấy trực tiếp ảnh đó làm firstFrameImageMediaId (I2V),
-    // TUYỆT ĐỐI KHÔNG truyền referenceImageMediaIds (không lấy ảnh mẫu, ảnh SP, bối cảnh vào nữa)
+    // Khi Scene card ĐÃ CÓ ẢNH: lấy trực tiếp ảnh đó làm firstFrameImageMediaId (I2V)
     videoResult = await Flow.generate.video({
       prompt: videoPrompt,
       firstFrameImageMediaId: scene.keyframeMedia!.mediaId,
