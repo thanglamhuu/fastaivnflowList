@@ -31,70 +31,86 @@ export const TopActionBar: React.FC<TopActionBarProps> = ({
     <header className="h-14 border-b border-zinc-800 bg-[#0d0e12] px-4 flex items-center justify-between shrink-0 z-30 select-none">
       {/* Brand & System Status */}
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-black font-black shadow-md shadow-amber-500/20">
-          <span className="material-symbols-outlined text-[20px]">movie_edit</span>
-        </div>
+        <a
+          href="https://fastaivn.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+          title="Trang chủ FastAI VN (fastaivn.com)"
+        >
+          <img
+            src="https://fastaivn.com/baner.png"
+            alt="FastAI VN Logo"
+            className="h-7 w-auto object-contain"
+          />
+        </a>
+        <div className="h-6 w-[1px] bg-zinc-800 mx-1 hidden sm:block"></div>
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm font-bold text-white tracking-wide uppercase">
-              Studio Sản Xuất Video Bán Hàng 4 Cảnh
+              FastAIVN Xưởng Review
             </h1>
-            <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/15 text-amber-400 border border-amber-500/30">
-              E-COM 9:16
+            <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#F31B17]/15 text-[#F31B17] border border-[#F31B17]/30">
+              v1.11
             </span>
           </div>
           <div className="flex items-center gap-2 text-[10px] text-zinc-400 font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Trạng thái: Sẵn sàng</span>
-            <span className="text-zinc-600">•</span>
-            <span className="text-zinc-400">FFmpeg WASM & Omni 1.1 Flash</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F31B17] animate-pulse"></span>
+            <a
+              href="https://fastaivn.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#F31B17] transition-colors font-semibold"
+            >
+              fastaivn.com
+            </a>
           </div>
         </div>
       </div>
       {/* Top 4 Pipeline Action Buttons */}
       <div className="flex items-center gap-2">
-        {/* 1. ✨ Tạo Lại 4 Ảnh */}
+        {/* 1. Tạo Lại 4 Ảnh */}
         <button
           type="button"
           onClick={onGenerate4Images}
           disabled={!canMakeImages || isGeneratingImages || isRenderingVideos}
           className={`h-9 px-3.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm ${
             canMakeImages && !isGeneratingImages
-              ? 'bg-zinc-800 hover:bg-zinc-700 text-amber-300 border border-amber-500/40 hover:border-amber-400 active:scale-95 cursor-pointer'
+              ? 'bg-zinc-800 hover:bg-zinc-700 text-red-200 border border-[#F31B17]/40 hover:border-[#F31B17] active:scale-95 cursor-pointer'
               : 'bg-zinc-900 text-zinc-500 border border-zinc-800 cursor-not-allowed opacity-60'
           }`}
           title="Tạo 4 ảnh Keyframe 9:16 tại kho/xưởng ứng với 4 cảnh"
         >
-          <span className={`material-symbols-outlined text-[16px] ${isGeneratingImages ? 'animate-spin' : ''}`}>
+          <span className={`material-symbols-outlined text-[16px] text-[#F31B17] ${isGeneratingImages ? 'animate-spin' : ''}`}>
             {isGeneratingImages ? 'sync' : 'auto_awesome'}
           </span>
-          <span>{isGeneratingImages ? 'Đang tạo 4 ảnh...' : '✨ Tạo Lại 4 Ảnh'}</span>
+          <span>{isGeneratingImages ? 'Đang tạo 4 ảnh...' : 'Tạo Lại 4 Ảnh'}</span>
         </button>
-        {/* 2. 📄 Tạo Kịch Bản */}
+        {/* 2. Tạo Kịch Bản */}
         <button
           type="button"
           onClick={onGenerateScript}
           disabled={isGeneratingScript || isRenderingVideos}
           className={`h-9 px-3.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm ${
             !isGeneratingScript
-              ? 'bg-zinc-800 hover:bg-zinc-700 text-cyan-300 border border-cyan-500/40 hover:border-cyan-400 active:scale-95 cursor-pointer'
+              ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 hover:border-[#F31B17] active:scale-95 cursor-pointer'
               : 'bg-zinc-900 text-zinc-500 border border-zinc-800 cursor-not-allowed opacity-60'
           }`}
-          title="Dùng Flow.generate.text sinh lời thoại cho 4 cảnh dựa trên Mẫu Kịch Bản"
+          title="Dùng AI sinh lời thoại cho 4 cảnh dựa trên Mẫu Kịch Bản"
         >
-          <span className={`material-symbols-outlined text-[16px] ${isGeneratingScript ? 'animate-spin' : ''}`}>
+          <span className={`material-symbols-outlined text-[16px] text-[#F31B17] ${isGeneratingScript ? 'animate-spin' : ''}`}>
             {isGeneratingScript ? 'sync' : 'description'}
           </span>
-          <span>{isGeneratingScript ? 'Đang viết thoại...' : '📄 Tạo Kịch Bản'}</span>
+          <span>{isGeneratingScript ? 'Đang viết thoại...' : 'Tạo Kịch Bản'}</span>
         </button>
-        {/* 3. 🎬 Render 4 Cảnh */}
+        {/* 3. Render 4 Cảnh */}
         <button
           type="button"
           onClick={onRender4Videos}
           disabled={!hasKeyframes || isRenderingVideos || isGeneratingImages}
           className={`h-9 px-4 rounded-lg text-xs font-extrabold flex items-center gap-1.5 transition-all shadow-md ${
             hasKeyframes && !isRenderingVideos
-              ? 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black shadow-amber-500/25 active:scale-95 cursor-pointer'
+              ? 'bg-[#F31B17] hover:bg-[#d11713] text-white shadow-red-900/40 active:scale-95 cursor-pointer ring-1 ring-red-400/40'
               : 'bg-zinc-900 text-zinc-500 border border-zinc-800 cursor-not-allowed opacity-60'
           }`}
           title="Render video nói thoại 8s đa luồng tối đa 2 cảnh song song"
@@ -103,17 +119,17 @@ export const TopActionBar: React.FC<TopActionBarProps> = ({
             {isRenderingVideos ? 'sync' : 'movie_filter'}
           </span>
           <span>
-            {isRenderingVideos ? `Đang render (${activeVideoCount} chạy)...` : '🎬 Render 4 Cảnh'}
+            {isRenderingVideos ? `Đang render (${activeVideoCount} chạy)...` : 'Render 4 Cảnh'}
           </span>
         </button>
-        {/* 4. 🎞️ Ghép & Tải Video (Yêu cầu tối thiểu 2 clip) */}
+        {/* 4. Ghép & Tải Video */}
         <button
           type="button"
           onClick={onOpenMergeModal}
           disabled={!hasEnoughVideosToMerge || isRenderingVideos}
           className={`h-9 px-4 rounded-lg text-xs font-black flex items-center gap-1.5 transition-all shadow-md ${
             hasEnoughVideosToMerge && !isRenderingVideos
-              ? 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-black active:scale-95 cursor-pointer shadow-emerald-500/25 ring-1 ring-emerald-400/50'
+              ? 'bg-zinc-800 hover:bg-zinc-700 text-white active:scale-95 cursor-pointer border border-[#F31B17] shadow-red-950/40'
               : 'bg-zinc-900 text-zinc-500 border border-zinc-800 cursor-not-allowed opacity-60'
           }`}
           title={
@@ -122,10 +138,10 @@ export const TopActionBar: React.FC<TopActionBarProps> = ({
               : `Cần tối thiểu 2 clip đã hoàn thành để ghép (Hiện có: ${completedVideoCount}/4)`
           }
         >
-          <span className="material-symbols-outlined text-[18px]">
+          <span className="material-symbols-outlined text-[18px] text-[#F31B17]">
             video_library
           </span>
-          <span>🎞️ Ghép & Tải Video ({completedVideoCount}/4)</span>
+          <span>Ghép & Tải Video ({completedVideoCount}/4)</span>
         </button>
       </div>
     </header>
