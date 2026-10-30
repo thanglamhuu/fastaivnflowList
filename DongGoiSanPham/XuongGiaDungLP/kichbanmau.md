@@ -21,3 +21,7 @@ Thông số kỹ thuật và tính năng chính
 • Dung tích phổ biến: Có 2 loại chính gồm dung tích 500ml và 800ml.
 • Lưỡi dao: Làm từ inox chống gỉ, gồm từ 10 đến 16 lưỡi dao tùy phiên bản để xay nhuyễn thực phẩm nhanh chóng.
 • Công suất & Tốc độ: Động cơ đạt khoảng 18.000 vòng/phút.
+
+Lõi trong tráng gốm cao cấp giúp đảm bảo chất lượng của nước uống
+Có thể dùng một tay cầm cốc và mở nắp dễ dàng. Dung tích một lít tha hồ uống
+Các bác bấm ngay giỏ hàng góc trái săn giá xưởng, hôm nay vẫn còn chương trình trợ giá cho mọi người nhé.
