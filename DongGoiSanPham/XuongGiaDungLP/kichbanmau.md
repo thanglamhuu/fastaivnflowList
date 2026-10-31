@@ -22,6 +22,16 @@ Thông số kỹ thuật và tính năng chính
 • Lưỡi dao: Làm từ inox chống gỉ, gồm từ 10 đến 16 lưỡi dao tùy phiên bản để xay nhuyễn thực phẩm nhanh chóng.
 • Công suất & Tốc độ: Động cơ đạt khoảng 18.000 vòng/phút.
 
-Lõi trong tráng gốm cao cấp giúp đảm bảo chất lượng của nước uống
+
+
+
+Cốc giữ nhiệt dung tích lớn Sidagar 1000ML - Nắp trong bằng gốm + Thép không gỉ 316 - Cốc giữ nhiệt ngoài trời, Cốc đựng
+Lõi trong tráng gốm cao cấp giúp đảm bảo chất lượng của nước uống. Vỏ bằng kim loại chất lưpw
 Có thể dùng một tay cầm cốc và mở nắp dễ dàng. Dung tích một lít tha hồ uống
 Các bác bấm ngay giỏ hàng góc trái săn giá xưởng, hôm nay vẫn còn chương trình trợ giá cho mọi người nhé.
+
+
+
+Trong suốt video, người trình bày giữ một tay ra sau lưng, trong khi tay kia cầm vào quai cốc; họ dùng ngón cái nhấn vào một chốt khóa màu cam sáng, khiến nắp cốc bật mở ngay lập tức kèm theo một tiếng tách cơ học dứt khoát, để lộ chiếc ống hút bên dưới.
+
+The presenter keeps one hand behind their back throughout the entire video, while the other hand holds the cup by its handle; using their thumb, they press a bright orange locking latch, causing the lid to pop open instantly with a sharp, mechanical click—revealing a straw underneath.
